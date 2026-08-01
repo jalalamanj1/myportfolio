@@ -76,10 +76,7 @@ export const AboutSection: React.FC = () => {
                     />
                     
                     <div className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-black/50 backdrop-blur-md border border-white/15 flex items-center justify-between">
-                      <div>
-                        <p className="text-xs font-semibold text-white">Jalal Amanj</p>
-                        <p className="text-[10px] text-neutral-300">Senior Systems & Desktop Architect</p>
-                      </div>
+                      <p className="text-xs font-semibold text-white">Jalal Amanj</p>
                       <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#D7C4A3] animate-pulse" />
                     </div>
                   </div>
