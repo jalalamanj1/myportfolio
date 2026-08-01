@@ -24,3 +24,17 @@ export function clearStoredPromptCategories(): void {
 export function getAllPromptCategories(): PromptCategory[] {
   return getStoredPromptCategories() ?? [];
 }
+
+export async function fetchPromptCategories(): Promise<PromptCategory[]> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/prompts.json`, {
+      cache: 'no-cache',
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const parsed = await res.json();
+    if (Array.isArray(parsed)) return parsed as PromptCategory[];
+    return [];
+  } catch {
+    return getStoredPromptCategories() ?? [];
+  }
+}

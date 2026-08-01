@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers } from 'lucide-react';
+import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download } from 'lucide-react';
 import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem } from '../types';
 import {
   getStoredProducts,
@@ -340,6 +340,18 @@ export const AdminDashboard: React.FC = () => {
     saveStoredPromptCategories(promptCats);
     setPromptsSavedFlash(true);
     setTimeout(() => setPromptsSavedFlash(false), 2000);
+  };
+
+  const handleDownloadPrompts = () => {
+    const blob = new Blob([JSON.stringify(promptCats, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'prompts.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const handleResetPrompts = () => {
@@ -1158,6 +1170,13 @@ export const AdminDashboard: React.FC = () => {
                 >
                   <Save className="w-3.5 h-3.5" />
                   Save Prompts
+                </button>
+                <button
+                  onClick={handleDownloadPrompts}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Download Prompts JSON
                 </button>
                 <button
                   onClick={handleResetPrompts}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Laptop, Code, Palette, Sparkles, Monitor, Smartphone, Globe,
@@ -7,7 +7,7 @@ import {
   Maximize2, Brush, MessageSquare, BookOpen, FileCode, Search,
   Calendar, ArrowLeft, Copy, Check, FolderOpen
 } from 'lucide-react';
-import { getAllPromptCategories } from '../data/promptStore';
+import { fetchPromptCategories } from '../data/promptStore';
 import { PromptCategory } from '../types';
 
 const getIcon = (iconName: string, className: string = "w-6 h-6") => {
@@ -61,9 +61,22 @@ const copyToClipboard = async (text: string) => {
 };
 
 export const PromptsPage: React.FC = () => {
-  const [categories] = useState<PromptCategory[]>(() => getAllPromptCategories());
+  const [categories, setCategories] = useState<PromptCategory[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    fetchPromptCategories().then((data) => {
+      if (!mounted) return;
+      setCategories(data);
+      setLoading(false);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const activeCat = activeCategory
     ? categories.find((c) => c.id === activeCategory)
@@ -106,7 +119,12 @@ export const PromptsPage: React.FC = () => {
           </p>
         </motion.div>
 
-        {activeCat === null ? (
+        {loading ? (
+          <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 my-8 max-w-2xl mx-auto">
+            <Sparkles className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4 animate-pulse" />
+            <h3 className="font-serif text-2xl font-light text-white mb-2">Loading Prompts...</h3>
+          </div>
+        ) : activeCat === null ? (
           categories.length === 0 ? (
             <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 my-8 max-w-2xl mx-auto">
               <Sparkles className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4" />
