@@ -185,7 +185,7 @@ export const PromptsPage: React.FC = () => {
                       transition={{ duration: 0.5 }}
                       className="glass-card rounded-[28px] border border-white/15 hover:border-[#D7C4A3]/50 overflow-hidden group transition-all duration-300 hover:shadow-2xl"
                     >
-                      <div className="aspect-square overflow-hidden bg-neutral-900/40">
+                      <div className="aspect-[3/4] overflow-hidden bg-neutral-900/40">
                         <img
                           src={prompt.image}
                           alt={prompt.title}
