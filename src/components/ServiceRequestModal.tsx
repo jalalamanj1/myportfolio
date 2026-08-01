@@ -12,7 +12,6 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({ servic
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    timeline: 'Standard (2-4 Weeks)',
     details: ''
   });
   const [submitted, setSubmitted] = useState(false);
@@ -106,22 +105,6 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({ servic
                       className="glass-input px-4 py-3 text-xs text-white placeholder-neutral-500 w-full"
                     />
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-neutral-300 font-light mb-1.5">
-                    Target Timeline
-                  </label>
-                  <select
-                    value={formData.timeline}
-                    onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                    className="glass-input px-4 py-3 text-xs text-white bg-black/80 w-full"
-                  >
-                    <option value="Urgent (1-2 Weeks)">Urgent (1-2 Weeks)</option>
-                    <option value="Standard (2-4 Weeks)">Standard (2-4 Weeks)</option>
-                    <option value="Flexible (1-2 Months)">Flexible (1-2 Months)</option>
-                    <option value="Enterprise Architecture Retainer">Enterprise Architecture Retainer</option>
-                  </select>
                 </div>
 
                 <div>
