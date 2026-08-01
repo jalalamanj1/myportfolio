@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Laptop, Code, Palette, Sparkles, Monitor, Smartphone, Globe, 
@@ -54,6 +55,7 @@ export const ServicesPage: React.FC = () => {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [prevCategory, setPrevCategory] = useState<string | null>(null);
   const [categories] = useState<ServiceCategory[]>(() => getAllServices());
+  const navigate = useNavigate();
 
   const handleCategorySelect = (catId: string) => {
     if (activeCategory === catId) {
@@ -95,6 +97,16 @@ export const ServicesPage: React.FC = () => {
 
           <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mx-auto mt-8" />
         </motion.div>
+
+        <div className="flex justify-center mb-12">
+          <button
+            onClick={() => navigate('/services/Prompts')}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider hover:scale-105 transition-transform cursor-pointer shadow-lg"
+          >
+            <Sparkles className="w-4 h-4" />
+            Prompt Library
+          </button>
+        </div>
 
         {/* Category Filter Pills Bar */}
         <div id="services-list-section" className="flex flex-wrap items-center justify-center gap-3 mb-12 scroll-mt-24">

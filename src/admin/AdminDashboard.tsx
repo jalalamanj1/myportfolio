@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers } from 'lucide-react';
-import { Product, ServiceCategory, ServiceItem } from '../types';
+import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem } from '../types';
 import {
   getStoredProducts,
   saveStoredProducts,
@@ -12,6 +12,11 @@ import {
   saveStoredServices,
   clearStoredServices,
 } from '../data/serviceStore';
+import {
+  getStoredPromptCategories,
+  saveStoredPromptCategories,
+  clearStoredPromptCategories,
+} from '../data/promptStore';
 import { PRODUCTS } from '../data/portfolioData';
 
 import appOmniPulseImg from '../assets/images/app_omnipulse_desktop_1785494849235.jpg';
@@ -71,6 +76,20 @@ const emptyService = (): ServiceItem => ({
   actionLabel: '',
 });
 
+const emptyPromptCategory = (): PromptCategory => ({
+  id: '',
+  title: '',
+  iconName: 'Sparkles',
+  prompts: [],
+});
+
+const emptyPrompt = (): PromptItem => ({
+  id: '',
+  title: '',
+  image: '',
+  promptText: '',
+});
+
 const slugify = (value: string): string =>
   value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -88,7 +107,7 @@ export const AdminDashboard: React.FC = () => {
   const [tagRows, setTagRows] = useState<{ label: string; value: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [tab, setTab] = useState<'apps' | 'services'>('apps');
+  const [tab, setTab] = useState<'apps' | 'services' | 'prompts'>('apps');
   const [services, setServices] = useState<ServiceCategory[]>(() => getStoredServices() ?? []);
   const [servicesSavedFlash, setServicesSavedFlash] = useState(false);
 
@@ -100,6 +119,19 @@ export const AdminDashboard: React.FC = () => {
   const [svcEditingId, setSvcEditingId] = useState<string | null>(null);
   const [svcCategoryId, setSvcCategoryId] = useState('');
   const [svcForm, setSvcForm] = useState<ServiceItem>(emptyService());
+
+  const [promptCats, setPromptCats] = useState<PromptCategory[]>(() => getStoredPromptCategories() ?? []);
+  const [promptsSavedFlash, setPromptsSavedFlash] = useState(false);
+
+  const [promptCatFormOpen, setPromptCatFormOpen] = useState(false);
+  const [promptCatEditingId, setPromptCatEditingId] = useState<string | null>(null);
+  const [promptCatForm, setPromptCatForm] = useState<PromptCategory>(emptyPromptCategory());
+
+  const [promptFormOpen, setPromptFormOpen] = useState(false);
+  const [promptEditingId, setPromptEditingId] = useState<string | null>(null);
+  const [promptCategoryId, setPromptCategoryId] = useState('');
+  const [promptForm, setPromptForm] = useState<PromptItem>(emptyPrompt());
+  const promptFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -315,6 +347,118 @@ export const AdminDashboard: React.FC = () => {
     );
   };
 
+  const handleSaveAllPrompts = () => {
+    saveStoredPromptCategories(promptCats);
+    setPromptsSavedFlash(true);
+    setTimeout(() => setPromptsSavedFlash(false), 2000);
+  };
+
+  const handleResetPrompts = () => {
+    clearStoredPromptCategories();
+    setPromptCats([]);
+  };
+
+  const openPromptCategoryForm = () => {
+    setPromptCatEditingId(null);
+    setPromptCatForm(emptyPromptCategory());
+    setPromptCatFormOpen(true);
+  };
+
+  const openEditPromptCategory = (cat: PromptCategory) => {
+    setPromptCatEditingId(cat.id);
+    setPromptCatForm({ ...cat });
+    setPromptCatFormOpen(true);
+  };
+
+  const handleSavePromptCategory = (e: React.FormEvent) => {
+    e.preventDefault();
+    const slug = slugify(promptCatForm.title);
+    const next: PromptCategory = {
+      ...promptCatForm,
+      id: promptCatEditingId ?? `${slug || 'category'}-${Date.now()}`,
+    };
+    if (promptCatEditingId) {
+      setPromptCats((prev) => prev.map((c) => (c.id === promptCatEditingId ? next : c)));
+    } else {
+      setPromptCats((prev) => [...prev, next]);
+    }
+    setPromptCatFormOpen(false);
+  };
+
+  const handleDeletePromptCategory = (id: string) => {
+    setPromptCats((prev) => prev.filter((c) => c.id !== id));
+  };
+
+  const openPromptForm = (categoryId: string) => {
+    setPromptCategoryId(categoryId);
+    setPromptEditingId(null);
+    setPromptForm(emptyPrompt());
+    setPromptFormOpen(true);
+  };
+
+  const openEditPrompt = (cat: PromptCategory, prompt: PromptItem) => {
+    setPromptCategoryId(cat.id);
+    setPromptEditingId(prompt.id);
+    setPromptForm({ ...prompt });
+    setPromptFormOpen(true);
+  };
+
+  const handleSavePrompt = (e: React.FormEvent) => {
+    e.preventDefault();
+    const slug = slugify(promptForm.title);
+    const next: PromptItem = {
+      ...promptForm,
+      id: promptEditingId ?? `${slug || 'prompt'}-${Date.now()}`,
+    };
+    setPromptCats((prev) =>
+      prev.map((c) => {
+        if (c.id !== promptCategoryId) return c;
+        const items = promptEditingId
+          ? c.prompts.map((p) => (p.id === promptEditingId ? next : p))
+          : [...c.prompts, next];
+        return { ...c, prompts: items };
+      })
+    );
+    setPromptFormOpen(false);
+  };
+
+  const handleDeletePrompt = (catId: string, promptId: string) => {
+    setPromptCats((prev) =>
+      prev.map((c) =>
+        c.id === catId
+          ? { ...c, prompts: c.prompts.filter((p) => p.id !== promptId) }
+          : c
+      )
+    );
+  };
+
+  const handlePromptImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 900;
+        const ratio = Math.min(max / img.width, max / img.height, 1);
+        const width = Math.max(1, Math.round(img.width * ratio));
+        const height = Math.max(1, Math.round(img.height * ratio));
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        ctx.drawImage(img, 0, 0, width, height);
+        setPromptForm((prev) => ({
+          ...prev,
+          image: canvas.toDataURL('image/jpeg', 0.85),
+        }));
+      };
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
   if (!isAuthed) {
     return (
       <section className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-24">
@@ -409,6 +553,16 @@ export const AdminDashboard: React.FC = () => {
             }`}
           >
             Services
+          </button>
+          <button
+            onClick={() => setTab('prompts')}
+            className={`px-5 py-2 rounded-full text-xs font-medium uppercase tracking-wider transition-all cursor-pointer ${
+              tab === 'prompts'
+                ? 'bg-[#D7C4A3] text-black shadow-lg font-semibold'
+                : 'glass-button text-neutral-300 hover:text-white'
+            }`}
+          >
+            Prompts
           </button>
         </div>
 
@@ -1005,6 +1159,300 @@ export const AdminDashboard: React.FC = () => {
             <div className="mt-8 pt-6 border-t border-white/10">
               <p className="text-xs text-neutral-400 font-light">
                 {services.length} categor{services.length === 1 ? 'y' : 'ies'} · Click "Save Services" to persist.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {tab === 'prompts' && (
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <button
+                onClick={openPromptCategoryForm}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                Add Category
+              </button>
+              <div className="flex items-center gap-2">
+                {promptsSavedFlash && (
+                  <span className="text-xs text-[#D7C4A3] font-light">Saved</span>
+                )}
+                <button
+                  onClick={handleSaveAllPrompts}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  Save Prompts
+                </button>
+                <button
+                  onClick={handleResetPrompts}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Reset Prompts
+                </button>
+              </div>
+            </div>
+
+            {promptCatFormOpen && (
+              <form onSubmit={handleSavePromptCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
+                    {promptCatEditingId ? 'Edit Category' : 'Add Category'}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setPromptCatFormOpen(false)}
+                    aria-label="Close form"
+                    className="p-2 rounded-full glass-button cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Title *
+                  <input
+                    required
+                    value={promptCatForm.title}
+                    onChange={(e) => setPromptCatForm({ ...promptCatForm, title: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Icon
+                  <select
+                    value={promptCatForm.iconName}
+                    onChange={(e) => setPromptCatForm({ ...promptCatForm, iconName: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white bg-black/40"
+                  >
+                    {ICON_OPTIONS.map((name) => (
+                      <option key={name} value={name} className="bg-black text-white">
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+                  >
+                    <Save className="w-4 h-4" />
+                    {promptCatEditingId ? 'Update Category' : 'Add Category'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPromptCatFormOpen(false)}
+                    className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {promptFormOpen && (
+              <form onSubmit={handleSavePrompt} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
+                    {promptEditingId ? 'Edit Prompt' : 'Add Prompt'}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setPromptFormOpen(false)}
+                    aria-label="Close form"
+                    className="p-2 rounded-full glass-button cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Title *
+                  <input
+                    required
+                    value={promptForm.title}
+                    onChange={(e) => setPromptForm({ ...promptForm, title: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white"
+                  />
+                </label>
+                <div className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Image
+                  <div className="flex flex-wrap gap-2 items-center">
+                    {PRESET_IMAGES.map((preset) => (
+                      <button
+                        key={preset.label}
+                        type="button"
+                        onClick={() => setPromptForm({ ...promptForm, image: preset.src })}
+                        className={`p-1 rounded-xl border transition-all cursor-pointer ${
+                          promptForm.image === preset.src
+                            ? 'border-[#D7C4A3] ring-1 ring-[#D7C4A3]/40'
+                            : 'border-white/15 hover:border-white/40'
+                        }`}
+                        title={preset.label}
+                      >
+                        <img src={preset.src} alt={preset.label} className="w-16 h-12 object-cover rounded-lg" />
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => promptFileInputRef.current?.click()}
+                      className="flex items-center gap-1.5 p-2 rounded-xl border border-white/15 text-[10px] uppercase tracking-wider text-neutral-300 hover:text-white hover:border-[#D7C4A3]/60 transition-all cursor-pointer"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      Upload Image
+                    </button>
+                    <input
+                      ref={promptFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePromptImageUpload}
+                      className="hidden"
+                    />
+                    {promptForm.image !== '' && (
+                      <img
+                        src={promptForm.image}
+                        alt="Preview"
+                        className="w-16 h-12 object-cover rounded-lg border border-[#D7C4A3]/40"
+                      />
+                    )}
+                  </div>
+                  {promptForm.image !== '' && !promptForm.image.startsWith('data:') && (
+                    <input
+                      value={promptForm.image}
+                      onChange={(e) => setPromptForm({ ...promptForm, image: e.target.value })}
+                      placeholder="or paste an image URL here"
+                      className="glass-input px-4 py-3 text-sm font-light text-white"
+                    />
+                  )}
+                </div>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Prompt Text (hidden from visitors — only copied to clipboard)
+                  <textarea
+                    required
+                    rows={5}
+                    value={promptForm.promptText}
+                    onChange={(e) => setPromptForm({ ...promptForm, promptText: e.target.value })}
+                    placeholder="Paste the prompt text here..."
+                    className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
+                  />
+                </label>
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+                  >
+                    <Save className="w-4 h-4" />
+                    {promptEditingId ? 'Update Prompt' : 'Add Prompt'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPromptFormOpen(false)}
+                    className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {promptCats.length === 0 ? (
+              <div className="p-10 text-center rounded-2xl bg-white/5 border border-white/10">
+                <Layers className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4" />
+                <h3 className="font-serif text-xl font-light text-white mb-1">No prompt categories yet</h3>
+                <p className="text-xs text-neutral-400 font-light">
+                  Click "Add Category" to create your first prompt category, then add prompts inside it.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {promptCats.map((cat) => (
+                  <div key={cat.id} className="p-5 rounded-2xl bg-white/5 border border-white/10">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="p-2.5 rounded-xl bg-white/10 border border-white/15 text-[#D7C4A3] shrink-0">
+                          <Layers className="w-5 h-5" />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-medium text-white truncate">{cat.title}</h3>
+                          <p className="text-xs text-neutral-400 font-light">
+                            {cat.prompts.length} prompt{cat.prompts.length === 1 ? '' : 's'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          onClick={() => openEditPromptCategory(cat)}
+                          aria-label={`Edit ${cat.title}`}
+                          className="p-2.5 rounded-full glass-button cursor-pointer"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeletePromptCategory(cat.id)}
+                          aria-label={`Delete ${cat.title}`}
+                          className="p-2.5 rounded-full glass-button cursor-pointer"
+                        >
+                          <Trash2 className="w-4 h-4 text-red-400" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                      {cat.prompts.map((prompt) => (
+                        <div
+                          key={prompt.id}
+                          className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-white/5 border border-white/10"
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-14 h-10 rounded-lg overflow-hidden border border-white/10 shrink-0">
+                              <img
+                                src={prompt.image}
+                                alt={prompt.title}
+                                referrerPolicy="no-referrer"
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="min-w-0">
+                              <h4 className="text-sm font-light text-white truncate">{prompt.title}</h4>
+                              <p className="text-[10px] text-neutral-500 font-light truncate">
+                                {prompt.promptText.length} chars · hidden
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <button
+                              onClick={() => openEditPrompt(cat, prompt)}
+                              aria-label={`Edit ${prompt.title}`}
+                              className="p-2 rounded-lg glass-button cursor-pointer"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleDeletePrompt(cat.id, prompt.id)}
+                              aria-label={`Delete ${prompt.title}`}
+                              className="p-2 rounded-lg glass-button cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      <button
+                        onClick={() => openPromptForm(cat.id)}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs text-neutral-300 border border-dashed border-white/20 hover:border-[#D7C4A3]/50 hover:text-[#D7C4A3] transition-colors"
+                      >
+                        <Plus size={14} /> Add Prompt
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <p className="text-xs text-neutral-400 font-light">
+                {promptCats.length} categor{promptCats.length === 1 ? 'y' : 'ies'} · Click "Save Prompts" to persist.
               </p>
             </div>
           </div>

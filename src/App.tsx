@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Background } from './components/Background';
 import { HomePage } from './pages/HomePage';
 import { ServicesPage } from './pages/ServicesPage';
+import { PromptsPage } from './pages/PromptsPage';
 import { AdminDashboard } from './admin/AdminDashboard';
 import { useSiteProtection } from './hooks/useSiteProtection';
 
@@ -23,6 +24,7 @@ const AnimatedRoutes: React.FC = () => {
         <Routes location={location}>
           <Route path="/" element={<HomePage />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/services/Prompts" element={<PromptsPage />} />
           <Route path="/services/:categoryId" element={<ServicesPage />} />
           <Route path="/thebossadmin" element={<AdminDashboard />} />
           <Route path="*" element={<Navigate to="/" replace />} />

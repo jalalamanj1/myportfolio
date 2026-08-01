@@ -64,3 +64,17 @@ export interface ServiceCategory {
   services: ServiceItem[];
 }
 
+export interface PromptItem {
+  id: string;
+  title: string;
+  image: string;
+  promptText: string;
+}
+
+export interface PromptCategory {
+  id: string;
+  title: string;
+  iconName: string;
+  prompts: PromptItem[];
+}
+
