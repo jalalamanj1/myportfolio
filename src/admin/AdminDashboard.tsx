@@ -19,19 +19,8 @@ import {
 } from '../data/promptStore';
 import { PRODUCTS } from '../data/portfolioData';
 
-import appOmniPulseImg from '../assets/images/app_omnipulse_desktop_1785494849235.jpg';
-import appNovaStudioImg from '../assets/images/app_novastudio_ide_1785494863797.jpg';
-import appQuantumTraceImg from '../assets/images/app_quantumtrace_security_1785494875469.jpg';
-import appHyperFlowImg from '../assets/images/app_hyperflow_cad_1785494890939.jpg';
-
 const ADMIN_PASSWORD = 'admin2026';
 const AUTH_KEY = 'portfolio_admin_auth';
-const PRESET_IMAGES = [
-  { label: 'OmniPulse DAW', src: appOmniPulseImg },
-  { label: 'NovaStudio IDE', src: appNovaStudioImg },
-  { label: 'QuantumTrace Security', src: appQuantumTraceImg },
-  { label: 'HyperFlow CAD', src: appHyperFlowImg },
-];
 
 const ICON_OPTIONS = [
   'Laptop', 'Code', 'Palette', 'Sparkles', 'Monitor', 'Smartphone', 'Globe',
@@ -671,21 +660,6 @@ export const AdminDashboard: React.FC = () => {
               <div className="flex flex-col space-y-1.5 text-xs text-neutral-300">
                 Image
                 <div className="flex flex-wrap gap-2 items-center">
-                  {PRESET_IMAGES.map((preset) => (
-                    <button
-                      key={preset.label}
-                      type="button"
-                      onClick={() => handleFormField('image', preset.src)}
-                      className={`p-1 rounded-xl border transition-all cursor-pointer ${
-                        form.image === preset.src
-                          ? 'border-[#D7C4A3] ring-1 ring-[#D7C4A3]/40'
-                          : 'border-white/15 hover:border-white/40'
-                      }`}
-                      title={preset.label}
-                    >
-                      <img src={preset.src} alt={preset.label} className="w-16 h-12 object-cover rounded-lg" />
-                    </button>
-                  ))}
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
@@ -1279,21 +1253,6 @@ export const AdminDashboard: React.FC = () => {
                 <div className="flex flex-col space-y-1.5 text-xs text-neutral-300">
                   Image
                   <div className="flex flex-wrap gap-2 items-center">
-                    {PRESET_IMAGES.map((preset) => (
-                      <button
-                        key={preset.label}
-                        type="button"
-                        onClick={() => setPromptForm({ ...promptForm, image: preset.src })}
-                        className={`p-1 rounded-xl border transition-all cursor-pointer ${
-                          promptForm.image === preset.src
-                            ? 'border-[#D7C4A3] ring-1 ring-[#D7C4A3]/40'
-                            : 'border-white/15 hover:border-white/40'
-                        }`}
-                        title={preset.label}
-                      >
-                        <img src={preset.src} alt={preset.label} className="w-16 h-12 object-cover rounded-lg" />
-                      </button>
-                    ))}
                     <button
                       type="button"
                       onClick={() => promptFileInputRef.current?.click()}
