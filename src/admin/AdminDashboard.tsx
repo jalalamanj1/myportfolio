@@ -48,7 +48,7 @@ export const AdminDashboard: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [form, setForm] = useState<Product>(emptyProduct());
-  const [specsText, setSpecsText] = useState('');
+  const [tagRows, setTagRows] = useState<{ label: string; value: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,16 +110,29 @@ export const AdminDashboard: React.FC = () => {
   const openAddForm = () => {
     setEditingId(null);
     setForm(emptyProduct());
-    setSpecsText('');
+    setTagRows([{ label: '', value: '' }]);
     setIsFormOpen(true);
   };
 
   const openEditForm = (product: Product) => {
     setEditingId(product.id);
     setForm({ ...product });
-    setSpecsText(product.specs.map((s) => `${s.label}: ${s.value}`).join('\n'));
+    setTagRows(
+      product.specs.length > 0
+        ? product.specs.map((s) => ({ ...s }))
+        : [{ label: '', value: '' }]
+    );
     setIsFormOpen(true);
   };
+
+  const updateTagRow = (index: number, field: 'label' | 'value', val: string) => {
+    setTagRows((prev) => prev.map((r, i) => (i === index ? { ...r, [field]: val } : r)));
+  };
+
+  const addTagRow = () => setTagRows((prev) => [...prev, { label: '', value: '' }]);
+
+  const removeTagRow = (index: number) =>
+    setTagRows((prev) => prev.filter((_, i) => i !== index));
 
   const handleDelete = (id: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== id));
@@ -131,18 +144,9 @@ export const AdminDashboard: React.FC = () => {
 
   const handleSaveForm = (e: React.FormEvent) => {
     e.preventDefault();
-    const specRows = specsText
-      .split('\n')
-      .map((row) => row.trim())
-      .filter(Boolean)
-      .map((row) => {
-        const sep = row.indexOf(':');
-        if (sep === -1) return undefined;
-        const label = row.slice(0, sep).trim();
-        const value = row.slice(sep + 1).trim();
-        return label && value ? { label, value } : undefined;
-      })
-      .filter((x): x is { label: string; value: string } => Boolean(x));
+    const specRows = tagRows
+      .filter((r) => r.label.trim() && r.value.trim())
+      .map((r) => ({ label: r.label.trim(), value: r.value.trim() }));
 
     const slug = form.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     const next: Product = {
@@ -400,16 +404,39 @@ export const AdminDashboard: React.FC = () => {
                 )}
               </div>
 
-            <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-              Tags (one per line, format: Label: Value)
-              <textarea
-                rows={4}
-                value={specsText}
-                onChange={(e) => setSpecsText(e.target.value)}
-                placeholder={'Size: 118.06 MB\nPlatform: Windows, macOS'}
-                className="glass-input px-4 py-3 text-sm font-light text-white resize-none font-mono"
-              />
-            </label>
+            <div className="flex flex-col space-y-2">
+              {tagRows.map((row, i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <input
+                    value={row.label}
+                    onChange={(e) => updateTagRow(i, 'label', e.target.value)}
+                    placeholder="Label"
+                    className="glass-input px-3 py-2.5 text-sm font-light text-white flex-1"
+                  />
+                  <input
+                    value={row.value}
+                    onChange={(e) => updateTagRow(i, 'value', e.target.value)}
+                    placeholder="Value"
+                    className="glass-input px-3 py-2.5 text-sm font-light text-white flex-1"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeTagRow(i)}
+                    aria-label="Remove tag"
+                    className="p-2 rounded-xl text-neutral-400 hover:text-red-400 hover:bg-white/10 transition-colors shrink-0"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addTagRow}
+                className="flex items-center gap-1.5 self-start px-3 py-2 rounded-xl text-xs text-neutral-300 border border-white/15 hover:border-[#D7C4A3]/50 hover:text-[#D7C4A3] transition-colors"
+              >
+                <Plus size={14} /> Add Tag
+              </button>
+            </div>
 
             <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
               Download URL
