@@ -66,6 +66,9 @@ const emptyService = (): ServiceItem => ({
   category: '',
   iconName: 'Sparkles',
   deliverables: [],
+  actionType: 'request',
+  actionUrl: '',
+  actionLabel: '',
 });
 
 const slugify = (value: string): string =>
@@ -858,6 +861,44 @@ export const AdminDashboard: React.FC = () => {
                       setSvcForm({ ...svcForm, deliverables: e.target.value.split('\n') })
                     }
                     className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Button Action
+                  <select
+                    value={svcForm.actionType ?? 'request'}
+                    onChange={(e) =>
+                      setSvcForm({
+                        ...svcForm,
+                        actionType: e.target.value as ServiceItem['actionType'],
+                      })
+                    }
+                    className="glass-input px-4 py-3 text-sm font-light text-white bg-black/40"
+                  >
+                    <option value="request" className="bg-black text-white">Request Service</option>
+                    <option value="link" className="bg-black text-white">Open Link</option>
+                    <option value="download" className="bg-black text-white">Download</option>
+                  </select>
+                </label>
+                {(svcForm.actionType === 'link' || svcForm.actionType === 'download') && (
+                  <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                    Link / File URL *
+                    <input
+                      required
+                      value={svcForm.actionUrl ?? ''}
+                      onChange={(e) => setSvcForm({ ...svcForm, actionUrl: e.target.value })}
+                      placeholder={svcForm.actionType === 'download' ? 'https://example.com/file.zip' : 'https://example.com'}
+                      className="glass-input px-4 py-3 text-sm font-light text-white"
+                    />
+                  </label>
+                )}
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Button Label (optional)
+                  <input
+                    value={svcForm.actionLabel ?? ''}
+                    onChange={(e) => setSvcForm({ ...svcForm, actionLabel: e.target.value })}
+                    placeholder="Leave empty for default (e.g. Request Service)"
+                    className="glass-input px-4 py-3 text-sm font-light text-white"
                   />
                 </label>
                 <div className="flex gap-2 pt-2">

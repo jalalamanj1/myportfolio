@@ -50,6 +50,9 @@ export interface ServiceItem {
   category: string;
   iconName: string;
   deliverables?: string[];
+  actionType?: 'request' | 'link' | 'download';
+  actionUrl?: string;
+  actionLabel?: string;
 }
 
 export interface ServiceCategory {

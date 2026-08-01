@@ -231,14 +231,30 @@ export const ServicesPage: React.FC = () => {
                         )}
                       </div>
 
-                      {/* Request Service Button */}
-                      <button
-                        onClick={() => setSelectedService(service)}
-                        className="w-full mt-2 py-3 px-4 rounded-xl glass-button-primary text-xs font-medium tracking-wider uppercase flex items-center justify-center gap-2 group cursor-pointer shadow-lg"
-                      >
-                        <span>Request Service</span>
-                        <Send className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                      </button>
+                      {/* Service Action Button */}
+                      {service.actionType === 'request' || !service.actionType ? (
+                        <button
+                          onClick={() => setSelectedService(service)}
+                          className="w-full mt-2 py-3 px-4 rounded-xl glass-button-primary text-xs font-medium tracking-wider uppercase flex items-center justify-center gap-2 group cursor-pointer shadow-lg"
+                        >
+                          <span>{service.actionLabel || 'Request Service'}</span>
+                          <Send className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                      ) : (
+                        <a
+                          href={service.actionUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download={service.actionType === 'download' ? true : undefined}
+                          className="w-full mt-2 py-3 px-4 rounded-xl glass-button-primary text-xs font-medium tracking-wider uppercase flex items-center justify-center gap-2 group cursor-pointer shadow-lg"
+                        >
+                          <span>
+                            {service.actionLabel ||
+                              (service.actionType === 'download' ? 'Download' : 'Visit')}
+                          </span>
+                          <Send className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        </a>
+                      )}
                     </motion.div>
                   ))}
                 </div>
