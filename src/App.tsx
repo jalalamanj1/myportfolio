@@ -5,6 +5,7 @@ import { Background } from './components/Background';
 import { HomePage } from './pages/HomePage';
 import { ServicesPage } from './pages/ServicesPage';
 import { AdminDashboard } from './admin/AdminDashboard';
+import { useSiteProtection } from './hooks/useSiteProtection';
 
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const AnimatedRoutes: React.FC = () => {
 };
 
 export default function App() {
+  useSiteProtection();
   return (
     <BrowserRouter>
       <div className="relative min-h-screen w-full bg-black text-white font-sans overflow-x-hidden selection:bg-[#D7C4A3]/30 selection:text-white">
