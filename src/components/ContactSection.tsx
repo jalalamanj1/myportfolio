@@ -34,9 +34,6 @@ export const ContactSection: React.FC = () => {
           <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-wide text-white">
             {CONTACT_DATA.title}
           </h2>
-          <p className="text-xs sm:text-sm text-neutral-300 font-light mt-3 max-w-md">
-            {CONTACT_DATA.subtitle}
-          </p>
           <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mt-4" />
         </div>
 

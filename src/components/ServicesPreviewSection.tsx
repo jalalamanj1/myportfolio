@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowRight, Code, Palette, Sparkles, Layers, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export const ServicesPreviewSection: React.FC = () => {
   const navigate = useNavigate();
@@ -21,49 +21,9 @@ export const ServicesPreviewSection: React.FC = () => {
 
         <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
           {/* Title */}
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-wide text-white mb-6">
+          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-wide text-white mb-8">
             Services
           </h2>
-
-          <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mb-8" />
-
-          {/* Short Description */}
-          <p className="text-neutral-200 text-base sm:text-lg md:text-xl font-light leading-relaxed mb-10">
-            I provide professional technical, creative, and consulting services tailored for enterprises, startups, and innovative creators. From native high-performance desktop applications and cloud architectures to bespoke brand visual identities and technical advisory, every solution is built with uncompromised craftsmanship.
-          </p>
-
-          {/* Quick Pillar Highlights */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mb-10 text-left">
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
-              <div className="p-2.5 rounded-xl bg-white/10 text-[#D7C4A3]">
-                <Code className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Technology</h3>
-                <p className="text-[11px] text-neutral-300 font-light mt-0.5">Desktop Apps, APIs, Database & Local AI</p>
-              </div>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
-              <div className="p-2.5 rounded-xl bg-white/10 text-[#D7C4A3]">
-                <Palette className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Creative</h3>
-                <p className="text-[11px] text-neutral-300 font-light mt-0.5">Brand Identity, 3D Mockups & UI Graphics</p>
-              </div>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
-              <div className="p-2.5 rounded-xl bg-white/10 text-[#D7C4A3]">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold text-white uppercase tracking-wider">Advisory</h3>
-                <p className="text-[11px] text-neutral-300 font-light mt-0.5">Consulting, Workshops & Architecture</p>
-              </div>
-            </div>
-          </div>
 
           {/* Large Action Button */}
           <button

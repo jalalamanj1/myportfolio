@@ -433,7 +433,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
 ];
 
 export const CONTACT_DATA = {
-  title: "Initiate Tech Dialogue",
+  title: "Contact Me.",
   subtitle: "Available for desktop app engineering, technical consulting, system architecture, and tech services.",
   email: "inquieryjalalamanj@proton.me",
   instagram: "https://instagram.com/jalalamanj1",
