@@ -23,7 +23,7 @@ const AnimatedRoutes: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/services/:categoryId" element={<ServicesPage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/thebossadmin" element={<AdminDashboard />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </motion.div>

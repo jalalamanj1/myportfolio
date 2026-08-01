@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 
 export const Footer: React.FC = () => {
@@ -17,6 +18,12 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-6">
+          <Link
+            to="/thebossadmin"
+            className="text-[10px] uppercase tracking-widest text-neutral-500 hover:text-[#D7C4A3] transition-colors"
+          >
+            Admin
+          </Link>
           <button
             onClick={scrollToTop}
             aria-label="Scroll to top"

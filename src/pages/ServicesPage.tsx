@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Laptop, Code, Palette, Sparkles, Monitor, Smartphone, Globe, 
@@ -53,24 +53,6 @@ export const ServicesPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<'technology' | 'creative' | 'other' | null>(null);
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [prevCategory, setPrevCategory] = useState<'technology' | 'creative' | 'other' | null>(null);
-
-  // Scroll lock effect
-  useEffect(() => {
-    if (activeCategory !== null) {
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = 'unset';
-      };
-    }
-  }, [activeCategory]);
-
-  // Handle scroll lock on initial mount
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
 
   const handleCategorySelect = (catId: 'technology' | 'creative' | 'other') => {
     if (activeCategory === catId) {
