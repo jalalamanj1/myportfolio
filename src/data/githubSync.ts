@@ -1,4 +1,4 @@
-import { PromptCategory } from '../types';
+import { Product, ServiceCategory, PromptCategory } from '../types';
 
 const TOKEN_KEY = 'portfolio_admin_github_token';
 const REPO_KEY = 'portfolio_admin_github_repo';
@@ -44,16 +44,17 @@ async function readFileSha(token: string, repo: string, path: string): Promise<s
   return typeof data.sha === 'string' ? data.sha : null;
 }
 
-export async function pushPromptsToGitHub(
+export async function pushFileToGitHub(
   token: string,
   repo: string,
-  promptCats: PromptCategory[]
+  path: string,
+  content: string,
+  message: string
 ): Promise<void> {
-  const path = 'public/data/prompts.json';
   const sha = await readFileSha(token, repo, path);
   const body: Record<string, unknown> = {
-    message: 'Update prompts from admin dashboard',
-    content: toBase64(JSON.stringify(promptCats, null, 2)),
+    message,
+    content: toBase64(content),
   };
   if (sha) body.sha = sha;
 
@@ -70,4 +71,34 @@ export async function pushPromptsToGitHub(
   if (!res.ok) {
     throw new Error(`GitHub push failed (${res.status}): ${(await res.text()).slice(0, 300)}`);
   }
+}
+
+export function pushPromptsToGitHub(token: string, repo: string, promptCats: PromptCategory[]): Promise<void> {
+  return pushFileToGitHub(
+    token,
+    repo,
+    'public/data/prompts.json',
+    JSON.stringify(promptCats, null, 2),
+    'Update prompts from admin dashboard'
+  );
+}
+
+export function pushProductsToGitHub(token: string, repo: string, products: Product[]): Promise<void> {
+  return pushFileToGitHub(
+    token,
+    repo,
+    'public/data/products.json',
+    JSON.stringify(products, null, 2),
+    'Update apps from admin dashboard'
+  );
+}
+
+export function pushServicesToGitHub(token: string, repo: string, services: ServiceCategory[]): Promise<void> {
+  return pushFileToGitHub(
+    token,
+    repo,
+    'public/data/services.json',
+    JSON.stringify(services, null, 2),
+    'Update services from admin dashboard'
+  );
 }

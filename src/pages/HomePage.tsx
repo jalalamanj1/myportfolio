@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HeroSection } from '../components/HeroSection';
 import { AboutSection } from '../components/AboutSection';
 import { ProductCarousel } from '../components/ProductCarousel';
@@ -6,12 +6,22 @@ import { ServicesPreviewSection } from '../components/ServicesPreviewSection';
 import { ContactSection } from '../components/ContactSection';
 import { Footer } from '../components/Footer';
 import { ProjectModal } from '../components/ProjectModal';
-import { getAllProducts } from '../data/productStore';
+import { getAllProducts, fetchProducts } from '../data/productStore';
 import { Product } from '../types';
 
 export const HomePage: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const products = getAllProducts();
+  const [products, setProducts] = useState<Product[]>(() => getAllProducts());
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchProducts().then((data) => {
+      if (!cancelled) setProducts(data);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="relative z-10 flex flex-col w-full min-h-screen">

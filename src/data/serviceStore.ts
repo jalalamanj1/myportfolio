@@ -24,3 +24,17 @@ export function clearStoredServices(): void {
 export function getAllServices(): ServiceCategory[] {
   return getStoredServices() ?? [];
 }
+
+export async function fetchServices(): Promise<ServiceCategory[]> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/services.json`, {
+      cache: 'no-cache',
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const parsed = await res.json();
+    if (Array.isArray(parsed)) return parsed as ServiceCategory[];
+    return [];
+  } catch {
+    return getAllServices();
+  }
+}

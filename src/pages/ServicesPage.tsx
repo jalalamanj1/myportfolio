@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -8,7 +8,7 @@ import {
   Maximize2, Brush, MessageSquare, BookOpen, FileCode, Search, 
   Calendar, ArrowLeft, Send
 } from 'lucide-react';
-import { getAllServices } from '../data/serviceStore';
+import { fetchServices } from '../data/serviceStore';
 import { ServiceCategory, ServiceItem } from '../types';
 import { ServiceRequestModal } from '../components/ServiceRequestModal';
 
@@ -54,8 +54,18 @@ export const ServicesPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [prevCategory, setPrevCategory] = useState<string | null>(null);
-  const [categories] = useState<ServiceCategory[]>(() => getAllServices());
+  const [categories, setCategories] = useState<ServiceCategory[]>(() => []);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchServices().then((data) => {
+      if (!cancelled) setCategories(data);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleCategorySelect = (catId: string) => {
     if (activeCategory === catId) {

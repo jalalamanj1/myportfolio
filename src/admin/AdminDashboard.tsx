@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download, Github } from 'lucide-react';
+import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download } from 'lucide-react';
 import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem } from '../types';
 import {
   getStoredProducts,
@@ -13,7 +13,8 @@ import {
   clearStoredServices,
 } from '../data/serviceStore';
 import { getStoredPromptCategories, saveStoredPromptCategories, clearStoredPromptCategories } from '../data/promptStore';
-import { getGitHubConfig, saveGitHubConfig, pushPromptsToGitHub, GitHubConfig } from '../data/githubSync';
+import { getGitHubConfig, saveGitHubConfig, pushPromptsToGitHub, pushProductsToGitHub, pushServicesToGitHub, GitHubConfig } from '../data/githubSync';
+import { GitHubSyncCard } from './GitHubSyncCard';
 import { PRODUCTS } from '../data/portfolioData';
 
 const ADMIN_PASSWORD = 'admin2026';
@@ -172,6 +173,9 @@ export const AdminDashboard: React.FC = () => {
     saveStoredProducts(products);
     setSavedFlash(true);
     setTimeout(() => setSavedFlash(false), 2000);
+    if (ghConfig.token) {
+      handlePushProductsToGitHub(false);
+    }
   };
 
   const handleReset = () => {
@@ -239,6 +243,9 @@ export const AdminDashboard: React.FC = () => {
     saveStoredServices(services);
     setServicesSavedFlash(true);
     setTimeout(() => setServicesSavedFlash(false), 2000);
+    if (ghConfig.token) {
+      handlePushServicesToGitHub(false);
+    }
   };
 
   const handleResetServices = () => {
@@ -343,6 +350,40 @@ export const AdminDashboard: React.FC = () => {
     setTimeout(() => setPromptsSavedFlash(false), 2000);
     if (ghConfig.token) {
       handlePushPromptsToGitHub(false);
+    }
+  };
+
+  const handlePushProductsToGitHub = async (showErrors = true) => {
+    if (!ghConfig.token) {
+      if (showErrors) setGhStatus('Enter a GitHub token first.');
+      return;
+    }
+    setGhBusy(true);
+    setGhStatus('Pushing apps to GitHub…');
+    try {
+      await pushProductsToGitHub(ghConfig.token, ghConfig.repo, products);
+      setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
+    } catch (err) {
+      setGhStatus(err instanceof Error ? err.message : 'Push failed.');
+    } finally {
+      setGhBusy(false);
+    }
+  };
+
+  const handlePushServicesToGitHub = async (showErrors = true) => {
+    if (!ghConfig.token) {
+      if (showErrors) setGhStatus('Enter a GitHub token first.');
+      return;
+    }
+    setGhBusy(true);
+    setGhStatus('Pushing services to GitHub…');
+    try {
+      await pushServicesToGitHub(ghConfig.token, ghConfig.repo, services);
+      setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
+    } catch (err) {
+      setGhStatus(err instanceof Error ? err.message : 'Push failed.');
+    } finally {
+      setGhBusy(false);
     }
   };
 
@@ -622,6 +663,16 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
+        <GitHubSyncCard
+          config={ghConfig}
+          onConfigChange={setGhConfig}
+          status={ghStatus}
+          busy={ghBusy}
+          onSaveConfig={handleSaveGhConfig}
+          onPush={() => handlePushProductsToGitHub(true)}
+          pushLabel="Push Apps to GitHub"
+        />
+
         {isFormOpen && (
           <form onSubmit={handleSaveForm} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
             <div className="flex items-center justify-between mb-2">
@@ -895,6 +946,16 @@ export const AdminDashboard: React.FC = () => {
                 </button>
               </div>
             </div>
+
+            <GitHubSyncCard
+              config={ghConfig}
+              onConfigChange={setGhConfig}
+              status={ghStatus}
+              busy={ghBusy}
+              onSaveConfig={handleSaveGhConfig}
+              onPush={() => handlePushServicesToGitHub(true)}
+              pushLabel="Push Services to GitHub"
+            />
 
             {catFormOpen && (
               <form onSubmit={handleSaveCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
@@ -1214,58 +1275,15 @@ export const AdminDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="mb-8 p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-4">
-              <div className="flex items-center gap-2">
-                <Github className="w-4 h-4 text-[#D7C4A3]" />
-                <h2 className="font-serif text-lg font-light text-[#D7C4A3]">
-                  GitHub Sync — publish prompts to all visitors
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  GitHub Token (fine-grained PAT, Contents: read+write on this repo only)
-                  <input
-                    type="password"
-                    value={ghConfig.token}
-                    onChange={(e) => setGhConfig({ ...ghConfig, token: e.target.value })}
-                    placeholder="github_pat_…"
-                    className="glass-input px-4 py-3 text-sm font-light text-white"
-                  />
-                </label>
-                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Repository
-                  <input
-                    value={ghConfig.repo}
-                    onChange={(e) => setGhConfig({ ...ghConfig, repo: e.target.value })}
-                    placeholder="owner/repo"
-                    className="glass-input px-4 py-3 text-sm font-light text-white"
-                  />
-                </label>
-              </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  onClick={handleSaveGhConfig}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
-                >
-                  <Save className="w-3.5 h-3.5" />
-                  Save Connection
-                </button>
-                <button
-                  onClick={() => handlePushPromptsToGitHub(true)}
-                  disabled={ghBusy}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button-primary text-xs uppercase tracking-wider cursor-pointer disabled:opacity-50"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  {ghBusy ? 'Pushing…' : 'Push Prompts to GitHub'}
-                </button>
-                <span className="text-xs text-neutral-400 font-light">{ghStatus}</span>
-              </div>
-              <p className="text-[10px] text-neutral-500 font-light leading-relaxed">
-                Token is stored only in your browser and sent to api.github.com. Pushing overwrites
-                <span className="text-neutral-300"> public/data/prompts.json </span>
-                in the repo and triggers the deploy — no manual download needed. "Save Prompts" pushes automatically when a token is saved.
-              </p>
-            </div>
+            <GitHubSyncCard
+              config={ghConfig}
+              onConfigChange={setGhConfig}
+              status={ghStatus}
+              busy={ghBusy}
+              onSaveConfig={handleSaveGhConfig}
+              onPush={() => handlePushPromptsToGitHub(true)}
+              pushLabel="Push Prompts to GitHub"
+            />
 
             {promptCatFormOpen && (
               <form onSubmit={handleSavePromptCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">

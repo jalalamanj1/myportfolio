@@ -25,3 +25,17 @@ export function clearStoredProducts(): void {
 export function getAllProducts(): Product[] {
   return getStoredProducts() ?? PRODUCTS;
 }
+
+export async function fetchProducts(): Promise<Product[]> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/products.json`, {
+      cache: 'no-cache',
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const parsed = await res.json();
+    if (Array.isArray(parsed)) return parsed as Product[];
+    return [];
+  } catch {
+    return getAllProducts();
+  }
+}

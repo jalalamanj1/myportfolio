@@ -1,0 +1,74 @@
+[
+  {
+    "id": "omnipulse-daw",
+    "title": "OmniPulse Audio Engine",
+    "category": "Desktop Application",
+    "year": "2026",
+    "shortDescription": "Real-time audio synthesis and spectral DSP desktop software.",
+    "fullDescription": "OmniPulse is a professional cross-platform desktop digital audio workstation built with Rust, C++, and a hardware-accelerated WebGPU UI. It provides sub-2ms audio latency processing, VST3 plugin host support, and real-time 3D spectral FFT audio visualization for sound designers and producers.",
+    "image": "/data/images/products/app_omnipulse_desktop_1785494849235.jpg",
+    "client": "Amanj Tech Systems",
+    "specs": [
+      { "label": "Tech Stack", "value": "Rust, C++ Audio Core, WebGPU, React" },
+      { "label": "Audio Latency", "value": "< 1.8 ms ASIO / CoreAudio" },
+      { "label": "Platform", "value": "macOS, Windows, Linux" },
+      { "label": "Memory Footprint", "value": "< 120 MB idle RAM" }
+    ],
+    "tags": ["Desktop App", "Rust", "C++", "Audio Engineering", "Tauri"],
+    "downloadUrl": "/data/images/products/app_omnipulse_desktop_1785494849235.jpg"
+  },
+  {
+    "id": "novastudio-ide",
+    "title": "NovaStudio Local AI IDE",
+    "category": "Developer Tooling",
+    "year": "2025",
+    "shortDescription": "Ultra-fast code editor with integrated local LLM inference.",
+    "fullDescription": "NovaStudio is a modern lightweight desktop code editor designed for privacy-first developers. Powered by local GGUF/Ollama inference models running directly on GPU via WebGPU/DirectML, it provides real-time code completion, AST semantic searching, and zero cloud dependency.",
+    "image": "/data/images/products/app_novastudio_ide_1785494863797.jpg",
+    "client": "Open Source Tech Initiative",
+    "specs": [
+      { "label": "Tech Stack", "value": "Electron, TypeScript, WebGPU, ONNX" },
+      { "label": "Inference Speed", "value": "65+ tokens/sec on local GPU" },
+      { "label": "Platform", "value": "macOS, Windows, Linux" },
+      { "label": "Features", "value": "AST Parsing, Local AI, Git Graph" }
+    ],
+    "tags": ["IDE", "Local AI", "TypeScript", "Electron", "Developer Tools"],
+    "downloadUrl": "/data/images/products/app_novastudio_ide_1785494863797.jpg"
+  },
+  {
+    "id": "quantumtrace-security",
+    "title": "QuantumTrace Suite",
+    "category": "Enterprise Security",
+    "year": "2026",
+    "shortDescription": "Network packet diagnostic & threat detection desktop software.",
+    "fullDescription": "QuantumTrace is an enterprise network security desktop application built for SOC analysts and system admins. It monitors high-throughput network interfaces in real time, visualizes live packet topology maps, and runs heuristic anomaly detection routines directly on client hardware.",
+    "image": "/data/images/products/app_quantumtrace_security_1785494875469.jpg",
+    "client": "CyberShield Security",
+    "specs": [
+      { "label": "Tech Stack", "value": "Tauri, Rust eBPF, D3.js, Tailwind" },
+      { "label": "Throughput", "value": "10 Gbps packet capture" },
+      { "label": "Platform", "value": "Windows Enterprise, Linux" },
+      { "label": "Security", "value": "Encrypted Vault & Hardened IPC" }
+    ],
+    "tags": ["Cybersecurity", "Network Diagnostics", "Rust", "Desktop App"],
+    "downloadUrl": "/data/images/products/app_quantumtrace_security_1785494875469.jpg"
+  },
+  {
+    "id": "hyperflow-cad",
+    "title": "HyperFlow 3D Simulator",
+    "category": "CAD & Engineering",
+    "year": "2025",
+    "shortDescription": "Hardware-accelerated 3D physics and structural CAD software.",
+    "fullDescription": "HyperFlow is a desktop spatial CAD software designed for structural and fluid dynamics modeling. Utilizing custom Vulkan graphics pipelines and Rust multithreading, engineers can render millions of parametric polygons with real-time stress test calculations.",
+    "image": "/data/images/products/app_hyperflow_cad_1785494890939.jpg",
+    "client": "Precision Engineering Corp",
+    "specs": [
+      { "label": "Tech Stack", "value": "C++20, Vulkan API, Qt, Rust IPC" },
+      { "label": "Render Target", "value": "60 FPS @ 4K 10M Polygons" },
+      { "label": "Platform", "value": "macOS Metal, Windows DirectX12" },
+      { "label": "Use Case", "value": "Structural & Thermal Simulation" }
+    ],
+    "tags": ["3D Simulation", "CAD", "Graphics", "Desktop Software"],
+    "downloadUrl": "/data/images/products/app_hyperflow_cad_1785494890939.jpg"
+  }
+]
