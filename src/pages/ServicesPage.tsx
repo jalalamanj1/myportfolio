@@ -7,7 +7,7 @@ import {
   Maximize2, Brush, MessageSquare, BookOpen, FileCode, Search, 
   Calendar, ArrowLeft, Send
 } from 'lucide-react';
-import { SERVICE_CATEGORIES } from '../data/portfolioData';
+import { getAllServices } from '../data/serviceStore';
 import { ServiceCategory, ServiceItem } from '../types';
 import { ServiceRequestModal } from '../components/ServiceRequestModal';
 
@@ -49,12 +49,13 @@ const getIcon = (iconName: string, className: string = "w-6 h-6") => {
 };
 
 export const ServicesPage: React.FC = () => {
-  // activeCategory can be null (hidden by default) or 'technology' | 'creative' | 'other'
-  const [activeCategory, setActiveCategory] = useState<'technology' | 'creative' | 'other' | null>(null);
+  // activeCategory can be null (hidden by default) or any category id added via the admin dashboard
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
-  const [prevCategory, setPrevCategory] = useState<'technology' | 'creative' | 'other' | null>(null);
+  const [prevCategory, setPrevCategory] = useState<string | null>(null);
+  const [categories] = useState<ServiceCategory[]>(() => getAllServices());
 
-  const handleCategorySelect = (catId: 'technology' | 'creative' | 'other') => {
+  const handleCategorySelect = (catId: string) => {
     if (activeCategory === catId) {
       setActiveCategory(null);
       return;
@@ -64,7 +65,7 @@ export const ServicesPage: React.FC = () => {
   };
 
   const displayedCategories = activeCategory !== null
-    ? SERVICE_CATEGORIES.filter(cat => cat.id === activeCategory)
+    ? categories.filter(cat => cat.id === activeCategory)
     : [];
 
   return (
@@ -97,7 +98,12 @@ export const ServicesPage: React.FC = () => {
 
         {/* Category Filter Pills Bar */}
         <div id="services-list-section" className="flex flex-wrap items-center justify-center gap-3 mb-12 scroll-mt-24">
-          {SERVICE_CATEGORIES.map((cat) => (
+          {categories.length === 0 ? (
+            <p className="text-xs text-neutral-400 font-light">
+              No services have been added yet. Check back soon.
+            </p>
+          ) : (
+            categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => handleCategorySelect(cat.id)}
@@ -109,7 +115,8 @@ export const ServicesPage: React.FC = () => {
             >
               {cat.title} ({cat.services.length})
             </button>
-          ))}
+          ))
+          )}
         </div>
 
         {/* Placeholder when no category is selected */}

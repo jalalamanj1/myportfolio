@@ -1,12 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload } from 'lucide-react';
-import { Product } from '../types';
+import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers } from 'lucide-react';
+import { Product, ServiceCategory, ServiceItem } from '../types';
 import {
   getStoredProducts,
   saveStoredProducts,
   clearStoredProducts,
 } from '../data/productStore';
+import {
+  getStoredServices,
+  saveStoredServices,
+  clearStoredServices,
+} from '../data/serviceStore';
 import { PRODUCTS } from '../data/portfolioData';
 
 import appOmniPulseImg from '../assets/images/app_omnipulse_desktop_1785494849235.jpg';
@@ -23,6 +28,14 @@ const PRESET_IMAGES = [
   { label: 'HyperFlow CAD', src: appHyperFlowImg },
 ];
 
+const ICON_OPTIONS = [
+  'Laptop', 'Code', 'Palette', 'Sparkles', 'Monitor', 'Smartphone', 'Globe',
+  'Layout', 'Database', 'Server', 'Cpu', 'Wrench', 'Zap', 'Layers',
+  'HelpCircle', 'Pentagon', 'Image', 'Share2', 'FileText', 'Box',
+  'Component', 'Camera', 'Maximize2', 'Brush', 'MessageSquare', 'BookOpen',
+  'FileCode', 'Search', 'Calendar',
+];
+
 const emptyProduct = (): Product => ({
   id: '',
   title: '',
@@ -37,6 +50,27 @@ const emptyProduct = (): Product => ({
   downloadUrl: '',
 });
 
+const emptyCategory = (): ServiceCategory => ({
+  id: '',
+  title: '',
+  subtitle: '',
+  description: '',
+  iconName: 'Sparkles',
+  services: [],
+});
+
+const emptyService = (): ServiceItem => ({
+  id: '',
+  title: '',
+  description: '',
+  category: '',
+  iconName: 'Sparkles',
+  deliverables: [],
+});
+
+const slugify = (value: string): string =>
+  value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
 export const AdminDashboard: React.FC = () => {
   const [isAuthed, setIsAuthed] = useState<boolean>(
     () => sessionStorage.getItem(AUTH_KEY) === '1'
@@ -50,6 +84,19 @@ export const AdminDashboard: React.FC = () => {
   const [form, setForm] = useState<Product>(emptyProduct());
   const [tagRows, setTagRows] = useState<{ label: string; value: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [tab, setTab] = useState<'apps' | 'services'>('apps');
+  const [services, setServices] = useState<ServiceCategory[]>(() => getStoredServices() ?? []);
+  const [servicesSavedFlash, setServicesSavedFlash] = useState(false);
+
+  const [catFormOpen, setCatFormOpen] = useState(false);
+  const [catEditingId, setCatEditingId] = useState<string | null>(null);
+  const [catForm, setCatForm] = useState<ServiceCategory>(emptyCategory());
+
+  const [svcFormOpen, setSvcFormOpen] = useState(false);
+  const [svcEditingId, setSvcEditingId] = useState<string | null>(null);
+  const [svcCategoryId, setSvcCategoryId] = useState('');
+  const [svcForm, setSvcForm] = useState<ServiceItem>(emptyService());
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -163,6 +210,108 @@ export const AdminDashboard: React.FC = () => {
     setIsFormOpen(false);
   };
 
+  const handleSaveAllServices = () => {
+    saveStoredServices(services);
+    setServicesSavedFlash(true);
+    setTimeout(() => setServicesSavedFlash(false), 2000);
+  };
+
+  const handleResetServices = () => {
+    clearStoredServices();
+    setServices([]);
+  };
+
+  const openCategoryForm = () => {
+    setCatEditingId(null);
+    setCatForm(emptyCategory());
+    setCatFormOpen(true);
+  };
+
+  const openEditCategory = (cat: ServiceCategory) => {
+    setCatEditingId(cat.id);
+    setCatForm({ ...cat });
+    setCatFormOpen(true);
+  };
+
+  const handleSaveCategory = (e: React.FormEvent) => {
+    e.preventDefault();
+    const slug = slugify(catForm.title);
+    const next: ServiceCategory = {
+      ...catForm,
+      id: catEditingId ?? `${slug || 'category'}-${Date.now()}`,
+    };
+    if (catEditingId) {
+      setServices((prev) =>
+        prev.map((c) => {
+          if (c.id !== catEditingId) return c;
+          return {
+            ...next,
+            services: next.services.map((s) => ({ ...s, category: next.id })),
+          };
+        })
+      );
+    } else {
+      setServices((prev) => [...prev, next]);
+    }
+    setCatFormOpen(false);
+  };
+
+  const handleDeleteCategory = (id: string) => {
+    setServices((prev) => prev.filter((c) => c.id !== id));
+  };
+
+  const openServiceForm = (categoryId: string) => {
+    setSvcCategoryId(categoryId);
+    setSvcEditingId(null);
+    setSvcForm({ ...emptyService(), category: categoryId });
+    setSvcFormOpen(true);
+  };
+
+  const openEditService = (cat: ServiceCategory, svc: ServiceItem) => {
+    setSvcCategoryId(cat.id);
+    setSvcEditingId(svc.id);
+    setSvcForm({
+      ...svc,
+      category: cat.id,
+      deliverables: svc.deliverables ?? [],
+    });
+    setSvcFormOpen(true);
+  };
+
+  const handleSaveService = (e: React.FormEvent) => {
+    e.preventDefault();
+    const slug = slugify(svcForm.title);
+    const deliverables = svcForm.deliverables
+      ? svcForm.deliverables.map((d) => d.trim()).filter(Boolean)
+      : [];
+    const next: ServiceItem = {
+      ...svcForm,
+      id: svcEditingId ?? `${slug || 'service'}-${Date.now()}`,
+      category: svcCategoryId,
+      deliverables,
+    };
+    setServices((prev) =>
+      prev.map((c) => {
+        if (c.id !== svcCategoryId) return c;
+        const items = svcEditingId
+          ? c.services.map((s) => (s.id === svcEditingId ? next : s))
+          : [...c.services, next];
+        return { ...c, services: items };
+      })
+    );
+    setSvcFormOpen(false);
+  };
+
+  const handleDeleteService = (catId: string, svcId: string) => {
+    setServices((prev) =>
+      prev.map((c) =>
+        c.id === catId
+          ? { ...c, services: c.services.filter((s) => s.id !== svcId) }
+          : c
+      )
+    );
+  };
+
   if (!isAuthed) {
     return (
       <section className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-24">
@@ -220,7 +369,7 @@ export const AdminDashboard: React.FC = () => {
               Admin Control
             </h1>
             <p className="text-xs text-neutral-300 font-light mt-1">
-              Manage the apps displayed in the portfolio. Changes persist in this browser.
+              Manage the apps and services shown on the site. Changes persist in this browser.
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -236,6 +385,32 @@ export const AdminDashboard: React.FC = () => {
             </button>
           </div>
         </div>
+
+        <div className="flex items-center gap-2 mb-8">
+          <button
+            onClick={() => setTab('apps')}
+            className={`px-5 py-2 rounded-full text-xs font-medium uppercase tracking-wider transition-all cursor-pointer ${
+              tab === 'apps'
+                ? 'bg-[#D7C4A3] text-black shadow-lg font-semibold'
+                : 'glass-button text-neutral-300 hover:text-white'
+            }`}
+          >
+            Apps
+          </button>
+          <button
+            onClick={() => setTab('services')}
+            className={`px-5 py-2 rounded-full text-xs font-medium uppercase tracking-wider transition-all cursor-pointer ${
+              tab === 'services'
+                ? 'bg-[#D7C4A3] text-black shadow-lg font-semibold'
+                : 'glass-button text-neutral-300 hover:text-white'
+            }`}
+          >
+            Services
+          </button>
+        </div>
+
+        {tab === 'apps' && (
+        <>
 
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <button
@@ -518,6 +693,281 @@ export const AdminDashboard: React.FC = () => {
             View Site
           </a>
         </div>
+        </>
+        )}
+
+        {tab === 'services' && (
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <button
+                onClick={openCategoryForm}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                Add Category
+              </button>
+              <div className="flex items-center gap-2">
+                {servicesSavedFlash && (
+                  <span className="text-xs text-[#D7C4A3] font-light">Saved</span>
+                )}
+                <button
+                  onClick={handleSaveAllServices}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  Save Services
+                </button>
+                <button
+                  onClick={handleResetServices}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Reset Services
+                </button>
+              </div>
+            </div>
+
+            {catFormOpen && (
+              <form onSubmit={handleSaveCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
+                    {catEditingId ? 'Edit Category' : 'Add Category'}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setCatFormOpen(false)}
+                    aria-label="Close form"
+                    className="p-2 rounded-full glass-button cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Title *
+                  <input
+                    required
+                    value={catForm.title}
+                    onChange={(e) => setCatForm({ ...catForm, title: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Subtitle
+                  <input
+                    value={catForm.subtitle}
+                    onChange={(e) => setCatForm({ ...catForm, subtitle: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Description
+                  <textarea
+                    rows={3}
+                    value={catForm.description}
+                    onChange={(e) => setCatForm({ ...catForm, description: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Icon
+                  <select
+                    value={catForm.iconName}
+                    onChange={(e) => setCatForm({ ...catForm, iconName: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white bg-black/40"
+                  >
+                    {ICON_OPTIONS.map((name) => (
+                      <option key={name} value={name} className="bg-black text-white">
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+                  >
+                    <Save className="w-4 h-4" />
+                    {catEditingId ? 'Update Category' : 'Add Category'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCatFormOpen(false)}
+                    className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {svcFormOpen && (
+              <form onSubmit={handleSaveService} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
+                    {svcEditingId ? 'Edit Service' : 'Add Service'}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setSvcFormOpen(false)}
+                    aria-label="Close form"
+                    className="p-2 rounded-full glass-button cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Title *
+                  <input
+                    required
+                    value={svcForm.title}
+                    onChange={(e) => setSvcForm({ ...svcForm, title: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Description *
+                  <textarea
+                    required
+                    rows={3}
+                    value={svcForm.description}
+                    onChange={(e) => setSvcForm({ ...svcForm, description: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Icon
+                  <select
+                    value={svcForm.iconName}
+                    onChange={(e) => setSvcForm({ ...svcForm, iconName: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white bg-black/40"
+                  >
+                    {ICON_OPTIONS.map((name) => (
+                      <option key={name} value={name} className="bg-black text-white">
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  Deliverables (one per line)
+                  <textarea
+                    rows={3}
+                    value={(svcForm.deliverables ?? []).join('\n')}
+                    onChange={(e) =>
+                      setSvcForm({ ...svcForm, deliverables: e.target.value.split('\n') })
+                    }
+                    className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
+                  />
+                </label>
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+                  >
+                    <Save className="w-4 h-4" />
+                    {svcEditingId ? 'Update Service' : 'Add Service'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSvcFormOpen(false)}
+                    className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {services.length === 0 ? (
+              <div className="p-10 text-center rounded-2xl bg-white/5 border border-white/10">
+                <Layers className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4" />
+                <h3 className="font-serif text-xl font-light text-white mb-1">No categories yet</h3>
+                <p className="text-xs text-neutral-400 font-light">
+                  Click "Add Category" to create your first service category, then add services inside it.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {services.map((cat) => (
+                  <div key={cat.id} className="p-5 rounded-2xl bg-white/5 border border-white/10">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="p-2.5 rounded-xl bg-white/10 border border-white/15 text-[#D7C4A3] shrink-0">
+                          <Layers className="w-5 h-5" />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-medium text-white truncate">{cat.title}</h3>
+                          <p className="text-xs text-neutral-400 font-light">
+                            {cat.services.length} service{cat.services.length === 1 ? '' : 's'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          onClick={() => openEditCategory(cat)}
+                          aria-label={`Edit ${cat.title}`}
+                          className="p-2.5 rounded-full glass-button cursor-pointer"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCategory(cat.id)}
+                          aria-label={`Delete ${cat.title}`}
+                          className="p-2.5 rounded-full glass-button cursor-pointer"
+                        >
+                          <Trash2 className="w-4 h-4 text-red-400" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                      {cat.services.map((svc) => (
+                        <div
+                          key={svc.id}
+                          className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-white/5 border border-white/10"
+                        >
+                          <div className="min-w-0">
+                            <h4 className="text-sm font-light text-white truncate">{svc.title}</h4>
+                            <p className="text-xs text-neutral-400 font-light truncate">{svc.description}</p>
+                          </div>
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <button
+                              onClick={() => openEditService(cat, svc)}
+                              aria-label={`Edit ${svc.title}`}
+                              className="p-2 rounded-lg glass-button cursor-pointer"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteService(cat.id, svc.id)}
+                              aria-label={`Delete ${svc.title}`}
+                              className="p-2 rounded-lg glass-button cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      <button
+                        onClick={() => openServiceForm(cat.id)}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs text-neutral-300 border border-dashed border-white/20 hover:border-[#D7C4A3]/50 hover:text-[#D7C4A3] transition-colors"
+                      >
+                        <Plus size={14} /> Add Service
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <p className="text-xs text-neutral-400 font-light">
+                {services.length} categor{services.length === 1 ? 'y' : 'ies'} · Click "Save Services" to persist.
+              </p>
+            </div>
+          </div>
+        )}
       </motion.div>
     </section>
   );

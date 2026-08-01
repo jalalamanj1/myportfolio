@@ -47,13 +47,13 @@ export interface ServiceItem {
   id: string;
   title: string;
   description: string;
-  category: 'technology' | 'creative' | 'other';
+  category: string;
   iconName: string;
   deliverables?: string[];
 }
 
 export interface ServiceCategory {
-  id: 'technology' | 'creative' | 'other';
+  id: string;
   title: string;
   subtitle: string;
   description: string;
