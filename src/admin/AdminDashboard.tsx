@@ -49,7 +49,6 @@ export const AdminDashboard: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [form, setForm] = useState<Product>(emptyProduct());
   const [specsText, setSpecsText] = useState('');
-  const [tagsText, setTagsText] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,15 +111,13 @@ export const AdminDashboard: React.FC = () => {
     setEditingId(null);
     setForm(emptyProduct());
     setSpecsText('');
-    setTagsText('');
     setIsFormOpen(true);
   };
 
   const openEditForm = (product: Product) => {
     setEditingId(product.id);
     setForm({ ...product });
-    setSpecsText(product.specs.map((s) => `${s.label}|${s.value}`).join('\n'));
-    setTagsText(product.tags.join(', '));
+    setSpecsText(product.specs.map((s) => `${s.label}: ${s.value}`).join('\n'));
     setIsFormOpen(true);
   };
 
@@ -136,21 +133,22 @@ export const AdminDashboard: React.FC = () => {
     e.preventDefault();
     const specRows = specsText
       .split('\n')
-      .map((row) => row.split('|').map((part) => part.trim()))
-      .filter((parts) => parts.length === 2 && parts[0] && parts[1])
-      .map(([label, value]) => ({ label, value }));
-
-    const tags = tagsText
-      .split(',')
-      .map((t) => t.trim())
-      .filter(Boolean);
+      .map((row) => row.trim())
+      .filter(Boolean)
+      .map((row) => {
+        const sep = row.indexOf(':');
+        if (sep === -1) return undefined;
+        const label = row.slice(0, sep).trim();
+        const value = row.slice(sep + 1).trim();
+        return label && value ? { label, value } : undefined;
+      })
+      .filter((x): x is { label: string; value: string } => Boolean(x));
 
     const slug = form.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     const next: Product = {
       ...form,
       id: editingId ?? `${slug || 'app'}-${Date.now()}`,
       specs: specRows,
-      tags,
     };
 
     if (editingId) {
@@ -403,23 +401,13 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
             <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-              Specs (one per line, format: Label|Value)
+              Tags (one per line, format: Label: Value)
               <textarea
                 rows={4}
                 value={specsText}
                 onChange={(e) => setSpecsText(e.target.value)}
-                placeholder={'Tech Stack|Rust, React\nPlatform|Windows, macOS'}
+                placeholder={'Size: 118.06 MB\nPlatform: Windows, macOS'}
                 className="glass-input px-4 py-3 text-sm font-light text-white resize-none font-mono"
-              />
-            </label>
-
-            <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-              Tags (comma separated)
-              <input
-                value={tagsText}
-                onChange={(e) => setTagsText(e.target.value)}
-                placeholder="Desktop App, Rust, Audio"
-                className="glass-input px-4 py-3 text-sm font-light text-white"
               />
             </label>
 

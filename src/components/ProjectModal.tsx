@@ -94,28 +94,16 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ product, onClose }) 
               <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-2">
                 <h4 className="text-[11px] font-semibold text-[#D7C4A3] uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  Specifications & Crafts
+                  Tags
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
                   {product.specs.map((spec, idx) => (
                     <div key={idx} className="text-xs">
-                      <span className="text-neutral-400 font-light block">{spec.label}</span>
+                      <span className="text-neutral-400 font-light">{spec.label}: </span>
                       <span className="text-white font-medium">{spec.value}</span>
                     </div>
                   ))}
                 </div>
-              </div>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {product.tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-[11px] text-neutral-300 font-light"
-                  >
-                    #{tag}
-                  </span>
-                ))}
               </div>
 
               {/* Action */}
