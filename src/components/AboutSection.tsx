@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { ABOUT_DATA } from '../data/portfolioData';
-import { 
-  Award, Briefcase, GraduationCap, Globe, Code2, 
-  CheckCircle2, Cpu, Terminal, Sparkles, BookOpen 
-} from 'lucide-react';
+import { getAboutData, fetchAbout } from '../data/aboutStore';
+import { AboutData } from '../types';
+import { Award, Briefcase, GraduationCap, Globe } from 'lucide-react';
 
 export const AboutSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'skills' | 'experience' | 'education' | 'credentials'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'experience' | 'education' | 'credentials'>('overview');
+  const [about, setAbout] = useState<AboutData>(() => getAboutData());
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchAbout().then((data) => {
+      if (!cancelled) setAbout(data);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section id="about" className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -30,7 +40,6 @@ export const AboutSection: React.FC = () => {
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10 pb-4 border-b border-white/15">
           {[
             { id: 'overview', label: 'About & Bio' },
-            { id: 'skills', label: 'Skills & Tech' },
             { id: 'experience', label: 'Experience' },
             { id: 'education', label: 'Education' },
             { id: 'credentials', label: 'Certifications & Languages' },
@@ -108,60 +117,7 @@ export const AboutSection: React.FC = () => {
             </motion.div>
           )}
 
-          {/* TAB 2: SKILLS & TECHNOLOGIES */}
-          {activeTab === 'skills' && (
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="space-y-8"
-            >
-              {/* Core Skill Categories */}
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-[#D7C4A3] mb-4 flex items-center gap-2">
-                  <Cpu className="w-4 h-4" />
-                  <span>Core Engineering Disciplines</span>
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {ABOUT_DATA.skills.map((cat, idx) => (
-                    <div key={idx} className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/40 transition-all">
-                      <h4 className="text-sm font-semibold text-white mb-3 pb-2 border-b border-white/10">
-                        {cat.title}
-                      </h4>
-                      <ul className="space-y-2">
-                        {cat.skills.map((skill, sIdx) => (
-                          <li key={sIdx} className="text-xs text-neutral-300 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#D7C4A3]" />
-                            <span>{skill}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Technologies Cloud */}
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.25em] text-[#D7C4A3] mb-4 flex items-center gap-2">
-                  <Terminal className="w-4 h-4" />
-                  <span>Technologies & Stack</span>
-                </h3>
-                <div className="flex flex-wrap gap-2.5">
-                  {ABOUT_DATA.technologies.map((tech, tIdx) => (
-                    <span
-                      key={tIdx}
-                      className="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/15 text-xs text-neutral-200 font-mono hover:border-[#D7C4A3]/50 hover:bg-[#D7C4A3]/10 hover:text-white transition-colors"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* TAB 3: EXPERIENCE */}
+          {/* TAB 2: EXPERIENCE */}
           {activeTab === 'experience' && (
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -174,7 +130,7 @@ export const AboutSection: React.FC = () => {
                 <span>Professional Experience</span>
               </h3>
               <div className="space-y-4">
-                {ABOUT_DATA.experiences.map((exp, expIdx) => (
+                {about.experiences.map((exp, expIdx) => (
                   <div key={expIdx} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/30 transition-all">
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                       <h4 className="text-base font-medium text-white">{exp.role}</h4>
@@ -189,6 +145,9 @@ export const AboutSection: React.FC = () => {
                   </div>
                 ))}
               </div>
+              {about.experiences.length === 0 && (
+                <p className="text-sm text-neutral-400 font-light">No experience added yet.</p>
+              )}
             </motion.div>
           )}
 
@@ -238,7 +197,7 @@ export const AboutSection: React.FC = () => {
                   <span>Industry Certifications</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {ABOUT_DATA.certifications.map((cert, cIdx) => (
+                  {about.certifications.map((cert, cIdx) => (
                     <div key={cIdx} className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/30 transition-all">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-[10px] font-mono text-[#D7C4A3]">{cert.year}</span>
@@ -251,6 +210,9 @@ export const AboutSection: React.FC = () => {
                     </div>
                   ))}
                 </div>
+                {about.certifications.length === 0 && (
+                  <p className="text-xs text-neutral-400 font-light">No certifications added yet.</p>
+                )}
               </div>
 
               {/* Languages */}
@@ -260,7 +222,7 @@ export const AboutSection: React.FC = () => {
                   <span>Languages</span>
                 </h3>
                 <div className="space-y-3">
-                  {ABOUT_DATA.languages.map((lang, lIdx) => (
+                  {about.languages.map((lang, lIdx) => (
                     <div key={lIdx} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
                       <span className="text-sm font-medium text-white">{lang.language}</span>
                       <span className="text-xs text-[#D7C4A3] font-light">{lang.level}</span>

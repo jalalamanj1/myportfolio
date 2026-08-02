@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download } from 'lucide-react';
-import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem } from '../types';
+import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download, Briefcase, Award, Globe } from 'lucide-react';
+import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem, AboutData, ExperienceItem, CertificationItem, LanguageItem } from '../types';
 import {
   getStoredProducts,
   saveStoredProducts,
@@ -13,8 +13,9 @@ import {
   clearStoredServices,
 } from '../data/serviceStore';
 import { getStoredPromptCategories, saveStoredPromptCategories, clearStoredPromptCategories } from '../data/promptStore';
-import { getGitHubConfig, saveGitHubConfig, pushPromptsToGitHub, pushProductsToGitHub, pushServicesToGitHub, GitHubConfig } from '../data/githubSync';
+import { getGitHubConfig, saveGitHubConfig, pushPromptsToGitHub, pushProductsToGitHub, pushServicesToGitHub, pushAboutToGitHub, GitHubConfig } from '../data/githubSync';
 import { GitHubSyncCard } from './GitHubSyncCard';
+import { getAboutData, saveStoredAbout, clearStoredAbout } from '../data/aboutStore';
 import { PRODUCTS } from '../data/portfolioData';
 
 const ADMIN_PASSWORD = 'admin2026';
@@ -94,7 +95,7 @@ export const AdminDashboard: React.FC = () => {
   const [tagRows, setTagRows] = useState<{ label: string; value: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [tab, setTab] = useState<'apps' | 'services' | 'prompts'>('apps');
+  const [tab, setTab] = useState<'apps' | 'services' | 'prompts' | 'profile'>('apps');
   const [services, setServices] = useState<ServiceCategory[]>(() => getStoredServices() ?? []);
   const [servicesSavedFlash, setServicesSavedFlash] = useState(false);
 
@@ -123,6 +124,21 @@ export const AdminDashboard: React.FC = () => {
   const [promptCategoryId, setPromptCategoryId] = useState('');
   const [promptForm, setPromptForm] = useState<PromptItem>(emptyPrompt());
   const promptFileInputRef = useRef<HTMLInputElement>(null);
+
+  const [about, setAbout] = useState<AboutData>(() => getAboutData());
+  const [aboutSavedFlash, setAboutSavedFlash] = useState(false);
+
+  const [expFormOpen, setExpFormOpen] = useState(false);
+  const [expEditingIdx, setExpEditingIdx] = useState<number | null>(null);
+  const [expForm, setExpForm] = useState<ExperienceItem>({ year: '', role: '', company: '', description: '' });
+
+  const [certFormOpen, setCertFormOpen] = useState(false);
+  const [certEditingIdx, setCertEditingIdx] = useState<number | null>(null);
+  const [certForm, setCertForm] = useState<CertificationItem>({ name: '', issuer: '', year: '', credentialId: '' });
+
+  const [langFormOpen, setLangFormOpen] = useState(false);
+  const [langEditingIdx, setLangEditingIdx] = useState<number | null>(null);
+  const [langForm, setLangForm] = useState<LanguageItem>({ language: '', level: '' });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -404,6 +420,115 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
+  const handleSaveAllAbout = () => {
+    saveStoredAbout(about);
+    setAboutSavedFlash(true);
+    setTimeout(() => setAboutSavedFlash(false), 2000);
+    if (ghConfig.token) {
+      handlePushAboutToGitHub(false);
+    }
+  };
+
+  const handleResetAbout = () => {
+    clearStoredAbout();
+    setAbout({ experiences: [], certifications: [], languages: [] });
+  };
+
+  const handlePushAboutToGitHub = async (showErrors = true) => {
+    if (!ghConfig.token) {
+      if (showErrors) setGhStatus('Enter a GitHub token first.');
+      return;
+    }
+    setGhBusy(true);
+    setGhStatus('Pushing about data to GitHub…');
+    try {
+      await pushAboutToGitHub(ghConfig.token, ghConfig.repo, about);
+      setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
+    } catch (err) {
+      setGhStatus(err instanceof Error ? err.message : 'Push failed.');
+    } finally {
+      setGhBusy(false);
+    }
+  };
+
+  const openExpForm = (idx?: number) => {
+    setExpEditingIdx(idx ?? null);
+    setExpForm(
+      idx !== undefined && about.experiences[idx]
+        ? { ...about.experiences[idx] }
+        : { year: '', role: '', company: '', description: '' }
+    );
+    setExpFormOpen(true);
+  };
+
+  const handleSaveExp = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAbout((prev) => {
+      const list =
+        expEditingIdx !== null
+          ? prev.experiences.map((it, i) => (i === expEditingIdx ? expForm : it))
+          : [...prev.experiences, expForm];
+      return { ...prev, experiences: list };
+    });
+    setExpFormOpen(false);
+  };
+
+  const handleDeleteExp = (idx: number) => {
+    setAbout((prev) => ({ ...prev, experiences: prev.experiences.filter((_, i) => i !== idx) }));
+  };
+
+  const openCertForm = (idx?: number) => {
+    setCertEditingIdx(idx ?? null);
+    setCertForm(
+      idx !== undefined && about.certifications[idx]
+        ? { ...about.certifications[idx] }
+        : { name: '', issuer: '', year: '', credentialId: '' }
+    );
+    setCertFormOpen(true);
+  };
+
+  const handleSaveCert = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAbout((prev) => {
+      const list =
+        certEditingIdx !== null
+          ? prev.certifications.map((it, i) => (i === certEditingIdx ? certForm : it))
+          : [...prev.certifications, certForm];
+      return { ...prev, certifications: list };
+    });
+    setCertFormOpen(false);
+  };
+
+  const handleDeleteCert = (idx: number) => {
+    setAbout((prev) => ({ ...prev, certifications: prev.certifications.filter((_, i) => i !== idx) }));
+  };
+
+  const openLangForm = (idx?: number) => {
+    setLangEditingIdx(idx ?? null);
+    setLangForm(
+      idx !== undefined && about.languages[idx]
+        ? { ...about.languages[idx] }
+        : { language: '', level: '' }
+    );
+    setLangFormOpen(true);
+  };
+
+  const handleSaveLang = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAbout((prev) => {
+      const list =
+        langEditingIdx !== null
+          ? prev.languages.map((it, i) => (i === langEditingIdx ? langForm : it))
+          : [...prev.languages, langForm];
+      return { ...prev, languages: list };
+    });
+    setLangFormOpen(false);
+  };
+
+  const handleDeleteLang = (idx: number) => {
+    setAbout((prev) => ({ ...prev, languages: prev.languages.filter((_, i) => i !== idx) }));
+  };
+
   const handleSaveGhConfig = () => {
     saveGitHubConfig(ghConfig);
     setGhStatus('GitHub connection saved.');
@@ -631,6 +756,16 @@ export const AdminDashboard: React.FC = () => {
             }`}
           >
             Prompts
+          </button>
+          <button
+            onClick={() => setTab('profile')}
+            className={`px-5 py-2 rounded-full text-xs font-medium uppercase tracking-wider transition-all cursor-pointer ${
+              tab === 'profile'
+                ? 'bg-[#D7C4A3] text-black shadow-lg font-semibold'
+                : 'glass-button text-neutral-300 hover:text-white'
+            }`}
+          >
+            Profile
           </button>
         </div>
 
@@ -1528,6 +1663,418 @@ export const AdminDashboard: React.FC = () => {
             <div className="mt-8 pt-6 border-t border-white/10">
               <p className="text-xs text-neutral-400 font-light">
                 {promptCats.length} categor{promptCats.length === 1 ? 'y' : 'ies'} · Click "Save Prompts" to persist.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {tab === 'profile' && (
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <button
+                onClick={() => openExpForm()}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                Add Experience
+              </button>
+              <div className="flex items-center gap-2">
+                {aboutSavedFlash && (
+                  <span className="text-xs text-[#D7C4A3] font-light">Saved</span>
+                )}
+                <button
+                  onClick={handleSaveAllAbout}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  Save Profile
+                </button>
+                <button
+                  onClick={handleResetAbout}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Reset Profile
+                </button>
+              </div>
+            </div>
+
+            <GitHubSyncCard
+              config={ghConfig}
+              onConfigChange={setGhConfig}
+              status={ghStatus}
+              busy={ghBusy}
+              onSaveConfig={handleSaveGhConfig}
+              onPush={() => handlePushAboutToGitHub(true)}
+              pushLabel="Push Profile to GitHub"
+            />
+
+            {/* Experience */}
+            <div className="mb-10">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-serif text-xl font-light text-[#D7C4A3] flex items-center gap-2">
+                  <Briefcase className="w-5 h-5" />
+                  Experience
+                </h2>
+                <button
+                  onClick={() => openExpForm()}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add Experience
+                </button>
+              </div>
+
+              {expFormOpen && (
+                <form onSubmit={handleSaveExp} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
+                      {expEditingIdx !== null ? 'Edit Experience' : 'Add Experience'}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setExpFormOpen(false)}
+                      aria-label="Close form"
+                      className="p-2 rounded-full glass-button cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                      Year *
+                      <input
+                        required
+                        value={expForm.year}
+                        onChange={(e) => setExpForm({ ...expForm, year: e.target.value })}
+                        placeholder="2023 — Present"
+                        className="glass-input px-4 py-3 text-sm font-light text-white"
+                      />
+                    </label>
+                    <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                      Role *
+                      <input
+                        required
+                        value={expForm.role}
+                        onChange={(e) => setExpForm({ ...expForm, role: e.target.value })}
+                        placeholder="Lead Developer"
+                        className="glass-input px-4 py-3 text-sm font-light text-white"
+                      />
+                    </label>
+                  </div>
+                  <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                    Company *
+                    <input
+                      required
+                      value={expForm.company}
+                      onChange={(e) => setExpForm({ ...expForm, company: e.target.value })}
+                      placeholder="Company name"
+                      className="glass-input px-4 py-3 text-sm font-light text-white"
+                    />
+                  </label>
+                  <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                    Description
+                    <textarea
+                      rows={3}
+                      value={expForm.description}
+                      onChange={(e) => setExpForm({ ...expForm, description: e.target.value })}
+                      placeholder="What you did in this role..."
+                      className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
+                    />
+                  </label>
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      type="submit"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+                    >
+                      <Save className="w-4 h-4" />
+                      {expEditingIdx !== null ? 'Update Experience' : 'Add Experience'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setExpFormOpen(false)}
+                      className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              <div className="space-y-3">
+                {about.experiences.map((exp, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <h3 className="text-sm font-medium text-white">{exp.role}</h3>
+                        <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#D7C4A3]/20 border border-[#D7C4A3]/40 text-[#D7C4A3] font-mono">
+                          {exp.year}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#D7C4A3] font-light mb-1">{exp.company}</p>
+                      <p className="text-xs text-neutral-300 font-light leading-relaxed">{exp.description}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button
+                        onClick={() => openExpForm(i)}
+                        aria-label="Edit experience"
+                        className="p-2 rounded-lg glass-button cursor-pointer"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteExp(i)}
+                        aria-label="Delete experience"
+                        className="p-2 rounded-lg glass-button cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {about.experiences.length === 0 && (
+                  <p className="text-xs text-neutral-400 font-light">No experience added yet.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Certifications */}
+            <div className="mb-10">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-serif text-xl font-light text-[#D7C4A3] flex items-center gap-2">
+                  <Award className="w-5 h-5" />
+                  Certifications
+                </h2>
+                <button
+                  onClick={() => openCertForm()}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add Certification
+                </button>
+              </div>
+
+              {certFormOpen && (
+                <form onSubmit={handleSaveCert} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
+                      {certEditingIdx !== null ? 'Edit Certification' : 'Add Certification'}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setCertFormOpen(false)}
+                      aria-label="Close form"
+                      className="p-2 rounded-full glass-button cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                      Name *
+                      <input
+                        required
+                        value={certForm.name}
+                        onChange={(e) => setCertForm({ ...certForm, name: e.target.value })}
+                        placeholder="Certification name"
+                        className="glass-input px-4 py-3 text-sm font-light text-white"
+                      />
+                    </label>
+                    <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                      Issuer *
+                      <input
+                        required
+                        value={certForm.issuer}
+                        onChange={(e) => setCertForm({ ...certForm, issuer: e.target.value })}
+                        placeholder="Issuing organization"
+                        className="glass-input px-4 py-3 text-sm font-light text-white"
+                      />
+                    </label>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                      Year
+                      <input
+                        value={certForm.year}
+                        onChange={(e) => setCertForm({ ...certForm, year: e.target.value })}
+                        placeholder="2024"
+                        className="glass-input px-4 py-3 text-sm font-light text-white"
+                      />
+                    </label>
+                    <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                      Credential ID (optional)
+                      <input
+                        value={certForm.credentialId ?? ''}
+                        onChange={(e) => setCertForm({ ...certForm, credentialId: e.target.value })}
+                        placeholder="CERT-12345"
+                        className="glass-input px-4 py-3 text-sm font-light text-white"
+                      />
+                    </label>
+                  </div>
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      type="submit"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+                    >
+                      <Save className="w-4 h-4" />
+                      {certEditingIdx !== null ? 'Update Certification' : 'Add Certification'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCertFormOpen(false)}
+                      className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              <div className="space-y-3">
+                {about.certifications.map((cert, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        {cert.year && (
+                          <span className="text-[10px] font-mono text-[#D7C4A3]">{cert.year}</span>
+                        )}
+                        {cert.credentialId && (
+                          <span className="text-[10px] font-mono text-neutral-400">{cert.credentialId}</span>
+                        )}
+                      </div>
+                      <h3 className="text-sm font-medium text-white">{cert.name}</h3>
+                      <p className="text-xs text-neutral-300 font-light">{cert.issuer}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button
+                        onClick={() => openCertForm(i)}
+                        aria-label="Edit certification"
+                        className="p-2 rounded-lg glass-button cursor-pointer"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCert(i)}
+                        aria-label="Delete certification"
+                        className="p-2 rounded-lg glass-button cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {about.certifications.length === 0 && (
+                  <p className="text-xs text-neutral-400 font-light">No certifications added yet.</p>
+                )}
+              </div>
+            </div>
+
+            {/* Languages */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-serif text-xl font-light text-[#D7C4A3] flex items-center gap-2">
+                  <Globe className="w-5 h-5" />
+                  Languages
+                </h2>
+                <button
+                  onClick={() => openLangForm()}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add Language
+                </button>
+              </div>
+
+              {langFormOpen && (
+                <form onSubmit={handleSaveLang} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
+                      {langEditingIdx !== null ? 'Edit Language' : 'Add Language'}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setLangFormOpen(false)}
+                      aria-label="Close form"
+                      className="p-2 rounded-full glass-button cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                      Language *
+                      <input
+                        required
+                        value={langForm.language}
+                        onChange={(e) => setLangForm({ ...langForm, language: e.target.value })}
+                        placeholder="English"
+                        className="glass-input px-4 py-3 text-sm font-light text-white"
+                      />
+                    </label>
+                    <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                      Level *
+                      <input
+                        required
+                        value={langForm.level}
+                        onChange={(e) => setLangForm({ ...langForm, level: e.target.value })}
+                        placeholder="Native"
+                        className="glass-input px-4 py-3 text-sm font-light text-white"
+                      />
+                    </label>
+                  </div>
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      type="submit"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
+                    >
+                      <Save className="w-4 h-4" />
+                      {langEditingIdx !== null ? 'Update Language' : 'Add Language'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLangFormOpen(false)}
+                      className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              <div className="space-y-3">
+                {about.languages.map((lang, i) => (
+                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-wrap items-center justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-sm font-medium text-white">{lang.language}</h3>
+                      <p className="text-xs text-[#D7C4A3] font-light">{lang.level}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button
+                        onClick={() => openLangForm(i)}
+                        aria-label="Edit language"
+                        className="p-2 rounded-lg glass-button cursor-pointer"
+                      >
+                        <Pencil className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteLang(i)}
+                        aria-label="Delete language"
+                        className="p-2 rounded-lg glass-button cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {about.languages.length === 0 && (
+                  <p className="text-xs text-neutral-400 font-light">No languages added yet.</p>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <p className="text-xs text-neutral-400 font-light">
+                Experience, certifications, and languages · Click "Save Profile" to persist.
               </p>
             </div>
           </div>

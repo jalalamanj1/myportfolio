@@ -43,6 +43,12 @@ export interface LanguageItem {
   level: string;
 }
 
+export interface AboutData {
+  experiences: ExperienceItem[];
+  certifications: CertificationItem[];
+  languages: LanguageItem[];
+}
+
 export interface ServiceItem {
   id: string;
   title: string;

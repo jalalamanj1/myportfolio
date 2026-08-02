@@ -1,4 +1,4 @@
-import { Product, ServiceCategory, PromptCategory } from '../types';
+import { Product, ServiceCategory, PromptCategory, AboutData } from '../types';
 
 const TOKEN_KEY = 'portfolio_admin_github_token';
 const REPO_KEY = 'portfolio_admin_github_repo';
@@ -100,5 +100,15 @@ export function pushServicesToGitHub(token: string, repo: string, services: Serv
     'public/data/services.json',
     JSON.stringify(services, null, 2),
     'Update services from admin dashboard'
+  );
+}
+
+export function pushAboutToGitHub(token: string, repo: string, about: AboutData): Promise<void> {
+  return pushFileToGitHub(
+    token,
+    repo,
+    'public/data/about.json',
+    JSON.stringify(about, null, 2),
+    'Update about data from admin dashboard'
   );
 }
