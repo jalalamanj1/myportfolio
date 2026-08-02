@@ -20,6 +20,10 @@
       {
         "label": "Updates",
         "value": "Auto-update system"
+      },
+      {
+        "label": "Price",
+        "value": "FREE"
       }
     ],
     "tags": [],
