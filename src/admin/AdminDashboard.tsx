@@ -5,17 +5,15 @@ import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem, Abou
 import {
   getStoredProducts,
   saveStoredProducts,
-  clearStoredProducts,
 } from '../data/productStore';
 import {
   getStoredServices,
   saveStoredServices,
-  clearStoredServices,
 } from '../data/serviceStore';
-import { getStoredPromptCategories, saveStoredPromptCategories, clearStoredPromptCategories } from '../data/promptStore';
+import { getStoredPromptCategories, saveStoredPromptCategories } from '../data/promptStore';
 import { getGitHubConfig, saveGitHubConfig, pushPromptsToGitHub, pushProductsToGitHub, pushServicesToGitHub, pushAboutToGitHub, GitHubConfig } from '../data/githubSync';
 import { GitHubSyncCard } from './GitHubSyncCard';
-import { getAboutData, saveStoredAbout, clearStoredAbout } from '../data/aboutStore';
+import { getAboutData, saveStoredAbout } from '../data/aboutStore';
 import { PRODUCTS } from '../data/portfolioData';
 
 const ADMIN_PASSWORD = 'admin2026';
@@ -185,6 +183,30 @@ export const AdminDashboard: React.FC = () => {
     setPassword('');
   };
 
+  const persistProducts = (next: Product[]) => {
+    setProducts(next);
+    saveStoredProducts(next);
+    if (ghConfig.token) void handlePushProductsToGitHub(false, next);
+  };
+
+  const persistServices = (next: ServiceCategory[]) => {
+    setServices(next);
+    saveStoredServices(next);
+    if (ghConfig.token) void handlePushServicesToGitHub(false, next);
+  };
+
+  const persistPromptCats = (next: PromptCategory[]) => {
+    setPromptCats(next);
+    saveStoredPromptCategories(next);
+    if (ghConfig.token) void handlePushPromptsToGitHub(false, next);
+  };
+
+  const persistAbout = (next: AboutData) => {
+    setAbout(next);
+    saveStoredAbout(next);
+    if (ghConfig.token) void handlePushAboutToGitHub(false, next);
+  };
+
   const handleSaveAll = () => {
     saveStoredProducts(products);
     setSavedFlash(true);
@@ -195,8 +217,7 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleReset = () => {
-    clearStoredProducts();
-    setProducts(PRODUCTS);
+    persistProducts(PRODUCTS);
   };
 
   const openAddForm = () => {
@@ -227,7 +248,7 @@ export const AdminDashboard: React.FC = () => {
     setTagRows((prev) => prev.filter((_, i) => i !== index));
 
   const handleDelete = (id: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+    persistProducts(products.filter((p) => p.id !== id));
   };
 
   const handleFormField = (field: keyof Product, value: string) => {
@@ -248,9 +269,9 @@ export const AdminDashboard: React.FC = () => {
     };
 
     if (editingId) {
-      setProducts((prev) => prev.map((p) => (p.id === editingId ? next : p)));
+      persistProducts(products.map((p) => (p.id === editingId ? next : p)));
     } else {
-      setProducts((prev) => [...prev, next]);
+      persistProducts([...products, next]);
     }
     setIsFormOpen(false);
   };
@@ -265,8 +286,7 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleResetServices = () => {
-    clearStoredServices();
-    setServices([]);
+    persistServices([]);
   };
 
   const openCategoryForm = () => {
@@ -289,8 +309,8 @@ export const AdminDashboard: React.FC = () => {
       id: catEditingId ?? `${slug || 'category'}-${Date.now()}`,
     };
     if (catEditingId) {
-      setServices((prev) =>
-        prev.map((c) => {
+      persistServices(
+        services.map((c) => {
           if (c.id !== catEditingId) return c;
           return {
             ...next,
@@ -299,13 +319,13 @@ export const AdminDashboard: React.FC = () => {
         })
       );
     } else {
-      setServices((prev) => [...prev, next]);
+      persistServices([...services, next]);
     }
     setCatFormOpen(false);
   };
 
   const handleDeleteCategory = (id: string) => {
-    setServices((prev) => prev.filter((c) => c.id !== id));
+    persistServices(services.filter((c) => c.id !== id));
   };
 
   const openServiceForm = (categoryId: string) => {
@@ -338,8 +358,8 @@ export const AdminDashboard: React.FC = () => {
       category: svcCategoryId,
       deliverables,
     };
-    setServices((prev) =>
-      prev.map((c) => {
+    persistServices(
+      services.map((c) => {
         if (c.id !== svcCategoryId) return c;
         const items = svcEditingId
           ? c.services.map((s) => (s.id === svcEditingId ? next : s))
@@ -351,8 +371,8 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleDeleteService = (catId: string, svcId: string) => {
-    setServices((prev) =>
-      prev.map((c) =>
+    persistServices(
+      services.map((c) =>
         c.id === catId
           ? { ...c, services: c.services.filter((s) => s.id !== svcId) }
           : c
@@ -369,7 +389,7 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handlePushProductsToGitHub = async (showErrors = true) => {
+  const handlePushProductsToGitHub = async (showErrors = true, data?: Product[]) => {
     if (!ghConfig.token) {
       if (showErrors) setGhStatus('Enter a GitHub token first.');
       return;
@@ -377,7 +397,7 @@ export const AdminDashboard: React.FC = () => {
     setGhBusy(true);
     setGhStatus('Pushing apps to GitHub…');
     try {
-      await pushProductsToGitHub(ghConfig.token, ghConfig.repo, products);
+      await pushProductsToGitHub(ghConfig.token, ghConfig.repo, data ?? products);
       setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
     } catch (err) {
       setGhStatus(err instanceof Error ? err.message : 'Push failed.');
@@ -386,7 +406,7 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handlePushServicesToGitHub = async (showErrors = true) => {
+  const handlePushServicesToGitHub = async (showErrors = true, data?: ServiceCategory[]) => {
     if (!ghConfig.token) {
       if (showErrors) setGhStatus('Enter a GitHub token first.');
       return;
@@ -394,7 +414,7 @@ export const AdminDashboard: React.FC = () => {
     setGhBusy(true);
     setGhStatus('Pushing services to GitHub…');
     try {
-      await pushServicesToGitHub(ghConfig.token, ghConfig.repo, services);
+      await pushServicesToGitHub(ghConfig.token, ghConfig.repo, data ?? services);
       setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
     } catch (err) {
       setGhStatus(err instanceof Error ? err.message : 'Push failed.');
@@ -403,7 +423,7 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handlePushPromptsToGitHub = async (showErrors = true) => {
+  const handlePushPromptsToGitHub = async (showErrors = true, data?: PromptCategory[]) => {
     if (!ghConfig.token) {
       if (showErrors) setGhStatus('Enter a GitHub token first.');
       return;
@@ -411,7 +431,7 @@ export const AdminDashboard: React.FC = () => {
     setGhBusy(true);
     setGhStatus('Pushing to GitHub…');
     try {
-      await pushPromptsToGitHub(ghConfig.token, ghConfig.repo, promptCats);
+      await pushPromptsToGitHub(ghConfig.token, ghConfig.repo, data ?? promptCats);
       setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
     } catch (err) {
       setGhStatus(err instanceof Error ? err.message : 'Push failed.');
@@ -430,11 +450,10 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleResetAbout = () => {
-    clearStoredAbout();
-    setAbout({ experiences: [], certifications: [], languages: [] });
+    persistAbout({ experiences: [], certifications: [], languages: [] });
   };
 
-  const handlePushAboutToGitHub = async (showErrors = true) => {
+  const handlePushAboutToGitHub = async (showErrors = true, data?: AboutData) => {
     if (!ghConfig.token) {
       if (showErrors) setGhStatus('Enter a GitHub token first.');
       return;
@@ -442,7 +461,7 @@ export const AdminDashboard: React.FC = () => {
     setGhBusy(true);
     setGhStatus('Pushing about data to GitHub…');
     try {
-      await pushAboutToGitHub(ghConfig.token, ghConfig.repo, about);
+      await pushAboutToGitHub(ghConfig.token, ghConfig.repo, data ?? about);
       setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
     } catch (err) {
       setGhStatus(err instanceof Error ? err.message : 'Push failed.');
@@ -463,18 +482,16 @@ export const AdminDashboard: React.FC = () => {
 
   const handleSaveExp = (e: React.FormEvent) => {
     e.preventDefault();
-    setAbout((prev) => {
-      const list =
-        expEditingIdx !== null
-          ? prev.experiences.map((it, i) => (i === expEditingIdx ? expForm : it))
-          : [...prev.experiences, expForm];
-      return { ...prev, experiences: list };
-    });
+    const list =
+      expEditingIdx !== null
+        ? about.experiences.map((it, i) => (i === expEditingIdx ? expForm : it))
+        : [...about.experiences, expForm];
+    persistAbout({ ...about, experiences: list });
     setExpFormOpen(false);
   };
 
   const handleDeleteExp = (idx: number) => {
-    setAbout((prev) => ({ ...prev, experiences: prev.experiences.filter((_, i) => i !== idx) }));
+    persistAbout({ ...about, experiences: about.experiences.filter((_, i) => i !== idx) });
   };
 
   const openCertForm = (idx?: number) => {
@@ -489,18 +506,16 @@ export const AdminDashboard: React.FC = () => {
 
   const handleSaveCert = (e: React.FormEvent) => {
     e.preventDefault();
-    setAbout((prev) => {
-      const list =
-        certEditingIdx !== null
-          ? prev.certifications.map((it, i) => (i === certEditingIdx ? certForm : it))
-          : [...prev.certifications, certForm];
-      return { ...prev, certifications: list };
-    });
+    const list =
+      certEditingIdx !== null
+        ? about.certifications.map((it, i) => (i === certEditingIdx ? certForm : it))
+        : [...about.certifications, certForm];
+    persistAbout({ ...about, certifications: list });
     setCertFormOpen(false);
   };
 
   const handleDeleteCert = (idx: number) => {
-    setAbout((prev) => ({ ...prev, certifications: prev.certifications.filter((_, i) => i !== idx) }));
+    persistAbout({ ...about, certifications: about.certifications.filter((_, i) => i !== idx) });
   };
 
   const openLangForm = (idx?: number) => {
@@ -515,18 +530,16 @@ export const AdminDashboard: React.FC = () => {
 
   const handleSaveLang = (e: React.FormEvent) => {
     e.preventDefault();
-    setAbout((prev) => {
-      const list =
-        langEditingIdx !== null
-          ? prev.languages.map((it, i) => (i === langEditingIdx ? langForm : it))
-          : [...prev.languages, langForm];
-      return { ...prev, languages: list };
-    });
+    const list =
+      langEditingIdx !== null
+        ? about.languages.map((it, i) => (i === langEditingIdx ? langForm : it))
+        : [...about.languages, langForm];
+    persistAbout({ ...about, languages: list });
     setLangFormOpen(false);
   };
 
   const handleDeleteLang = (idx: number) => {
-    setAbout((prev) => ({ ...prev, languages: prev.languages.filter((_, i) => i !== idx) }));
+    persistAbout({ ...about, languages: about.languages.filter((_, i) => i !== idx) });
   };
 
   const handleSaveGhConfig = () => {
@@ -547,8 +560,7 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleResetPrompts = () => {
-    clearStoredPromptCategories();
-    setPromptCats([]);
+    persistPromptCats([]);
   };
 
   const openPromptCategoryForm = () => {
@@ -571,15 +583,15 @@ export const AdminDashboard: React.FC = () => {
       id: promptCatEditingId ?? `${slug || 'category'}-${Date.now()}`,
     };
     if (promptCatEditingId) {
-      setPromptCats((prev) => prev.map((c) => (c.id === promptCatEditingId ? next : c)));
+      persistPromptCats(promptCats.map((c) => (c.id === promptCatEditingId ? next : c)));
     } else {
-      setPromptCats((prev) => [...prev, next]);
+      persistPromptCats([...promptCats, next]);
     }
     setPromptCatFormOpen(false);
   };
 
   const handleDeletePromptCategory = (id: string) => {
-    setPromptCats((prev) => prev.filter((c) => c.id !== id));
+    persistPromptCats(promptCats.filter((c) => c.id !== id));
   };
 
   const openPromptForm = (categoryId: string) => {
@@ -603,8 +615,8 @@ export const AdminDashboard: React.FC = () => {
       ...promptForm,
       id: promptEditingId ?? `${slug || 'prompt'}-${Date.now()}`,
     };
-    setPromptCats((prev) =>
-      prev.map((c) => {
+    persistPromptCats(
+      promptCats.map((c) => {
         if (c.id !== promptCategoryId) return c;
         const items = promptEditingId
           ? c.prompts.map((p) => (p.id === promptEditingId ? next : p))
@@ -616,8 +628,8 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleDeletePrompt = (catId: string, promptId: string) => {
-    setPromptCats((prev) =>
-      prev.map((c) =>
+    persistPromptCats(
+      promptCats.map((c) =>
         c.id === catId
           ? { ...c, prompts: c.prompts.filter((p) => p.id !== promptId) }
           : c
