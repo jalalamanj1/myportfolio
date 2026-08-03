@@ -173,32 +173,59 @@ export const AdminDashboard: React.FC = () => {
     };
   }, [isAuthed]);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const resizeImageFile = (file: File | Blob): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const max = 900;
+          const ratio = Math.min(max / img.width, max / img.height, 1);
+          const width = Math.max(1, Math.round(img.width * ratio));
+          const height = Math.max(1, Math.round(img.height * ratio));
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Canvas not supported'));
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', 0.85));
+        };
+        img.onerror = reject;
+        img.src = reader.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const maxDim = 900;
-        let width = img.width;
-        let height = img.height;
-        if (width > maxDim || height > maxDim) {
-          const scale = maxDim / Math.max(width, height);
-          width = Math.round(width * scale);
-          height = Math.round(height * scale);
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        ctx.drawImage(img, 0, 0, width, height);
-        handleFormField('image', canvas.toDataURL('image/jpeg', 0.85));
-      };
-      img.src = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+    try {
+      const dataUrl = await resizeImageFile(file);
+      handleFormField('image', dataUrl);
+    } catch {
+      // ignore invalid image
+    }
+  };
+
+  const handleImagePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData.items;
+    const item = Array.from({ length: items.length }, (_, i) => items[i]).find(
+      (i) => i.type.startsWith('image/')
+    );
+    if (!item) return;
+    e.preventDefault();
+    const file = item.getAsFile();
+    if (!file) return;
+    resizeImageFile(file)
+      .then((dataUrl) => handleFormField('image', dataUrl))
+      .catch(() => {
+        // ignore invalid clipboard image
+      });
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -672,31 +699,31 @@ export const AdminDashboard: React.FC = () => {
     );
   };
 
-  const handlePromptImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePromptImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const max = 900;
-        const ratio = Math.min(max / img.width, max / img.height, 1);
-        const width = Math.max(1, Math.round(img.width * ratio));
-        const height = Math.max(1, Math.round(img.height * ratio));
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        ctx.drawImage(img, 0, 0, width, height);
-        setPromptForm((prev) => ({
-          ...prev,
-          image: canvas.toDataURL('image/jpeg', 0.85),
-        }));
-      };
-      img.src = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+    try {
+      const dataUrl = await resizeImageFile(file);
+      setPromptForm((prev) => ({ ...prev, image: dataUrl }));
+    } catch {
+      // ignore invalid image
+    }
+  };
+
+  const handlePromptImagePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData.items;
+    const item = Array.from({ length: items.length }, (_, i) => items[i]).find(
+      (i) => i.type.startsWith('image/')
+    );
+    if (!item) return;
+    e.preventDefault();
+    const file = item.getAsFile();
+    if (!file) return;
+    resizeImageFile(file)
+      .then((dataUrl) => setPromptForm((prev) => ({ ...prev, image: dataUrl })))
+      .catch(() => {
+        // ignore invalid clipboard image
+      });
   };
 
   if (!isAuthed) {
@@ -856,7 +883,7 @@ export const AdminDashboard: React.FC = () => {
         />
 
         {isFormOpen && (
-          <form onSubmit={handleSaveForm} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+          <form onSubmit={handleSaveForm} onPaste={handleImagePaste} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
             <div className="flex items-center justify-between mb-2">
               <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
                 {editingId ? 'Edit App' : 'Add New App'}
@@ -957,6 +984,9 @@ export const AdminDashboard: React.FC = () => {
                   >
                     Custom URL
                   </button>
+                  <span className="text-[10px] text-neutral-400 font-light">
+                    or paste an image (Ctrl+V)
+                  </span>
                 </div>
                 {form.image.startsWith('data:') ? (
                   <div className="flex items-center gap-3 mt-1">
@@ -1525,7 +1555,7 @@ export const AdminDashboard: React.FC = () => {
             )}
 
             {promptFormOpen && (
-              <form onSubmit={handleSavePrompt} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+              <form onSubmit={handleSavePrompt} onPaste={handlePromptImagePaste} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
                     {promptEditingId ? 'Edit Prompt' : 'Add Prompt'}
@@ -1566,6 +1596,9 @@ export const AdminDashboard: React.FC = () => {
                       onChange={handlePromptImageUpload}
                       className="hidden"
                     />
+                    <span className="text-[10px] text-neutral-400 font-light">
+                      or paste an image (Ctrl+V)
+                    </span>
                     {promptForm.image !== '' && (
                       <img
                         src={promptForm.image}
