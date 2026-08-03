@@ -1,12 +1,12 @@
 import { Product, SkillCategory, ExperienceItem, EducationItem, CertificationItem, LanguageItem, ServiceCategory } from '../types';
 
-import bgImage from '../../background.png';
-import profileImage from '../../profile portrait.png';
+import bgImage from '../assets/images/background.webp';
+import profileImage from '../assets/images/profile-portrait.webp';
 
-import appOmniPulseImg from '../assets/images/app_omnipulse_desktop_1785494849235.jpg';
-import appNovaStudioImg from '../assets/images/app_novastudio_ide_1785494863797.jpg';
-import appQuantumTraceImg from '../assets/images/app_quantumtrace_security_1785494875469.jpg';
-import appHyperFlowImg from '../assets/images/app_hyperflow_cad_1785494890939.jpg';
+import appOmniPulseImg from '../assets/images/app_omnipulse_desktop_1785494849235.webp';
+import appNovaStudioImg from '../assets/images/app_novastudio_ide_1785494863797.webp';
+import appQuantumTraceImg from '../assets/images/app_quantumtrace_security_1785494875469.webp';
+import appHyperFlowImg from '../assets/images/app_hyperflow_cad_1785494890939.webp';
 
 export const HERO_DATA = {
   name: "JALAL AMANJ",

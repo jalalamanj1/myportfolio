@@ -9,22 +9,35 @@ export const Background: React.FC = () => {
         src={HERO_DATA.bgImage}
         alt="Background Architectural Interior"
         referrerPolicy="no-referrer"
+        fetchPriority="high"
+        decoding="async"
         className="w-full h-full object-cover fixed inset-0 scale-105 filter brightness-95"
       />
-      
+
       {/* 35% Dark Translucent Overlay + Subtle Radial Vignette for Readability */}
-      <div className="absolute inset-0 bg-black/40 backdrop-brightness-90" />
-      
-      <div 
+      <div className="absolute inset-0 bg-black/40" />
+
+      <div
         className="absolute inset-0 opacity-80"
         style={{
           background: 'radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.75) 100%)'
         }}
       />
 
-      {/* Subtle Golden ambient accent light spots */}
-      <div className="absolute -top-32 left-1/4 w-96 h-96 bg-[#D7C4A3]/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-[#D7C4A3]/10 rounded-full blur-[140px] pointer-events-none" />
+      {/* Subtle Golden ambient accent light spots (radial gradients instead of
+          filter blur — much cheaper for the compositor on mobile GPUs) */}
+      <div
+        className="absolute -top-32 left-1/4 w-96 h-96 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(215, 196, 163, 0.16) 0%, rgba(215, 196, 163, 0) 70%)'
+        }}
+      />
+      <div
+        className="absolute bottom-1/3 right-1/4 w-96 h-96 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(215, 196, 163, 0.12) 0%, rgba(215, 196, 163, 0) 70%)'
+        }}
+      />
     </div>
   );
 };

@@ -39,6 +39,31 @@ export default defineConfig(() => {
       cssMinify: 'esbuild' as const,
       // No source maps shipped to visitors.
       sourcemap: false,
+      // Split heavy vendor libraries into cacheable chunks so the initial
+      // page load only downloads what it needs and the rest is cached.
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('motion') || id.includes('framer-motion')) {
+                return 'vendor-motion';
+              }
+              if (id.includes('react-router')) {
+                return 'vendor-router';
+              }
+              if (id.includes('react-dom') || id.includes('react')) {
+                return 'vendor-react';
+              }
+              if (id.includes('lucide-react')) {
+                return 'vendor-icons';
+              }
+            }
+            return undefined;
+          },
+        },
+      },
+      // Route-level lazy chunks plus vendor splits keep chunks well below this.
+      chunkSizeWarningLimit: 400,
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

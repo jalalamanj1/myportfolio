@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 
-export const ServicesPreviewSection: React.FC = () => {
+export const ServicesPreviewSection: React.FC = memo(function ServicesPreviewSection() {
   const navigate = useNavigate();
 
   return (
@@ -37,4 +37,4 @@ export const ServicesPreviewSection: React.FC = () => {
       </motion.div>
     </section>
   );
-};
+});

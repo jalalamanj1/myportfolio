@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, Suspense, lazy, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -10,7 +10,11 @@ import {
 } from 'lucide-react';
 import { fetchServices } from '../data/serviceStore';
 import { ServiceCategory, ServiceItem } from '../types';
-import { ServiceRequestModal } from '../components/ServiceRequestModal';
+
+// Request modal only loads when a service is actually requested.
+const ServiceRequestModal = lazy(() =>
+  import('../components/ServiceRequestModal').then((m) => ({ default: m.ServiceRequestModal }))
+);
 
 // Helper to resolve icon by string name
 const getIcon = (iconName: string, className: string = "w-6 h-6") => {
@@ -75,6 +79,10 @@ export const ServicesPage: React.FC = () => {
     setPrevCategory(activeCategory);
     setActiveCategory(catId);
   };
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedService(null);
+  }, []);
 
   const displayedCategories = activeCategory !== null
     ? categories.filter(cat => cat.id === activeCategory)
@@ -287,10 +295,12 @@ export const ServicesPage: React.FC = () => {
       </div>
 
       {/* Service Request Modal */}
-      <ServiceRequestModal
-        service={selectedService}
-        onClose={() => setSelectedService(null)}
-      />
+      <Suspense fallback={null}>
+        <ServiceRequestModal
+          service={selectedService}
+          onClose={handleCloseModal}
+        />
+      </Suspense>
     </div>
   );
 };

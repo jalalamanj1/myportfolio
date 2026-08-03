@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { motion } from 'motion/react';
 import { ABOUT_DATA } from '../data/portfolioData';
 import { getAboutData, fetchAbout } from '../data/aboutStore';
 import { AboutData } from '../types';
 import { Award, Briefcase, GraduationCap, Globe } from 'lucide-react';
 
-export const AboutSection: React.FC = () => {
+export const AboutSection: React.FC = memo(function AboutSection() {
   const [activeTab, setActiveTab] = useState<'overview' | 'experience' | 'education' | 'credentials'>('overview');
   const [about, setAbout] = useState<AboutData>(() => getAboutData());
 
@@ -81,6 +81,8 @@ export const AboutSection: React.FC = () => {
                       src={ABOUT_DATA.profileImage}
                       alt="Jalal Amanj Profile Portrait"
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-auto object-cover aspect-square transition duration-700 group-hover:scale-105"
                     />
                     
@@ -236,4 +238,4 @@ export const AboutSection: React.FC = () => {
       </motion.div>
     </section>
   );
-};
+});

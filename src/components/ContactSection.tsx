@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { motion } from 'motion/react';
 import { Send, CheckCircle, Instagram, Mail } from 'lucide-react';
 import { CONTACT_DATA } from '../data/portfolioData';
 
-export const ContactSection: React.FC = () => {
+export const ContactSection: React.FC = memo(function ContactSection() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -159,4 +159,4 @@ export const ContactSection: React.FC = () => {
       </motion.div>
     </section>
   );
-};
+});

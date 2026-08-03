@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, lazy, Suspense } from 'react';
 import { HeroSection } from '../components/HeroSection';
 import { AboutSection } from '../components/AboutSection';
 import { ProductCarousel } from '../components/ProductCarousel';
 import { ServicesPreviewSection } from '../components/ServicesPreviewSection';
 import { ContactSection } from '../components/ContactSection';
 import { Footer } from '../components/Footer';
-import { ProjectModal } from '../components/ProjectModal';
 import { getAllProducts, fetchProducts } from '../data/productStore';
 import { Product } from '../types';
+
+// Project detail modal only loads when a project is actually opened.
+const ProjectModal = lazy(() =>
+  import('../components/ProjectModal').then((m) => ({ default: m.ProjectModal }))
+);
 
 export const HomePage: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -23,6 +27,14 @@ export const HomePage: React.FC = () => {
     };
   }, []);
 
+  const handleSelectProduct = useCallback((product: Product) => {
+    setSelectedProduct(product);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedProduct(null);
+  }, []);
+
   return (
     <div className="relative z-10 flex flex-col w-full min-h-screen">
       {/* Section 1: Hero */}
@@ -36,7 +48,7 @@ export const HomePage: React.FC = () => {
       {/* Section 3: Products Horizontal Carousel */}
       <ProductCarousel
         products={products}
-        onSelectProduct={(product) => setSelectedProduct(product)}
+        onSelectProduct={handleSelectProduct}
       />
 
       {/* Section 4: Services Preview */}
@@ -49,10 +61,12 @@ export const HomePage: React.FC = () => {
       <Footer />
 
       {/* Project Detail Glass Modal */}
-      <ProjectModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
+      <Suspense fallback={null}>
+        <ProjectModal
+          product={selectedProduct}
+          onClose={handleCloseModal}
+        />
+      </Suspense>
     </div>
   );
 };

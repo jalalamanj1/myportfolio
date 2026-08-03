@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Send, CheckCircle2, Sparkles, MessageSquare } from 'lucide-react';
 import { ServiceItem } from '../types';
@@ -8,7 +8,7 @@ interface ServiceRequestModalProps {
   onClose: () => void;
 }
 
-export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({ service, onClose }) => {
+export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = memo(function ServiceRequestModal({ service, onClose }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -144,4 +144,4 @@ export const ServiceRequestModal: React.FC<ServiceRequestModalProps> = ({ servic
       </div>
     </AnimatePresence>
   );
-};
+});

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC = memo(function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -44,4 +44,4 @@ export const Footer: React.FC = () => {
       </div>
     </footer>
   );
-};
+});

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ExternalLink, Calendar, Tag, ShieldCheck, Download } from 'lucide-react';
 import { Product } from '../types';
@@ -8,7 +8,7 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-export const ProjectModal: React.FC<ProjectModalProps> = ({ product, onClose }) => {
+export const ProjectModal: React.FC<ProjectModalProps> = memo(function ProjectModal({ product, onClose }) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -63,6 +63,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ product, onClose }) 
                 src={product.image}
                 alt={product.title}
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover max-h-[340px] lg:max-h-[420px]"
               />
             </div>
@@ -125,4 +127,4 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ product, onClose }) 
       </div>
     </AnimatePresence>
   );
-};
+});

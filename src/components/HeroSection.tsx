@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'motion/react';
-import { ChevronDown, Sparkles } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { HERO_DATA } from '../data/portfolioData';
 
-export const HeroSection: React.FC = () => {
+export const HeroSection: React.FC = memo(() => {
   const scrollToAbout = () => {
     const aboutElem = document.getElementById('about');
     if (aboutElem) {
@@ -93,4 +93,4 @@ export const HeroSection: React.FC = () => {
       </motion.div>
     </section>
   );
-};
+});
