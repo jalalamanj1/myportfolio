@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download, Briefcase, Award, Globe } from 'lucide-react';
+import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download, Briefcase, Award, Globe, ChevronDown, ChevronRight } from 'lucide-react';
 import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem, AboutData, ExperienceItem, CertificationItem, LanguageItem } from '../types';
 import {
   getStoredProducts,
@@ -139,6 +139,13 @@ export const AdminDashboard: React.FC = () => {
   const [langFormOpen, setLangFormOpen] = useState(false);
   const [langEditingIdx, setLangEditingIdx] = useState<number | null>(null);
   const [langForm, setLangForm] = useState<LanguageItem>({ language: '', level: '' });
+  const [expandedCat, setExpandedCat] = useState<string | null>(null);
+
+  const scrollToForm = (id: string) => {
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  };
 
   useEffect(() => {
     if (!isAuthed) return;
@@ -287,6 +294,7 @@ export const AdminDashboard: React.FC = () => {
     setForm(emptyProduct());
     setTagRows([{ label: '', value: '' }]);
     setIsFormOpen(true);
+    scrollToForm('product-form');
   };
 
   const openEditForm = (product: Product) => {
@@ -298,6 +306,7 @@ export const AdminDashboard: React.FC = () => {
         : [{ label: '', value: '' }]
     );
     setIsFormOpen(true);
+    scrollToForm('product-form');
   };
 
   const updateTagRow = (index: number, field: 'label' | 'value', val: string) => {
@@ -355,12 +364,14 @@ export const AdminDashboard: React.FC = () => {
     setCatEditingId(null);
     setCatForm(emptyCategory());
     setCatFormOpen(true);
+    scrollToForm('service-category-form');
   };
 
   const openEditCategory = (cat: ServiceCategory) => {
     setCatEditingId(cat.id);
     setCatForm({ ...cat });
     setCatFormOpen(true);
+    scrollToForm('service-category-form');
   };
 
   const handleSaveCategory = (e: React.FormEvent) => {
@@ -395,6 +406,7 @@ export const AdminDashboard: React.FC = () => {
     setSvcEditingId(null);
     setSvcForm({ ...emptyService(), category: categoryId });
     setSvcFormOpen(true);
+    scrollToForm('service-item-form');
   };
 
   const openEditService = (cat: ServiceCategory, svc: ServiceItem) => {
@@ -406,6 +418,7 @@ export const AdminDashboard: React.FC = () => {
       deliverables: svc.deliverables ?? [],
     });
     setSvcFormOpen(true);
+    scrollToForm('service-item-form');
   };
 
   const handleSaveService = (e: React.FormEvent) => {
@@ -540,6 +553,7 @@ export const AdminDashboard: React.FC = () => {
         : { year: '', role: '', company: '', description: '' }
     );
     setExpFormOpen(true);
+    scrollToForm('exp-form');
   };
 
   const handleSaveExp = (e: React.FormEvent) => {
@@ -564,6 +578,7 @@ export const AdminDashboard: React.FC = () => {
         : { name: '', issuer: '', year: '', credentialId: '' }
     );
     setCertFormOpen(true);
+    scrollToForm('cert-form');
   };
 
   const handleSaveCert = (e: React.FormEvent) => {
@@ -588,6 +603,7 @@ export const AdminDashboard: React.FC = () => {
         : { language: '', level: '' }
     );
     setLangFormOpen(true);
+    scrollToForm('lang-form');
   };
 
   const handleSaveLang = (e: React.FormEvent) => {
@@ -629,12 +645,14 @@ export const AdminDashboard: React.FC = () => {
     setPromptCatEditingId(null);
     setPromptCatForm(emptyPromptCategory());
     setPromptCatFormOpen(true);
+    scrollToForm('prompt-category-form');
   };
 
   const openEditPromptCategory = (cat: PromptCategory) => {
     setPromptCatEditingId(cat.id);
     setPromptCatForm({ ...cat });
     setPromptCatFormOpen(true);
+    scrollToForm('prompt-category-form');
   };
 
   const handleSavePromptCategory = (e: React.FormEvent) => {
@@ -661,6 +679,8 @@ export const AdminDashboard: React.FC = () => {
     setPromptEditingId(null);
     setPromptForm(emptyPrompt());
     setPromptFormOpen(true);
+    setExpandedCat(categoryId);
+    scrollToForm('prompt-form');
   };
 
   const openEditPrompt = (cat: PromptCategory, prompt: PromptItem) => {
@@ -668,6 +688,7 @@ export const AdminDashboard: React.FC = () => {
     setPromptEditingId(prompt.id);
     setPromptForm({ ...prompt });
     setPromptFormOpen(true);
+    scrollToForm('prompt-form');
   };
 
   const handleSavePrompt = (e: React.FormEvent) => {
@@ -883,7 +904,7 @@ export const AdminDashboard: React.FC = () => {
         />
 
         {isFormOpen && (
-          <form onSubmit={handleSaveForm} onPaste={handleImagePaste} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+          <form id="product-form" onSubmit={handleSaveForm} onPaste={handleImagePaste} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
             <div className="flex items-center justify-between mb-2">
               <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
                 {editingId ? 'Edit App' : 'Add New App'}
@@ -1170,7 +1191,7 @@ export const AdminDashboard: React.FC = () => {
             />
 
             {catFormOpen && (
-              <form onSubmit={handleSaveCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+              <form id="service-category-form" onSubmit={handleSaveCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
                     {catEditingId ? 'Edit Category' : 'Add Category'}
@@ -1244,7 +1265,7 @@ export const AdminDashboard: React.FC = () => {
             )}
 
             {svcFormOpen && (
-              <form onSubmit={handleSaveService} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+              <form id="service-item-form" onSubmit={handleSaveService} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
                     {svcEditingId ? 'Edit Service' : 'Add Service'}
@@ -1498,7 +1519,7 @@ export const AdminDashboard: React.FC = () => {
             />
 
             {promptCatFormOpen && (
-              <form onSubmit={handleSavePromptCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+              <form id="prompt-category-form" onSubmit={handleSavePromptCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
                     {promptCatEditingId ? 'Edit Category' : 'Add Category'}
@@ -1555,7 +1576,7 @@ export const AdminDashboard: React.FC = () => {
             )}
 
             {promptFormOpen && (
-              <form onSubmit={handleSavePrompt} onPaste={handlePromptImagePaste} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+              <form id="prompt-form" onSubmit={handleSavePrompt} onPaste={handlePromptImagePaste} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
                     {promptEditingId ? 'Edit Prompt' : 'Add Prompt'}
@@ -1656,87 +1677,110 @@ export const AdminDashboard: React.FC = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                {promptCats.map((cat) => (
-                  <div key={cat.id} className="p-5 rounded-2xl bg-white/5 border border-white/10">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="p-2.5 rounded-xl bg-white/10 border border-white/15 text-[#D7C4A3] shrink-0">
-                          <Layers className="w-5 h-5" />
-                        </div>
-                        <div className="min-w-0">
-                          <h3 className="text-sm font-medium text-white truncate">{cat.title}</h3>
-                          <p className="text-xs text-neutral-400 font-light">
-                            {cat.prompts.length} prompt{cat.prompts.length === 1 ? '' : 's'}
-                          </p>
+                {promptCats.map((cat) => {
+                  const isOpen = expandedCat === cat.id;
+                  return (
+                    <div key={cat.id} className="p-5 rounded-2xl bg-white/5 border border-white/10">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setExpandedCat(isOpen ? null : cat.id)}
+                          aria-expanded={isOpen}
+                          className="flex items-center gap-3 min-w-0 flex-1 text-left cursor-pointer"
+                        >
+                          <div className="p-2.5 rounded-xl bg-white/10 border border-white/15 text-[#D7C4A3] shrink-0">
+                            <Layers className="w-5 h-5" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-sm font-medium text-white truncate">{cat.title}</h3>
+                            <p className="text-xs text-neutral-400 font-light">
+                              {cat.prompts.length} prompt{cat.prompts.length === 1 ? '' : 's'} · click to {isOpen ? 'collapse' : 'expand'}
+                            </p>
+                          </div>
+                          {isOpen ? (
+                            <ChevronDown className="w-4 h-4 text-[#D7C4A3] shrink-0 transition-transform" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 text-neutral-400 shrink-0 transition-transform" />
+                          )}
+                        </button>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            onClick={() => openEditPromptCategory(cat)}
+                            aria-label={`Edit ${cat.title}`}
+                            className="p-2.5 rounded-full glass-button cursor-pointer"
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeletePromptCategory(cat.id)}
+                            aria-label={`Delete ${cat.title}`}
+                            className="p-2.5 rounded-full glass-button cursor-pointer"
+                          >
+                            <Trash2 className="w-4 h-4 text-red-400" />
+                          </button>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <button
-                          onClick={() => openEditPromptCategory(cat)}
-                          aria-label={`Edit ${cat.title}`}
-                          className="p-2.5 rounded-full glass-button cursor-pointer"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDeletePromptCategory(cat.id)}
-                          aria-label={`Delete ${cat.title}`}
-                          className="p-2.5 rounded-full glass-button cursor-pointer"
-                        >
-                          <Trash2 className="w-4 h-4 text-red-400" />
-                        </button>
-                      </div>
-                    </div>
 
-                    <div className="mt-4 space-y-2">
-                      {cat.prompts.map((prompt) => (
-                        <div
-                          key={prompt.id}
-                          className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-white/5 border border-white/10"
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden"
                         >
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-14 h-10 rounded-lg overflow-hidden border border-white/10 shrink-0">
-                              <img
-                                src={prompt.image}
-                                alt={prompt.title}
-                                referrerPolicy="no-referrer"
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div className="min-w-0">
-                              <h4 className="text-sm font-light text-white truncate">{prompt.title}</h4>
-                              <p className="text-[10px] text-neutral-500 font-light truncate">
-                                {prompt.promptText.length} chars · hidden
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-1.5 shrink-0">
+                          <div className="mt-4 space-y-2">
+                            {cat.prompts.map((prompt) => (
+                              <div
+                                key={prompt.id}
+                                className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-white/5 border border-white/10"
+                              >
+                                <div className="flex items-center gap-3 min-w-0">
+                                  <div className="w-14 h-10 rounded-lg overflow-hidden border border-white/10 shrink-0">
+                                    <img
+                                      src={prompt.image}
+                                      alt={prompt.title}
+                                      referrerPolicy="no-referrer"
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <h4 className="text-sm font-light text-white truncate">{prompt.title}</h4>
+                                    <p className="text-[10px] text-neutral-500 font-light truncate">
+                                      {prompt.promptText.length} chars · hidden
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-1.5 shrink-0">
+                                  <button
+                                    onClick={() => openEditPrompt(cat, prompt)}
+                                    aria-label={`Edit ${prompt.title}`}
+                                    className="p-2 rounded-lg glass-button cursor-pointer"
+                                  >
+                                    <Pencil className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeletePrompt(cat.id, prompt.id)}
+                                    aria-label={`Delete ${prompt.title}`}
+                                    className="p-2 rounded-lg glass-button cursor-pointer"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
                             <button
-                              onClick={() => openEditPrompt(cat, prompt)}
-                              aria-label={`Edit ${prompt.title}`}
-                              className="p-2 rounded-lg glass-button cursor-pointer"
+                              onClick={() => openPromptForm(cat.id)}
+                              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs text-neutral-300 border border-dashed border-white/20 hover:border-[#D7C4A3]/50 hover:text-[#D7C4A3] transition-colors"
                             >
-                              <Pencil className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => handleDeletePrompt(cat.id, prompt.id)}
-                              aria-label={`Delete ${prompt.title}`}
-                              className="p-2 rounded-lg glass-button cursor-pointer"
-                            >
-                              <Trash2 className="w-3.5 h-3.5 text-red-400" />
+                              <Plus size={14} /> Add Prompt
                             </button>
                           </div>
-                        </div>
-                      ))}
-                      <button
-                        onClick={() => openPromptForm(cat.id)}
-                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs text-neutral-300 border border-dashed border-white/20 hover:border-[#D7C4A3]/50 hover:text-[#D7C4A3] transition-colors"
-                      >
-                        <Plus size={14} /> Add Prompt
-                      </button>
+                        </motion.div>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 
@@ -1806,7 +1850,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               {expFormOpen && (
-                <form onSubmit={handleSaveExp} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                <form id="exp-form" onSubmit={handleSaveExp} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
                       {expEditingIdx !== null ? 'Edit Experience' : 'Add Experience'}
@@ -1935,7 +1979,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               {certFormOpen && (
-                <form onSubmit={handleSaveCert} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                <form id="cert-form" onSubmit={handleSaveCert} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
                       {certEditingIdx !== null ? 'Edit Certification' : 'Add Certification'}
@@ -2066,7 +2110,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
 
               {langFormOpen && (
-                <form onSubmit={handleSaveLang} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
+                <form id="lang-form" onSubmit={handleSaveLang} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
                       {langEditingIdx !== null ? 'Edit Language' : 'Add Language'}
