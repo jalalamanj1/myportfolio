@@ -25,6 +25,38 @@ export function getAllPromptCategories(): PromptCategory[] {
   return getStoredPromptCategories() ?? [];
 }
 
+export function mergePromptCategories(
+  local: PromptCategory[],
+  fetched: PromptCategory[]
+): PromptCategory[] {
+  const localById = new Map(local.map((c) => [c.id, c]));
+  const merged: PromptCategory[] = [];
+  const seenIds = new Set<string>();
+
+  for (const fileCat of fetched) {
+    seenIds.add(fileCat.id);
+    const localCat = localById.get(fileCat.id);
+    if (localCat) {
+      const fileIds = new Set(fileCat.prompts.map((p) => p.id));
+      merged.push({
+        ...fileCat,
+        prompts: [
+          ...localCat.prompts.filter((p) => !fileIds.has(p.id)),
+          ...fileCat.prompts,
+        ],
+      });
+    } else {
+      merged.push(fileCat);
+    }
+  }
+
+  for (const localCat of local) {
+    if (!seenIds.has(localCat.id)) merged.push(localCat);
+  }
+
+  return merged;
+}
+
 export async function fetchPromptCategories(): Promise<PromptCategory[]> {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}data/prompts.json`, {

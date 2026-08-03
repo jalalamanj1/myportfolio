@@ -12,7 +12,7 @@ import {
   saveStoredServices,
   fetchServices,
 } from '../data/serviceStore';
-import { getStoredPromptCategories, saveStoredPromptCategories, fetchPromptCategories } from '../data/promptStore';
+import { getStoredPromptCategories, saveStoredPromptCategories, fetchPromptCategories, mergePromptCategories } from '../data/promptStore';
 import { getGitHubConfig, saveGitHubConfig, pushPromptsToGitHub, pushProductsToGitHub, pushServicesToGitHub, pushAboutToGitHub, GitHubConfig } from '../data/githubSync';
 import { GitHubSyncCard } from './GitHubSyncCard';
 import { getAboutData, saveStoredAbout, fetchAbout, getStoredAbout } from '../data/aboutStore';
@@ -167,10 +167,15 @@ export const AdminDashboard: React.FC = () => {
         setServices(fetchedServices);
         saveStoredServices(fetchedServices);
       }
-      if (!getStoredPromptCategories()) {
-        setPromptCats(fetchedPrompts);
-        saveStoredPromptCategories(fetchedPrompts);
-      }
+      // File (prompts.json) is the source of truth for restored/shared prompts;
+      // keep any locally-added prompts that aren't in the file, then persist the
+      // merged set so the admin never gets stuck on a stale cache.
+      const mergedPrompts = mergePromptCategories(
+        getStoredPromptCategories() ?? [],
+        fetchedPrompts
+      );
+      setPromptCats(mergedPrompts);
+      saveStoredPromptCategories(mergedPrompts);
       if (!getStoredAbout()) {
         setAbout(fetchedAbout);
         saveStoredAbout(fetchedAbout);
