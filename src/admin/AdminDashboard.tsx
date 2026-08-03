@@ -76,6 +76,7 @@ const emptyPrompt = (): PromptItem => ({
   title: '',
   image: '',
   promptText: '',
+  howToUse: '',
 });
 
 const slugify = (value: string): string =>
@@ -972,9 +973,19 @@ export const AdminDashboard: React.FC = () => {
                 rows={3}
                 value={form.fullDescription}
                 onChange={(e) => handleFormField('fullDescription', e.target.value)}
-                className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
-              />
-            </label>
+                    className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  How to Use (optional) — one step per line
+                  <textarea
+                    rows={5}
+                    value={promptForm.howToUse ?? ''}
+                    onChange={(e) => setPromptForm({ ...promptForm, howToUse: e.target.value })}
+                    placeholder={"Open ChatGPT/Claude...\nPaste the prompt...\nReplace [Your topic]...\nRun and iterate..."}
+                    className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
+                  />
+                </label>
 
               <div className="flex flex-col space-y-1.5 text-xs text-neutral-300">
                 Image

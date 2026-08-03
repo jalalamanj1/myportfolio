@@ -17,6 +17,7 @@ export default defineConfig(() => {
           controlFlowFlattening: false,
           deadCodeInjection: false,
           identifierNamesGenerator: 'hexadecimal',
+          ignoreImports: true,
           log: false,
           renameGlobals: false,
           selfDefending: false,

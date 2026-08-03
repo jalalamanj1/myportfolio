@@ -5,10 +5,10 @@ import {
   Layout, Database, Server, Cpu, Wrench, Zap, Layers, HelpCircle,
   Pentagon, Image, Share2, FileText, Box, Component, Camera,
   Maximize2, Brush, MessageSquare, BookOpen, FileCode, Search,
-  Calendar, ArrowLeft, Copy, Check, FolderOpen
+  Calendar, ArrowLeft, Copy, Check, FolderOpen, Info, X
 } from 'lucide-react';
 import { fetchPromptCategories } from '../data/promptStore';
-import { PromptCategory } from '../types';
+import { PromptCategory, PromptItem } from '../types';
 
 const getIcon = (iconName: string, className: string = "w-6 h-6") => {
   switch (iconName) {
@@ -65,6 +65,7 @@ export const PromptsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [infoPrompt, setInfoPrompt] = useState<PromptItem | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -77,6 +78,19 @@ export const PromptsPage: React.FC = () => {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (!infoPrompt) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setInfoPrompt(null);
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [infoPrompt]);
 
   const activeCat = activeCategory
     ? categories.find((c) => c.id === activeCategory)
@@ -165,7 +179,7 @@ export const PromptsPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.4, ease: 'ease-in-out' }}
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
@@ -203,7 +217,7 @@ export const PromptsPage: React.FC = () => {
                       transition={{ duration: 0.5 }}
                       className="glass-card rounded-[28px] border border-white/15 hover:border-[#D7C4A3]/50 overflow-hidden group transition-all duration-300 hover:shadow-2xl"
                     >
-                      <div className="aspect-[3/4] overflow-hidden bg-neutral-900/40">
+                      <div className="relative aspect-[3/4] overflow-hidden bg-neutral-900/40">
                         <img
                           src={prompt.image}
                           alt={prompt.title}
@@ -212,6 +226,16 @@ export const PromptsPage: React.FC = () => {
                           decoding="async"
                           className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                         />
+                        {prompt.howToUse && (
+                          <button
+                            onClick={() => setInfoPrompt(prompt)}
+                            aria-label={`How to use: ${prompt.title}`}
+                            title="How to use"
+                            className="absolute top-3 right-3 p-2 rounded-full bg-black/50 backdrop-blur-sm border border-white/25 text-white/90 hover:text-white hover:bg-black/70 hover:border-[#D7C4A3]/70 transition-all cursor-pointer"
+                          >
+                            <Info className="w-4 h-4" />
+                          </button>
+                        )}
                       </div>
                       <div className="p-5">
                         <h3 className="font-serif text-xl font-light text-white mb-3 truncate">
@@ -246,6 +270,63 @@ export const PromptsPage: React.FC = () => {
           </AnimatePresence>
         )}
       </div>
+
+      <AnimatePresence>
+        {infoPrompt && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setInfoPrompt(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 16 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              onClick={(e) => e.stopPropagation()}
+              className="glass-card border border-white/20 rounded-[32px] max-w-lg w-full overflow-hidden shadow-2xl"
+            >
+              <div className="flex items-start justify-between p-6 pb-4 gap-3">
+                <div className="flex items-start gap-3 min-w-0">
+                  <div className="p-2.5 rounded-2xl bg-white/10 border border-white/15 text-[#D7C4A3] flex-shrink-0">
+                    <Info className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-serif text-2xl font-light text-white">How to Use</h3>
+                    <p className="text-xs text-neutral-400 font-light mt-0.5 truncate">
+                      {infoPrompt.title}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setInfoPrompt(null)}
+                  aria-label="Close how to use"
+                  className="p-2 rounded-full glass-button cursor-pointer flex-shrink-0"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="px-6 pb-6 space-y-3">
+                {infoPrompt.howToUse
+                  ?.split('\n')
+                  .map((line) => line.trim())
+                  .filter(Boolean)
+                  .map((line, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-full bg-[#D7C4A3]/20 border border-[#D7C4A3]/40 text-[#D7C4A3] text-[11px] flex items-center justify-center font-mono">
+                        {i + 1}
+                      </span>
+                      <p className="text-sm text-neutral-200 font-light leading-relaxed">{line}</p>
+                    </div>
+                  ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

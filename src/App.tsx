@@ -3,12 +3,19 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { motion, AnimatePresence } from 'motion/react';
 import { Background } from './components/Background';
 import { HomePage } from './pages/HomePage';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { useSiteProtection } from './hooks/useSiteProtection';
 
 // Route-level code splitting: heavy pages load only when navigated to.
-const ServicesPage = lazy(() => import('./pages/ServicesPage'));
-const PromptsPage = lazy(() => import('./pages/PromptsPage'));
-const AdminDashboard = lazy(() => import('./admin/AdminDashboard'));
+const ServicesPage = lazy(() =>
+  import('./pages/ServicesPage').then((m) => ({ default: m.ServicesPage }))
+);
+const PromptsPage = lazy(() =>
+  import('./pages/PromptsPage').then((m) => ({ default: m.PromptsPage }))
+);
+const AdminDashboard = lazy(() =>
+  import('./admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard }))
+);
 
 const RouteFallback: React.FC = () => (
   <div className="w-full min-h-[50vh] flex items-center justify-center" aria-busy="true">
@@ -56,7 +63,9 @@ export default function App() {
 
         {/* Animated Application Routes */}
         <main className="relative z-10 w-full min-h-screen">
-          <AnimatedRoutes />
+          <ErrorBoundary>
+            <AnimatedRoutes />
+          </ErrorBoundary>
         </main>
       </div>
     </BrowserRouter>

@@ -172,7 +172,7 @@ export const ServicesPage: React.FC = () => {
               initial={{ opacity: 0, height: 0, y: -20 }}
               animate={{ opacity: 1, height: 'auto', y: 0 }}
               exit={{ opacity: 0, height: 0, y: -20 }}
-              transition={{ duration: 0.4, ease: 'ease-in-out' }}
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
               className="overflow-hidden"
             >
               {/* Category Header - Always Visible (No Animation) */}

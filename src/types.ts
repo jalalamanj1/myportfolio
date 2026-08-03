@@ -75,6 +75,7 @@ export interface PromptItem {
   title: string;
   image: string;
   promptText: string;
+  howToUse?: string;
 }
 
 export interface PromptCategory {
