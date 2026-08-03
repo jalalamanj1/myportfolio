@@ -44,33 +44,82 @@ async function readFileSha(token: string, repo: string, path: string): Promise<s
   return typeof data.sha === 'string' ? data.sha : null;
 }
 
-export async function pushFileToGitHub(
+interface QueuedPush {
+  token: string;
+  repo: string;
+  path: string;
+  content: string;
+  message: string;
+}
+
+const pushQueues = new Map<string, Promise<void>>();
+
+function enqueuePush(item: QueuedPush): Promise<void> {
+  const key = `${item.repo}:${item.path}`;
+  const prev = pushQueues.get(key) ?? Promise.resolve();
+  const next = prev.then(() => pushFileToGitHubSerial(item));
+  pushQueues.set(
+    key,
+    next.catch(() => {
+      // keep the queue alive even after a failed push
+    })
+  );
+  return next;
+}
+
+async function pushFileToGitHubSerial(item: QueuedPush): Promise<void> {
+  const { token, repo, path, content, message } = item;
+  const encoded = toBase64(content);
+  const attempt = async (): Promise<void> => {
+    const sha = await readFileSha(token, repo, path);
+    const body: Record<string, unknown> = {
+      message,
+      content: encoded,
+    };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const detail = (await res.text()).slice(0, 300);
+      if (res.status === 409) {
+        throw new Error(`GitHub push conflict — retrying (${detail})`);
+      }
+      throw new Error(`GitHub push failed (${res.status}): ${detail}`);
+    }
+  };
+
+  for (let i = 0; i < 3; i++) {
+    try {
+      await attempt();
+      return;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('conflict') && i < 2) {
+        await new Promise((r) => setTimeout(r, 800));
+        continue;
+      }
+      throw err;
+    }
+  }
+}
+
+export function pushFileToGitHub(
   token: string,
   repo: string,
   path: string,
   content: string,
   message: string
 ): Promise<void> {
-  const sha = await readFileSha(token, repo, path);
-  const body: Record<string, unknown> = {
-    message,
-    content: toBase64(content),
-  };
-  if (sha) body.sha = sha;
-
-  const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    throw new Error(`GitHub push failed (${res.status}): ${(await res.text()).slice(0, 300)}`);
-  }
+  return enqueuePush({ token, repo, path, content, message });
 }
 
 export function pushPromptsToGitHub(token: string, repo: string, promptCats: PromptCategory[]): Promise<void> {

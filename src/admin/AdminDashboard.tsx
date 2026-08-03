@@ -1,19 +1,21 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download, Briefcase, Award, Globe } from 'lucide-react';
 import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem, AboutData, ExperienceItem, CertificationItem, LanguageItem } from '../types';
 import {
   getStoredProducts,
   saveStoredProducts,
+  fetchProducts,
 } from '../data/productStore';
 import {
   getStoredServices,
   saveStoredServices,
+  fetchServices,
 } from '../data/serviceStore';
-import { getStoredPromptCategories, saveStoredPromptCategories } from '../data/promptStore';
+import { getStoredPromptCategories, saveStoredPromptCategories, fetchPromptCategories } from '../data/promptStore';
 import { getGitHubConfig, saveGitHubConfig, pushPromptsToGitHub, pushProductsToGitHub, pushServicesToGitHub, pushAboutToGitHub, GitHubConfig } from '../data/githubSync';
 import { GitHubSyncCard } from './GitHubSyncCard';
-import { getAboutData, saveStoredAbout } from '../data/aboutStore';
+import { getAboutData, saveStoredAbout, fetchAbout, getStoredAbout } from '../data/aboutStore';
 import { PRODUCTS } from '../data/portfolioData';
 
 const ADMIN_PASSWORD = 'admin2026';
@@ -137,6 +139,39 @@ export const AdminDashboard: React.FC = () => {
   const [langFormOpen, setLangFormOpen] = useState(false);
   const [langEditingIdx, setLangEditingIdx] = useState<number | null>(null);
   const [langForm, setLangForm] = useState<LanguageItem>({ language: '', level: '' });
+
+  useEffect(() => {
+    if (!isAuthed) return;
+    let cancelled = false;
+    (async () => {
+      const [fetchedProducts, fetchedServices, fetchedPrompts, fetchedAbout] = await Promise.all([
+        fetchProducts(),
+        fetchServices(),
+        fetchPromptCategories(),
+        fetchAbout(),
+      ]);
+      if (cancelled) return;
+      if (!getStoredProducts()) {
+        setProducts(fetchedProducts);
+        saveStoredProducts(fetchedProducts);
+      }
+      if (!getStoredServices()) {
+        setServices(fetchedServices);
+        saveStoredServices(fetchedServices);
+      }
+      if (!getStoredPromptCategories()) {
+        setPromptCats(fetchedPrompts);
+        saveStoredPromptCategories(fetchedPrompts);
+      }
+      if (!getStoredAbout()) {
+        setAbout(fetchedAbout);
+        saveStoredAbout(fetchedAbout);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthed]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
