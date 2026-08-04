@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download, Briefcase, Award, Globe, ChevronDown, ChevronRight } from 'lucide-react';
+import { LogOut, Plus, Trash2, Pencil, Save, RotateCcw, X, Eye, Lock, Upload, Layers, Download, Briefcase, Award, Globe, ChevronDown, ChevronRight, ChevronUp } from 'lucide-react';
 import { Product, ServiceCategory, ServiceItem, PromptCategory, PromptItem, AboutData, ExperienceItem, CertificationItem, LanguageItem } from '../types';
 import {
   getStoredProducts,
@@ -76,7 +76,7 @@ const emptyPrompt = (): PromptItem => ({
   title: '',
   image: '',
   promptText: '',
-  howToUse: '',
+  howToUse: [],
 });
 
 const slugify = (value: string): string =>
@@ -981,16 +981,6 @@ export const AdminDashboard: React.FC = () => {
                     className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
                   />
                 </label>
-                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  How to Use (optional) — one step per line
-                  <textarea
-                    rows={5}
-                    value={promptForm.howToUse ?? ''}
-                    onChange={(e) => setPromptForm({ ...promptForm, howToUse: e.target.value })}
-                    placeholder={"Open ChatGPT/Claude...\nPaste the prompt...\nReplace [Your topic]...\nRun and iterate..."}
-                    className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
-                  />
-                </label>
 
               <div className="flex flex-col space-y-1.5 text-xs text-neutral-300">
                 Image
@@ -1664,6 +1654,122 @@ export const AdminDashboard: React.FC = () => {
                     className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
                   />
                 </label>
+
+                {/* How to Use Steps */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs text-neutral-300 font-light">
+                      How to Use (optional)
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPromptForm((prev) => ({
+                          ...prev,
+                          howToUse: [
+                            ...prev.howToUse,
+                            { id: crypto.randomUUID(), order: prev.howToUse.length, text: '' },
+                          ],
+                        }))
+                      }
+                      className="text-xs text-[#D7C4A3] hover:text-white transition-colors cursor-pointer flex items-center gap-1"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      Add Step
+                    </button>
+                  </div>
+                  {promptForm.howToUse.length > 0 && (
+                    <div className="space-y-2">
+                      {promptForm.howToUse
+                        .slice()
+                        .sort((a, b) => a.order - b.order)
+                        .map((step, index) => (
+                          <div
+                            key={step.id}
+                            className="flex items-start gap-2 p-3 rounded-xl bg-white/5 border border-white/10"
+                          >
+                            <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-[#D7C4A3]/20 border border-[#D7C4A3]/40 text-[#D7C4A3] text-[10px] flex items-center justify-center font-mono">
+                              {index + 1}
+                            </span>
+                            <textarea
+                              value={step.text}
+                              onChange={(e) =>
+                                setPromptForm((prev) => ({
+                                  ...prev,
+                                  howToUse: prev.howToUse.map((s) =>
+                                    s.id === step.id ? { ...s, text: e.target.value } : s
+                                  ),
+                                }))
+                              }
+                              placeholder={`Step ${index + 1}...`}
+                              rows={2}
+                              className="flex-1 glass-input px-3 py-2 text-sm font-light text-white resize-none bg-transparent"
+                            />
+                            <div className="flex flex-col gap-1">
+                              {index > 0 && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setPromptForm((prev) => {
+                                      const steps = [...prev.howToUse];
+                                      const idx = steps.findIndex((s) => s.id === step.id);
+                                      if (idx > 0) {
+                                        [steps[idx], steps[idx - 1]] = [
+                                          { ...steps[idx], order: steps[idx - 1].order },
+                                          { ...steps[idx - 1], order: steps[idx].order },
+                                        ];
+                                      }
+                                      return { ...prev, howToUse: steps };
+                                    })
+                                  }
+                                  className="p-1 rounded glass-button hover:bg-white/10 cursor-pointer"
+                                  title="Move up"
+                                >
+                                  <ChevronUp className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                              {index < promptForm.howToUse.length - 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setPromptForm((prev) => {
+                                      const steps = [...prev.howToUse];
+                                      const idx = steps.findIndex((s) => s.id === step.id);
+                                      if (idx < steps.length - 1) {
+                                        [steps[idx], steps[idx + 1]] = [
+                                          { ...steps[idx], order: steps[idx + 1].order },
+                                          { ...steps[idx + 1], order: steps[idx].order },
+                                        ];
+                                      }
+                                      return { ...prev, howToUse: steps };
+                                    })
+                                  }
+                                  className="p-1 rounded glass-button hover:bg-white/10 cursor-pointer"
+                                  title="Move down"
+                                >
+                                  <ChevronDown className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setPromptForm((prev) => ({
+                                    ...prev,
+                                    howToUse: prev.howToUse.filter((s) => s.id !== step.id),
+                                  }))
+                                }
+                                className="p-1 rounded glass-button hover:bg-red-500/20 hover:text-red-400 cursor-pointer"
+                                title="Delete step"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex gap-2 pt-2">
                   <button
                     type="submit"
@@ -1921,8 +2027,8 @@ export const AdminDashboard: React.FC = () => {
                       placeholder="What you did in this role..."
                       className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
                     />
-                  </label>
-                  <div className="flex gap-2 pt-2">
+</label>
+                <div className="flex gap-2 pt-2">
                     <button
                       type="submit"
                       className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"

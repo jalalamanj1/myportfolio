@@ -75,7 +75,13 @@ export interface PromptItem {
   title: string;
   image: string;
   promptText: string;
-  howToUse?: string;
+  howToUse?: HowToUseStep[];
+}
+
+export interface HowToUseStep {
+  id: string;
+  order: number;
+  text: string;
 }
 
 export interface PromptCategory {

@@ -226,7 +226,7 @@ export const PromptsPage: React.FC = () => {
                           decoding="async"
                           className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                         />
-                        {prompt.howToUse && (
+                        {prompt.howToUse && prompt.howToUse.length > 0 && (
                           <button
                             onClick={() => setInfoPrompt(prompt)}
                             aria-label={`How to use: ${prompt.title}`}
@@ -311,15 +311,14 @@ export const PromptsPage: React.FC = () => {
               </div>
               <div className="px-6 pb-6 space-y-3">
                 {infoPrompt.howToUse
-                  ?.split('\n')
-                  .map((line) => line.trim())
-                  .filter(Boolean)
-                  .map((line, i) => (
-                    <div key={i} className="flex items-start gap-3">
+                  ?.slice()
+                  .sort((a, b) => a.order - b.order)
+                  .map((step, i) => (
+                    <div key={step.id} className="flex items-start gap-3">
                       <span className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-full bg-[#D7C4A3]/20 border border-[#D7C4A3]/40 text-[#D7C4A3] text-[11px] flex items-center justify-center font-mono">
                         {i + 1}
                       </span>
-                      <p className="text-sm text-neutral-200 font-light leading-relaxed">{line}</p>
+                      <p className="text-sm text-neutral-200 font-light leading-relaxed">{step.text}</p>
                     </div>
                   ))}
               </div>
