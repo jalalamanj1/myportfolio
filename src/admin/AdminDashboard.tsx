@@ -692,7 +692,7 @@ export const AdminDashboard: React.FC = () => {
   const openEditPrompt = (cat: PromptCategory, prompt: PromptItem) => {
     setPromptCategoryId(cat.id);
     setPromptEditingId(prompt.id);
-    setPromptForm({ ...prompt });
+    setPromptForm({ ...prompt, howToUse: prompt.howToUse ?? [] });
     setPromptFormOpen(true);
     scrollToForm('prompt-form');
   };
