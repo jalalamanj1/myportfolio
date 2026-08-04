@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, ArrowUpRight, Sparkles, Code, Cpu } from 'lucide-react';
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC = memo(function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
@@ -13,13 +13,13 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const isHomePage = location.pathname === '/';
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = useCallback((sectionId: string) => {
     setMobileMenuOpen(false);
     if (!isHomePage) {
       navigate('/', { replace: false });
@@ -31,15 +31,15 @@ export const Navbar: React.FC = () => {
       const elem = document.getElementById(sectionId);
       if (elem) elem.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }, [isHomePage, navigate]);
 
-  const navLinks = [
+  const navLinks = useMemo(() => [
     { label: 'Home', action: () => scrollToSection('hero'), isRoute: false, path: '/' },
     { label: 'About & Resume', action: () => scrollToSection('about'), isRoute: false, path: '#about' },
     { label: 'Products', action: () => scrollToSection('products'), isRoute: false, path: '#products' },
     { label: 'Services', action: () => navigate('/services'), isRoute: true, path: '/services' },
     { label: 'Contact', action: () => scrollToSection('contact'), isRoute: false, path: '#contact' },
-  ];
+  ], [scrollToSection, navigate]);
 
   return (
     <header
@@ -152,4 +152,4 @@ export const Navbar: React.FC = () => {
       </AnimatePresence>
     </header>
   );
-};
+});

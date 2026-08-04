@@ -5,6 +5,13 @@ import { getAboutData, fetchAbout } from '../data/aboutStore';
 import { AboutData } from '../types';
 import { Award, Briefcase, GraduationCap, Globe } from 'lucide-react';
 
+const TABS = [
+  { id: 'overview', label: 'About & Bio' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'education', label: 'Education' },
+  { id: 'credentials', label: 'Certifications & Languages' },
+] as const;
+
 export const AboutSection: React.FC = memo(function AboutSection() {
   const [activeTab, setActiveTab] = useState<'overview' | 'experience' | 'education' | 'credentials'>('overview');
   const [about, setAbout] = useState<AboutData>(() => getAboutData());
@@ -38,12 +45,7 @@ export const AboutSection: React.FC = memo(function AboutSection() {
 
         {/* Tab Navigation Controls */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10 pb-4 border-b border-white/15">
-          {[
-            { id: 'overview', label: 'About & Bio' },
-            { id: 'experience', label: 'Experience' },
-            { id: 'education', label: 'Education' },
-            { id: 'credentials', label: 'Certifications & Languages' },
-          ].map((tab) => {
+          {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
               <button

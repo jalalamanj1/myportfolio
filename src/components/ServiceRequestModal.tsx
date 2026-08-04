@@ -1,6 +1,6 @@
 import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Send, CheckCircle2, Sparkles, MessageSquare } from 'lucide-react';
+import { X, Send, CheckCircle2, Sparkles } from 'lucide-react';
 import { ServiceItem } from '../types';
 
 interface ServiceRequestModalProps {

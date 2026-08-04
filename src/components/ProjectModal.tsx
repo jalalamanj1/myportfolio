@@ -1,6 +1,6 @@
 import React, { useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ExternalLink, Calendar, Tag, ShieldCheck, Download } from 'lucide-react';
+import { X, Calendar, ShieldCheck, Download } from 'lucide-react';
 import { Product } from '../types';
 
 interface ProjectModalProps {

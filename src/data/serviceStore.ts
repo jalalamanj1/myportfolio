@@ -28,7 +28,7 @@ export function getAllServices(): ServiceCategory[] {
 export async function fetchServices(): Promise<ServiceCategory[]> {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}data/services.json`, {
-      cache: 'no-cache',
+      cache: 'default',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const parsed = await res.json();

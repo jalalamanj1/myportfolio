@@ -60,7 +60,7 @@ export function mergePromptCategories(
 export async function fetchPromptCategories(): Promise<PromptCategory[]> {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}data/prompts.json`, {
-      cache: 'no-cache',
+      cache: 'default',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const parsed = await res.json();

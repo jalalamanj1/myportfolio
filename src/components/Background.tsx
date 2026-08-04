@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { HERO_DATA } from '../data/portfolioData';
 
-export const Background: React.FC = () => {
+export const Background: React.FC = memo(function Background() {
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {/* Fixed Full Screen Background Image */}
@@ -40,4 +40,4 @@ export const Background: React.FC = () => {
       />
     </div>
   );
-};
+});

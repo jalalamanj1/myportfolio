@@ -1,13 +1,8 @@
 import React, { useCallback, Suspense, lazy, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Laptop, Code, Palette, Sparkles, Monitor, Smartphone, Globe, 
-  Layout, Database, Server, Cpu, Wrench, Zap, Layers, HelpCircle, 
-  Pentagon, Image, Share2, FileText, Box, Component, Camera, 
-  Maximize2, Brush, MessageSquare, BookOpen, FileCode, Search, 
-  Calendar, ArrowLeft, Send
-} from 'lucide-react';
+import { Sparkles, ArrowLeft, Send } from 'lucide-react';
+import { getIcon } from '../utils/iconMap';
 import { fetchServices } from '../data/serviceStore';
 import { ServiceCategory, ServiceItem } from '../types';
 
@@ -15,43 +10,6 @@ import { ServiceCategory, ServiceItem } from '../types';
 const ServiceRequestModal = lazy(() =>
   import('../components/ServiceRequestModal').then((m) => ({ default: m.ServiceRequestModal }))
 );
-
-// Helper to resolve icon by string name
-const getIcon = (iconName: string, className: string = "w-6 h-6") => {
-  switch (iconName) {
-    case 'Laptop': return <Laptop className={className} />;
-    case 'Code': return <Code className={className} />;
-    case 'Palette': return <Palette className={className} />;
-    case 'Sparkles': return <Sparkles className={className} />;
-    case 'Monitor': return <Monitor className={className} />;
-    case 'Smartphone': return <Smartphone className={className} />;
-    case 'Globe': return <Globe className={className} />;
-    case 'Layout': return <Layout className={className} />;
-    case 'Figma': return <Component className={className} />;
-    case 'Database': return <Database className={className} />;
-    case 'Server': return <Server className={className} />;
-    case 'Cpu': return <Cpu className={className} />;
-    case 'Wrench': return <Wrench className={className} />;
-    case 'Zap': return <Zap className={className} />;
-    case 'Layers': return <Layers className={className} />;
-    case 'HelpCircle': return <HelpCircle className={className} />;
-    case 'Pentagon': return <Pentagon className={className} />;
-    case 'Image': return <Image className={className} />;
-    case 'Share2': return <Share2 className={className} />;
-    case 'FileText': return <FileText className={className} />;
-    case 'Box': return <Box className={className} />;
-    case 'Component': return <Component className={className} />;
-    case 'Camera': return <Camera className={className} />;
-    case 'Maximize2': return <Maximize2 className={className} />;
-    case 'Brush': return <Brush className={className} />;
-    case 'MessageSquare': return <MessageSquare className={className} />;
-    case 'BookOpen': return <BookOpen className={className} />;
-    case 'FileCode': return <FileCode className={className} />;
-    case 'Search': return <Search className={className} />;
-    case 'Calendar': return <Calendar className={className} />;
-    default: return <Sparkles className={className} />;
-  }
-};
 
 export const ServicesPage: React.FC = () => {
   // activeCategory can be null (hidden by default) or any category id added via the admin dashboard

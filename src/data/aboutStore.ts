@@ -35,7 +35,7 @@ export function getAboutData(): AboutData {
 export async function fetchAbout(): Promise<AboutData> {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}data/about.json`, {
-      cache: 'no-cache',
+      cache: 'default',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const parsed = await res.json();

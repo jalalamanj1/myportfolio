@@ -29,7 +29,7 @@ export function getAllProducts(): Product[] {
 export async function fetchProducts(): Promise<Product[]> {
   try {
     const res = await fetch(`${import.meta.env.BASE_URL}data/products.json`, {
-      cache: 'no-cache',
+      cache: 'default',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const parsed = await res.json();

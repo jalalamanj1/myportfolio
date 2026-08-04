@@ -106,7 +106,6 @@ const ProductCard = memo(function ProductCard({
 
 export const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, onSelectProduct }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(false);
   const total = products.length;
 
   const touchStartX = useRef<number | null>(null);
