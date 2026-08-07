@@ -24,6 +24,10 @@
       {
         "label": "Price",
         "value": "FREE"
+      },
+      {
+        "label": "Language",
+        "value": "Supports (English, Arabic, Kurdish (Sorani) and Turkish)"
       }
     ],
     "tags": [],
