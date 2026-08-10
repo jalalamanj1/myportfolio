@@ -20,8 +20,8 @@ export const translations: Record<Lang, Record<string, string>> = {
     'hero.scroll': 'اسحب للاستكشاف',
 
     // Services Preview
-    'services.title': 'الخدمات',
-    'services.explore': 'استكشف الخدمات',
+    'services.title': 'اكتشف المزيد',
+    'services.explore': 'اكتشف المزيد',
 
     // Services Page
     'services.page.title': 'الخدمات',
@@ -141,8 +141,8 @@ export const translations: Record<Lang, Record<string, string>> = {
     'hero.scroll': 'Scroll to explore',
 
     // Services Preview
-    'services.title': 'Services',
-    'services.explore': 'Explore Services',
+    'services.title': 'Discover more',
+    'services.explore': 'Discover more',
 
     // Services Page
     'services.page.title': 'Services',
