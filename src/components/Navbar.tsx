@@ -35,7 +35,6 @@ export const Navbar: React.FC = memo(function Navbar() {
 
   const navLinks = useMemo(() => [
     { label: 'Home', action: () => scrollToSection('hero'), isRoute: false, path: '/' },
-    { label: 'About & Resume', action: () => scrollToSection('about'), isRoute: false, path: '#about' },
     { label: 'Products', action: () => scrollToSection('products'), isRoute: false, path: '#products' },
     { label: 'Services', action: () => navigate('/services'), isRoute: true, path: '/services' },
     { label: 'Contact', action: () => scrollToSection('contact'), isRoute: false, path: '#contact' },

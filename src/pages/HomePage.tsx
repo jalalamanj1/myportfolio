@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState, lazy, Suspense } from 'react';
 import { HeroSection } from '../components/HeroSection';
-import { AboutSection } from '../components/AboutSection';
 import { ProductCarousel } from '../components/ProductCarousel';
 import { ServicesPreviewSection } from '../components/ServicesPreviewSection';
 import { ContactSection } from '../components/ContactSection';
@@ -42,10 +41,7 @@ export const HomePage: React.FC = () => {
         <HeroSection />
       </div>
 
-      {/* Section 2: About & Resume */}
-      <AboutSection />
-
-      {/* Section 3: Products Horizontal Carousel */}
+      {/* Section 2: Products Horizontal Carousel */}
       <ProductCarousel
         products={products}
         onSelectProduct={handleSelectProduct}
