@@ -58,7 +58,7 @@ export const HeroSection: React.FC = memo(() => {
             }}
             className="glass-button-primary px-8 py-3.5 rounded-full text-sm font-medium tracking-wider uppercase cursor-pointer"
           >
-            Explore Portfolio
+            Explore
           </button>
           <button
             onClick={() => {

@@ -10,8 +10,8 @@ import appHyperFlowImg from '../assets/images/app_hyperflow_cad_1785494890939.we
 
 export const HERO_DATA = {
   name: "JALAL AMANJ",
-  title: "DREAMER... ACHIEVER...",
-  description: "Building high-performance cross-platform desktop applications, native hardware engines & bespoke tech services.",
+  title: "",
+  description: "",
   tagline: "TECH DESKTOP APPS & SERVICES • PORTFOLIO 2026",
   bgImage: bgImage,
 };
@@ -19,14 +19,8 @@ export const HERO_DATA = {
 export const ABOUT_DATA = {
   profileImage: profileImage,
   title: "About Me",
-  subtitle: "Inspiration is Allah's gift. Everything that follows is your responsibility.",
-  bio: [
-    "I am a psychologist, AI-assisted product creator, and digital designer with a passion for building practical solutions that improve how people work and interact with technology.",
-    "My background in psychology gives me a human-centered perspective, allowing me to design products that are intuitive, purposeful, and focused on real user needs. Rather than writing software from scratch, I specialize in transforming ideas into fully realized digital products by combining strategic thinking, product design, and the capabilities of modern artificial intelligence.",
-    "I use AI as a development partner to prototype, build, refine, and launch applications, websites, workflows, and digital experiences. My role is to define the vision, architect the solution, guide the implementation, and ensure every detail aligns with the product's goals and user experience.",
-    "Beyond product development, I have a strong interest in branding, UI/UX design, visual identity, and emerging AI technologies. I believe that great products are created through curiosity, continuous learning, thoughtful design, and the ability to connect technology with human needs.",
-    "I enjoy turning ambitious ideas into polished, functional products that solve meaningful problems and create lasting value."
-  ],
+  subtitle: "",
+  bio: [],
   stats: [
     { label: "Desktop Apps Built", value: "5+" },
   ],
@@ -192,13 +186,13 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [];
 export const CONTACT_DATA = {
   title: "Contact Me.",
   subtitle: "Available for desktop app engineering, technical consulting, system architecture, and tech services.",
-  email: "inquieryjalalamanj@proton.me",
+  email: "jalaldev001@yahoo.com",
   instagram: "https://instagram.com/jalalamanj1",
   linkedin: "https://linkedin.com/in/jalalamanj",
   github: "https://github.com/jalalamanj",
   location: "Global / Remote",
   socials: [
-    { name: "Email", href: "mailto:inquieryjalalamanj@proton.me", icon: "Mail" },
+    { name: "Email", href: "mailto:jalaldev001@yahoo.com", icon: "Mail" },
     { name: "Instagram", href: "https://instagram.com/jalalamanj1", icon: "Instagram" }
   ]
 };
