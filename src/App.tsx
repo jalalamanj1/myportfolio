@@ -5,6 +5,8 @@ import { Background } from './components/Background';
 import { HomePage } from './pages/HomePage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useSiteProtection } from './hooks/useSiteProtection';
+import { useLang } from './contexts/LanguageContext';
+import { t } from './i18n';
 
 // Route-level code splitting: heavy pages load only when navigated to.
 const ServicesPage = lazy(() =>
@@ -23,13 +25,16 @@ const AppsPage = lazy(() =>
   import('./pages/AppsPage').then((m) => ({ default: m.AppsPage }))
 );
 
-const RouteFallback: React.FC = () => (
-  <div className="w-full min-h-[50vh] flex items-center justify-center" aria-busy="true">
-    <span className="text-xs tracking-[0.3em] uppercase text-neutral-400 font-light animate-pulse">
-      Loading…
-    </span>
-  </div>
-);
+const RouteFallback: React.FC = () => {
+  const { lang } = useLang();
+  return (
+    <div className="w-full min-h-[50vh] flex items-center justify-center" aria-busy="true">
+      <span className="text-xs tracking-[0.3em] uppercase text-neutral-400 font-light animate-pulse">
+        {t('loading', lang)}
+      </span>
+    </div>
+  );
+};
 
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();

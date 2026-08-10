@@ -4,6 +4,8 @@ import { Sparkles, ArrowLeft, Copy, Check, FolderOpen, Info, X } from 'lucide-re
 import { getIcon } from '../utils/iconMap';
 import { fetchPromptCategories } from '../data/promptStore';
 import { PromptCategory, PromptItem } from '../types';
+import { useLang } from '../contexts/LanguageContext';
+import { t } from '../i18n';
 
 const copyToClipboard = async (text: string) => {
   try {
@@ -21,6 +23,7 @@ const copyToClipboard = async (text: string) => {
 };
 
 export const PromptsPage: React.FC = () => {
+  const { lang } = useLang();
   const [categories, setCategories] = useState<PromptCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -63,6 +66,8 @@ export const PromptsPage: React.FC = () => {
     });
   };
 
+  const promptLabel = (n: number) => n === 1 ? t('prompts.prompt', lang) : t('prompts.prompts', lang);
+
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -72,7 +77,7 @@ export const PromptsPage: React.FC = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />
-            <span>Back</span>
+            <span>{t('prompts.back', lang)}</span>
           </button>
         </div>
 
@@ -83,28 +88,28 @@ export const PromptsPage: React.FC = () => {
           className="text-center max-w-4xl mx-auto mb-16"
         >
           <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl font-light text-white tracking-tight leading-[0.95]">
-            Prompts
+            {t('prompts.title', lang)}
           </h1>
           <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mx-auto mt-8" />
           <p className="text-xs text-neutral-300 font-light mt-6 max-w-lg mx-auto leading-relaxed">
             {activeCat
-              ? `${activeCat.title} — pick a card and copy its prompt.`
-              : 'Pick a category, then copy the prompt you need.'}
+              ? `${activeCat.title} ${t('prompts.active.pick', lang)}`
+              : t('prompts.pick', lang)}
           </p>
         </motion.div>
 
         {loading ? (
           <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 my-8 max-w-2xl mx-auto">
             <Sparkles className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4 animate-pulse" />
-            <h3 className="font-serif text-2xl font-light text-white mb-2">Loading Prompts...</h3>
+            <h3 className="font-serif text-2xl font-light text-white mb-2">{t('prompts.loading', lang)}</h3>
           </div>
         ) : activeCat === null ? (
           categories.length === 0 ? (
             <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 my-8 max-w-2xl mx-auto">
               <Sparkles className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4" />
-              <h3 className="font-serif text-2xl font-light text-white mb-2">No Prompt Categories Yet</h3>
+              <h3 className="font-serif text-2xl font-light text-white mb-2">{t('prompts.empty.title', lang)}</h3>
               <p className="text-xs text-neutral-300 font-light leading-relaxed max-w-md mx-auto">
-                Prompt categories will appear here once added through the admin dashboard.
+                {t('prompts.empty.desc', lang)}
               </p>
             </div>
           ) : (
@@ -126,7 +131,7 @@ export const PromptsPage: React.FC = () => {
                     {cat.title}
                   </h3>
                   <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-neutral-400 uppercase tracking-widest">
-                    {cat.prompts.length} prompt{cat.prompts.length === 1 ? '' : 's'}
+                    {cat.prompts.length} {promptLabel(cat.prompts.length)}
                   </span>
                 </motion.button>
               ))}
@@ -154,16 +159,16 @@ export const PromptsPage: React.FC = () => {
                   onClick={() => setActiveCategory(null)}
                   className="text-xs text-neutral-400 hover:text-[#D7C4A3] transition-colors cursor-pointer uppercase font-mono tracking-wider"
                 >
-                  Close ✕
+                  {t('prompts.close', lang)}
                 </button>
               </div>
 
               {activeCat.prompts.length === 0 ? (
                 <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 my-8 max-w-2xl mx-auto">
                   <FolderOpen className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4" />
-                  <h3 className="font-serif text-2xl font-light text-white mb-2">No Prompts Here Yet</h3>
+                  <h3 className="font-serif text-2xl font-light text-white mb-2">{t('prompts.category.empty.title', lang)}</h3>
                   <p className="text-xs text-neutral-300 font-light leading-relaxed max-w-md mx-auto">
-                    Prompts for this category will appear once added through the admin dashboard.
+                    {t('prompts.category.empty.desc', lang)}
                   </p>
                 </div>
               ) : (
@@ -189,8 +194,8 @@ export const PromptsPage: React.FC = () => {
                         {prompt.howToUse && prompt.howToUse.length > 0 && (
                           <button
                             onClick={() => setInfoPrompt(prompt)}
-                            aria-label={`How to use: ${prompt.title}`}
-                            title="How to use"
+                            aria-label={`${t('prompts.howto', lang)}: ${prompt.title}`}
+                            title={t('prompts.howto', lang)}
                             className="absolute top-3 right-3 p-2 rounded-full bg-black/50 backdrop-blur-sm border border-white/25 text-white/90 hover:text-white hover:bg-black/70 hover:border-[#D7C4A3]/70 transition-all cursor-pointer"
                           >
                             <Info className="w-4 h-4" />
@@ -212,12 +217,12 @@ export const PromptsPage: React.FC = () => {
                           {copiedId === prompt.id ? (
                             <>
                               <Check className="w-3.5 h-3.5" />
-                              <span>Copied!</span>
+                              <span>{t('prompts.copied', lang)}</span>
                             </>
                           ) : (
                             <>
                               <Copy className="w-3.5 h-3.5" />
-                              <span>Copy Prompt</span>
+                              <span>{t('prompts.copy', lang)}</span>
                             </>
                           )}
                         </button>
@@ -255,7 +260,7 @@ export const PromptsPage: React.FC = () => {
                     <Info className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-serif text-2xl font-light text-white">How to Use</h3>
+                    <h3 className="font-serif text-2xl font-light text-white">{t('prompts.howto.title', lang)}</h3>
                     <p className="text-xs text-neutral-400 font-light mt-0.5 truncate">
                       {infoPrompt.title}
                     </p>
@@ -263,7 +268,7 @@ export const PromptsPage: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setInfoPrompt(null)}
-                  aria-label="Close how to use"
+                  aria-label={t('prompts.howto.close', lang)}
                   className="p-2 rounded-full glass-button cursor-pointer flex-shrink-0"
                 >
                   <X className="w-4 h-4" />

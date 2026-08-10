@@ -1,8 +1,12 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
+import { useLang } from '../contexts/LanguageContext';
+import { t } from '../i18n';
 
 export const Footer: React.FC = memo(function Footer() {
+  const { lang } = useLang();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -14,7 +18,7 @@ export const Footer: React.FC = memo(function Footer() {
           <span className="font-serif text-sm font-medium text-white tracking-widest uppercase mr-2">
             JALAL AMANJ
           </span>
-          <span>© 2026 All rights reserved.</span>
+          <span>{t('footer.rights', lang)}</span>
         </div>
 
         <div className="flex items-center gap-6">
@@ -22,7 +26,7 @@ export const Footer: React.FC = memo(function Footer() {
             to="/thebossadmin"
             className="text-[10px] uppercase tracking-widest text-neutral-500 hover:text-[#D7C4A3] transition-colors"
           >
-            Admin
+            {t('footer.admin', lang)}
           </Link>
           <button
             onClick={scrollToTop}
@@ -39,7 +43,7 @@ export const Footer: React.FC = memo(function Footer() {
           className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full glass-button text-xs uppercase tracking-widest text-neutral-300 hover:text-[#D7C4A3] hover:border-[#D7C4A3]/60 transition-all cursor-pointer"
         >
           <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-          Back to top
+          {t('footer.top', lang)}
         </button>
       </div>
     </footer>

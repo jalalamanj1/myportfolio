@@ -2,30 +2,33 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Sparkles, GraduationCap, Smartphone } from 'lucide-react';
-
-const cards = [
-  {
-    title: 'Prompts',
-    description: 'AI prompt library for design and productivity.',
-    icon: Sparkles,
-    path: '/services/Prompts',
-  },
-  {
-    title: 'Edu',
-    description: 'Educational resources and learning materials.',
-    icon: GraduationCap,
-    path: '/services/Edu',
-  },
-  {
-    title: 'Apps',
-    description: 'Desktop applications and software projects.',
-    icon: Smartphone,
-    path: '/services/Apps',
-  },
-];
+import { useLang } from '../contexts/LanguageContext';
+import { t } from '../i18n';
 
 export const ServicesPage: React.FC = () => {
   const navigate = useNavigate();
+  const { lang } = useLang();
+
+  const cards = [
+    {
+      title: lang === 'ar' ? 'المطالبات' : 'Prompts',
+      description: t('services.prompts.desc', lang),
+      icon: Sparkles,
+      path: '/services/Prompts',
+    },
+    {
+      title: lang === 'ar' ? 'التعليم' : 'Edu',
+      description: t('services.edu.desc', lang),
+      icon: GraduationCap,
+      path: '/services/Edu',
+    },
+    {
+      title: lang === 'ar' ? 'التطبيقات' : 'Apps',
+      description: t('services.apps.desc', lang),
+      icon: Smartphone,
+      path: '/services/Apps',
+    },
+  ];
 
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
@@ -36,7 +39,7 @@ export const ServicesPage: React.FC = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />
-            <span>Back to Home</span>
+            <span>{t('services.back', lang)}</span>
           </button>
         </div>
 
@@ -47,7 +50,7 @@ export const ServicesPage: React.FC = () => {
           className="text-center max-w-4xl mx-auto mb-16"
         >
           <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl font-light text-white tracking-tight leading-[0.95]">
-            Services
+            {t('services.page.title', lang)}
           </h1>
           <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mx-auto mt-8" />
         </motion.div>

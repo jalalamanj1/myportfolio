@@ -2,19 +2,22 @@ import React, { memo } from 'react';
 import { motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { HERO_DATA } from '../data/portfolioData';
+import { useLang } from '../contexts/LanguageContext';
+import { t } from '../i18n';
 
 export const HeroSection: React.FC = memo(() => {
+  const { lang } = useLang();
+
   const scrollToAbout = () => {
-    const aboutElem = document.getElementById('about');
-    if (aboutElem) {
-      aboutElem.scrollIntoView({ behavior: 'smooth' });
+    const productsElem = document.getElementById('products');
+    if (productsElem) {
+      productsElem.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12 z-10 text-center">
       <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
-        {/* Main Title - Cormorant Garamond */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -24,7 +27,6 @@ export const HeroSection: React.FC = memo(() => {
           {HERO_DATA.name}
         </motion.h1>
 
-        {/* Title / Role */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -34,7 +36,6 @@ export const HeroSection: React.FC = memo(() => {
           {HERO_DATA.title}
         </motion.p>
 
-        {/* Description */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -44,7 +45,6 @@ export const HeroSection: React.FC = memo(() => {
           {HERO_DATA.description}
         </motion.p>
 
-        {/* Hero Glass Action Pills */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ export const HeroSection: React.FC = memo(() => {
             }}
             className="glass-button-primary px-8 py-3.5 rounded-full text-sm font-medium tracking-wider uppercase cursor-pointer"
           >
-            Explore
+            {t('hero.explore', lang)}
           </button>
           <button
             onClick={() => {
@@ -67,12 +67,11 @@ export const HeroSection: React.FC = memo(() => {
             }}
             className="glass-button px-8 py-3.5 rounded-full text-sm font-medium tracking-wider uppercase cursor-pointer"
           >
-            Contact
+            {t('hero.contact', lang)}
           </button>
         </motion.div>
       </div>
 
-      {/* Animated Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -81,7 +80,7 @@ export const HeroSection: React.FC = memo(() => {
         onClick={scrollToAbout}
       >
         <span className="text-[11px] font-light tracking-[0.3em] text-neutral-400 group-hover:text-[#D7C4A3] transition-colors uppercase">
-          Scroll to explore
+          {t('hero.scroll', lang)}
         </span>
         <motion.div
           animate={{ y: [0, 8, 0] }}

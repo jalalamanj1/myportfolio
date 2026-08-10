@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ArrowUpRight, Sparkles, Code, Cpu } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Cpu } from 'lucide-react';
+import { useLang } from '../contexts/LanguageContext';
+import { t } from '../i18n';
 
 export const Navbar: React.FC = memo(function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { lang, setLang } = useLang();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -34,11 +37,11 @@ export const Navbar: React.FC = memo(function Navbar() {
   }, [isHomePage, navigate]);
 
   const navLinks = useMemo(() => [
-    { label: 'Home', action: () => scrollToSection('hero'), isRoute: false, path: '/' },
-    { label: 'Products', action: () => scrollToSection('products'), isRoute: false, path: '#products' },
-    { label: 'Services', action: () => navigate('/services'), isRoute: true, path: '/services' },
-    { label: 'Contact', action: () => scrollToSection('contact'), isRoute: false, path: '#contact' },
-  ], [scrollToSection, navigate]);
+    { label: t('nav.home', lang), action: () => scrollToSection('hero'), isRoute: false, path: '/' },
+    { label: t('nav.products', lang), action: () => scrollToSection('products'), isRoute: false, path: '#products' },
+    { label: t('nav.services', lang), action: () => navigate('/services'), isRoute: true, path: '/services' },
+    { label: t('nav.contact', lang), action: () => scrollToSection('contact'), isRoute: false, path: '#contact' },
+  ], [scrollToSection, navigate, lang]);
 
   return (
     <header
@@ -65,7 +68,7 @@ export const Navbar: React.FC = memo(function Navbar() {
               JALAL AMANJ
             </span>
             <span className="text-[9px] tracking-wider uppercase text-neutral-400 font-sans">
-              Systems & Desktop Architect
+              {t('nav.brand.subtitle', lang)}
             </span>
           </div>
         </Link>
@@ -93,25 +96,39 @@ export const Navbar: React.FC = memo(function Navbar() {
           })}
         </nav>
 
-        {/* CTA Button */}
+        {/* CTA + Lang Switch */}
         <div className="hidden md:flex items-center gap-3">
+          <button
+            onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+            className="px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider uppercase border border-white/20 text-neutral-300 hover:text-white hover:border-[#D7C4A3]/60 transition-all cursor-pointer"
+          >
+            {lang === 'ar' ? 'EN' : 'AR'}
+          </button>
           <button
             onClick={() => scrollToSection('contact')}
             className="glass-button-primary px-5 py-2 rounded-full text-xs font-medium tracking-wider uppercase flex items-center gap-1.5 cursor-pointer"
           >
-            <span>Initiate Contact</span>
+            <span>{t('nav.initiate', lang)}</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle Navigation Menu"
-          className="md:hidden p-2 rounded-xl glass-button text-white cursor-pointer"
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile: Lang + Menu */}
+        <div className="flex md:hidden items-center gap-2">
+          <button
+            onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+            className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border border-white/20 text-neutral-300 cursor-pointer"
+          >
+            {lang === 'ar' ? 'EN' : 'AR'}
+          </button>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle Navigation Menu"
+            className="p-2 rounded-xl glass-button text-white cursor-pointer"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu Overlay */}
@@ -143,7 +160,7 @@ export const Navbar: React.FC = memo(function Navbar() {
                 }}
                 className="w-full mt-3 glass-button-primary py-3 rounded-xl text-xs font-medium uppercase tracking-wider text-center"
               >
-                Initiate Contact
+                {t('nav.initiate', lang)}
               </button>
             </div>
           </motion.div>
