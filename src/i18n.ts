@@ -2,6 +2,8 @@ export type Lang = 'ar' | 'en';
 
 export const translations: Record<Lang, Record<string, string>> = {
   ar: {
+    // Site
+    'site.name': 'جلال امانج',
     // Navbar
     'nav.home': 'الرئيسية',
     'nav.products': 'المنتجات',
@@ -101,6 +103,8 @@ export const translations: Record<Lang, Record<string, string>> = {
     'loading': 'جاري التحميل…',
   },
   en: {
+    // Site
+    'site.name': 'JALAL AMANJ',
     // Navbar
     'nav.home': 'Home',
     'nav.products': 'Products',

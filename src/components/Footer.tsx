@@ -16,7 +16,7 @@ export const Footer: React.FC = memo(function Footer() {
       <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 p-6 glass-panel text-xs text-neutral-300 font-light">
         <div>
           <span className="font-serif text-sm font-medium text-white tracking-widest uppercase mr-2">
-            JALAL AMANJ
+            {t('site.name', lang)}
           </span>
           <span>{t('footer.rights', lang)}</span>
         </div>
