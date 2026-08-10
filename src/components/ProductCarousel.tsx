@@ -36,6 +36,7 @@ const ProductCard = memo(function ProductCard({
   onNext,
   onSelectProduct,
 }: ProductCardProps) {
+  const { lang } = useLang();
   return (
     <div
       onClick={() => {
