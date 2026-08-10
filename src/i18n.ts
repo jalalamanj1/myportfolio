@@ -24,7 +24,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     // Services Page
     'services.page.title': 'الخدمات',
     'services.back': 'العودة للرئيسية',
-    'services.prompts.desc': 'مكتبة مطالبات الذكاء الاصطناعي للتصميم والإنتاجية.',
+    'services.prompts.desc': 'مكتبة أوامر الذكاء الاصطناعي للتصميم والإنتاجية.',
     'services.edu.desc': 'الموارد التعليمية ومواد التعلم.',
     'services.apps.desc': 'تطبيقات سطح المكتب والمشاريع البرمجية.',
 
@@ -40,22 +40,22 @@ export const translations: Record<Lang, Record<string, string>> = {
 
     // Prompts Page
     'prompts.back': 'رجوع',
-    'prompts.title': 'المطالبات',
-    'prompts.loading': 'جاري تحميل المطالبات...',
-    'prompts.empty.title': 'لا توجد فئات مطالبات بعد',
-    'prompts.empty.desc': 'ستظهر فئات المطالبات هنا بعد إضافتها من لوحة التحكم.',
-    'prompts.category.empty.title': 'لا توجد مطالبات هنا بعد',
-    'prompts.category.empty.desc': 'ستظهر مطالبات هذه الفئة بعد إضافتها من لوحة التحكم.',
+    'prompts.title': 'أوامر الذكاء الإصطناعي',
+    'prompts.loading': 'جاري تحميل أوامر الذكاء الاصطناعي...',
+    'prompts.empty.title': 'لا توجد فئات أوامر بعد',
+    'prompts.empty.desc': 'ستظهر فئات الأوامر هنا بعد إضافتها من لوحة التحكم.',
+    'prompts.category.empty.title': 'لا توجد أوامر هنا بعد',
+    'prompts.category.empty.desc': 'ستظهر أوامر هذه الفئة بعد إضافتها من لوحة التحكم.',
     'prompts.close': 'إغلاق ✕',
-    'prompts.copy': 'نسخ المطالبة',
+    'prompts.copy': 'نسخ الأمر',
     'prompts.copied': '!تم النسخ',
     'prompts.howto': 'كيف تستخدم',
     'prompts.howto.title': 'كيف تستخدم',
     'prompts.howto.close': 'إغلاق',
-    'prompts.pick': 'اختر فئة، ثم انسخ المطالبة التي تحتاجها.',
-    'prompts.active.pick': '— اختر بطاقة وانسخ مطالبتك.',
-    'prompts.prompt': 'مطالبة',
-    'prompts.prompts': 'مطالبات',
+    'prompts.pick': 'اختر فئة، ثم انسخ الأمر الذي تحتاجه.',
+    'prompts.active.pick': '— اختر بطاقة وانسخ أمرك.',
+    'prompts.prompt': 'أمر',
+    'prompts.prompts': 'أوامر',
 
     // Product Carousel
     'products.featured': 'أحدث التطبيقات',

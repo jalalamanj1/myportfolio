@@ -11,7 +11,7 @@ export const ServicesPage: React.FC = () => {
 
   const cards = [
     {
-      title: lang === 'ar' ? 'المطالبات' : 'Prompts',
+      title: t('prompts.title', lang),
       description: t('services.prompts.desc', lang),
       icon: Sparkles,
       path: '/services/Prompts',
