@@ -1,3 +1,5 @@
+import { Product } from './types';
+
 export type Lang = 'ar' | 'en';
 
 export const translations: Record<Lang, Record<string, string>> = {
@@ -61,6 +63,26 @@ export const translations: Record<Lang, Record<string, string>> = {
     'products.featured': 'أحدث التطبيقات',
     'products.empty': 'المشاريع قادمة قريباً.',
     'products.view': 'عرض المشروع',
+
+    // Project Modal
+    'modal.tags': 'العلامات',
+    'modal.download': 'تحميل',
+
+    // Product content (Converto)
+    'product.omnipulse-daw.category': 'تطبيق سطح مكتب',
+    'product.omnipulse-daw.shortDescription': 'كونفرتو هو تطبيق سطح مكتب خفيف يحول مستندات PDF وDOCX إلى صور PNG وJPEG عالية الجودة. صُمم للسرعة والبساطة والعمل دون اتصال بالإنترنت، ويجعل التحويل من المستند إلى الصورة سهلاً بلا مجهود.',
+    'product.omnipulse-daw.fullDescription': 'كونفرتو هو تطبيق سطح مكتب احترافي مصمم لتحويل مستندات PDF وDOCX إلى صور PNG وJPEG عالية الجودة بكل سهولة. سواء كنت تحول ملفاً واحداً أو تعالج مستندات متعددة دفعة واحدة، يقدم كونفرتو نتائج سريعة وموثوقة ودقيقة أثناء العمل دون اتصال بالإنترنت تماماً. كما يدعم التحويل الدفعي.',
+
+    // Product specs (labels & values)
+    'product.spec.label.Size': 'الحجم',
+    'product.spec.label.Local': 'محلي',
+    'product.spec.label.Updates': 'التحديثات',
+    'product.spec.label.Price': 'السعر',
+    'product.spec.label.Language': 'اللغة',
+    'product.spec.value.Offline': 'دون اتصال',
+    'product.spec.value.Auto-update system': 'نظام التحديث التلقائي',
+    'product.spec.value.FREE': 'مجاني',
+    'product.spec.value.Supports (English, Arabic, Kurdish (Sorani) and Turkish)': 'يدعم (الإنجليزية، العربية، الكردية (سورانية) والتركية)',
 
     // Contact
     'contact.title': 'تواصل معي.',
@@ -213,4 +235,25 @@ export function t(key: string, lang: Lang, replacements?: Record<string, string>
     }
   }
   return text;
+}
+
+export function localizeProduct(product: Product, lang: Lang): Product {
+  if (lang === 'en') return product;
+
+  const category = translations[lang][`product.${product.id}.category`];
+  const shortDescription = translations[lang][`product.${product.id}.shortDescription`];
+  const fullDescription = translations[lang][`product.${product.id}.fullDescription`];
+
+  const specs = product.specs.map((spec) => ({
+    label: translations[lang][`product.spec.label.${spec.label}`] ?? spec.label,
+    value: translations[lang][`product.spec.value.${spec.value}`] ?? spec.value,
+  }));
+
+  return {
+    ...product,
+    category: category ?? product.category,
+    shortDescription: shortDescription ?? product.shortDescription,
+    fullDescription: fullDescription ?? product.fullDescription,
+    specs,
+  };
 }

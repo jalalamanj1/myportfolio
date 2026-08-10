@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState, memo } from 'react';
 import { ChevronLeft, ChevronRight, Eye, Sparkles } from 'lucide-react';
 import { Product } from '../types';
 import { useLang } from '../contexts/LanguageContext';
-import { t } from '../i18n';
+import { t, localizeProduct } from '../i18n';
 
 interface ProductCarouselProps {
   products: Product[];
@@ -37,6 +37,7 @@ const ProductCard = memo(function ProductCard({
   onSelectProduct,
 }: ProductCardProps) {
   const { lang } = useLang();
+  const localized = localizeProduct(product, lang);
   return (
     <div
       onClick={() => {
@@ -59,8 +60,8 @@ const ProductCard = memo(function ProductCard({
       {/* Card Image Container */}
       <div className="relative w-full h-[270px] sm:h-[290px] rounded-2xl overflow-hidden group">
         <img
-          src={product.image}
-          alt={product.title}
+          src={localized.image}
+          alt={localized.title}
           referrerPolicy="no-referrer"
           loading={isCenter ? 'eager' : 'lazy'}
           decoding="async"
@@ -72,11 +73,11 @@ const ProductCard = memo(function ProductCard({
 
         {/* Category Pill */}
         <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/40 border border-white/20 text-[10px] uppercase tracking-widest text-[#D7C4A3] font-medium">
-          {product.category}
+          {localized.category}
         </div>
 
         <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/40 border border-white/15 text-[10px] font-mono text-neutral-300">
-          {product.year}
+          {localized.year}
         </div>
       </div>
 
@@ -84,10 +85,10 @@ const ProductCard = memo(function ProductCard({
       <div className="flex-1 flex flex-col justify-between pt-4 px-1">
         <div>
           <h3 className="font-serif text-2xl font-normal text-white tracking-wide truncate">
-            {product.title}
+            {localized.title}
           </h3>
           <p className="text-xs text-neutral-300 font-light mt-1.5 line-clamp-2 leading-relaxed">
-            {product.shortDescription}
+            {localized.shortDescription}
           </p>
         </div>
 
