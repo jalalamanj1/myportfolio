@@ -16,6 +16,12 @@ const PromptsPage = lazy(() =>
 const AdminDashboard = lazy(() =>
   import('./admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard }))
 );
+const EduPage = lazy(() =>
+  import('./pages/EduPage').then((m) => ({ default: m.EduPage }))
+);
+const AppsPage = lazy(() =>
+  import('./pages/AppsPage').then((m) => ({ default: m.AppsPage }))
+);
 
 const RouteFallback: React.FC = () => (
   <div className="w-full min-h-[50vh] flex items-center justify-center" aria-busy="true">
@@ -43,6 +49,8 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/Prompts" element={<PromptsPage />} />
+            <Route path="/services/Edu" element={<EduPage />} />
+            <Route path="/services/Apps" element={<AppsPage />} />
             <Route path="/services/:categoryId" element={<ServicesPage />} />
             <Route path="/thebossadmin" element={<AdminDashboard />} />
             <Route path="*" element={<Navigate to="/" replace />} />
