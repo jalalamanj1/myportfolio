@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Background } from './components/Background';
-import { Navbar } from './components/Navbar';
+import { LanguageSwitch } from './components/LanguageSwitch';
 import { HomePage } from './pages/HomePage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useSiteProtection } from './hooks/useSiteProtection';
@@ -75,8 +75,8 @@ export default function App() {
         {/* Fixed Full Screen Ambient Dark Background */}
         <Background />
 
-        {/* Global Navigation Bar with Language Switch */}
-        <Navbar />
+        {/* Floating Language Switch (top corner) */}
+        <LanguageSwitch />
 
         {/* Animated Application Routes */}
         <main className="relative z-10 w-full min-h-screen">
