@@ -40,6 +40,11 @@ export const translations: Record<Lang, Record<string, string>> = {
     'apps.back': 'رجوع',
     'apps.desc': 'تطبيقات سطح المكتب والمشاريع البرمجية قريباً.',
 
+    // Murshid / Edara Pages
+    'murshid.title': 'مرشد',
+    'edara.title': 'إدارة',
+    'pages.comingSoon': 'قريباً!',
+
     // Prompts Page
     'prompts.back': 'رجوع',
     'prompts.title': 'أوامر الذكاء الإصطناعي',
@@ -160,6 +165,11 @@ export const translations: Record<Lang, Record<string, string>> = {
     'apps.title': 'Apps',
     'apps.back': 'Back',
     'apps.desc': 'Desktop applications and software projects coming soon.',
+
+    // Murshid / Edara Pages
+    'murshid.title': 'Murshid',
+    'edara.title': 'Edara',
+    'pages.comingSoon': 'Coming soon!',
 
     // Prompts Page
     'prompts.back': 'Back',

@@ -25,6 +25,12 @@ const EduPage = lazy(() =>
 const AppsPage = lazy(() =>
   import('./pages/AppsPage').then((m) => ({ default: m.AppsPage }))
 );
+const MurshidPage = lazy(() =>
+  import('./pages/MurshidPage').then((m) => ({ default: m.MurshidPage }))
+);
+const EdaraPage = lazy(() =>
+  import('./pages/EdaraPage').then((m) => ({ default: m.EdaraPage }))
+);
 
 const RouteFallback: React.FC = () => {
   const { lang } = useLang();
@@ -57,6 +63,8 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/services/Prompts" element={<PromptsPage />} />
             <Route path="/services/Edu" element={<EduPage />} />
             <Route path="/services/Apps" element={<AppsPage />} />
+            <Route path="/murshid" element={<MurshidPage />} />
+            <Route path="/edara" element={<EdaraPage />} />
             <Route path="/services/:categoryId" element={<ServicesPage />} />
             <Route path="/thebossadmin" element={<AdminDashboard />} />
             <Route path="*" element={<Navigate to="/" replace />} />
