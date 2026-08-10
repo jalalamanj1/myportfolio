@@ -1,7 +1,7 @@
 [
   {
     "id": "prompts-1785606327432",
-    "title": "Car Posters",
+    "title": "بوسترات سيارات",
     "iconName": "FileCode",
     "prompts": [
       {
@@ -104,7 +104,7 @@
   },
   {
     "id": "general-prompts-1785665632142",
-    "title": "50 Design Styles Prompts",
+    "title": "50 أمر لتصاميم متنوعة",
     "iconName": "Globe",
     "prompts": [
       {
@@ -411,7 +411,7 @@
   },
   {
     "id": "diverse-prompts-1785757000977",
-    "title": "Diverse Prompts",
+    "title": "أوامر متنوعة",
     "iconName": "Image",
     "prompts": [
       {
