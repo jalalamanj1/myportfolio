@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState, memo } from 'react';
 import { ChevronLeft, ChevronRight, Eye, Sparkles } from 'lucide-react';
 import { Product } from '../types';
+import { useLang } from '../contexts/LanguageContext';
+import { t } from '../i18n';
 
 interface ProductCarouselProps {
   products: Product[];
@@ -97,7 +99,7 @@ const ProductCard = memo(function ProductCard({
           className="w-full mt-3 py-2.5 px-4 rounded-xl glass-button text-xs font-medium tracking-wider uppercase flex items-center justify-center gap-2 group cursor-pointer"
         >
           <Eye className="w-3.5 h-3.5 text-[#D7C4A3] group-hover:scale-110 transition-transform" />
-          <span>View Project</span>
+          <span>{t('products.view', lang)}</span>
         </button>
       </div>
     </div>
@@ -105,6 +107,7 @@ const ProductCard = memo(function ProductCard({
 });
 
 export const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, onSelectProduct }) => {
+  const { lang } = useLang();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const total = products.length;
 
@@ -162,12 +165,12 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, onSe
       <section id="products" className="relative z-10 w-full py-24 px-4">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-wide text-white">
-            Featured Projects
+            {t('products.featured', lang)}
           </h2>
           <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mt-4" />
           <div className="mt-12 flex flex-col items-center gap-3 text-neutral-400">
             <Sparkles className="w-6 h-6 text-[#D7C4A3]" />
-            <p className="text-xs font-light">Projects are on the way.</p>
+            <p className="text-xs font-light">{t('products.empty', lang)}</p>
           </div>
         </div>
       </section>
@@ -180,7 +183,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, onSe
         {/* Section Title */}
         <div className="flex flex-col items-center text-center mb-16">
           <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-wide text-white">
-            Featured Projects
+            {t('products.featured', lang)}
           </h2>
           <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mt-4" />
         </div>

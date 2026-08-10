@@ -56,7 +56,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.prompts': 'مطالبات',
 
     // Product Carousel
-    'products.featured': 'المشاريع المميزة',
+    'products.featured': 'أحدث التطبيقات',
     'products.empty': 'المشاريع قادمة قريباً.',
     'products.view': 'عرض المشروع',
 
@@ -155,7 +155,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.prompts': 'prompts',
 
     // Product Carousel
-    'products.featured': 'Featured Projects',
+    'products.featured': 'Latest Apps',
     'products.empty': 'Projects are on the way.',
     'products.view': 'View Project',
 
