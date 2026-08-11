@@ -7,7 +7,7 @@ import { t } from '../i18n';
 
 const LEGAL_LINKS = [
   { path: '/murshid/privacy_policy', key: 'murshid.privacy', icon: ShieldCheck },
-  { path: '/murshid/terms_of_use', key: 'murshid.terms', icon: FileText },
+  { path: '/murshid/terms_of_service', key: 'murshid.terms', icon: FileText },
   { path: '/murshid/eula', key: 'murshid.eula', icon: ScrollText },
 ];
 

@@ -8,7 +8,7 @@ import { legalDocuments, LegalDocId } from '../data/legalDocuments';
 
 const DOC_ROUTE_MAP: Record<string, LegalDocId> = {
   privacy_policy: 'privacy',
-  terms_of_use: 'terms',
+  terms_of_service: 'terms',
   eula: 'eula',
 };
 

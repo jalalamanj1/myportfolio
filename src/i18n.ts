@@ -183,7 +183,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'murshid.legal': 'Legal Documents',
     'murshid.legal.desc': 'Legal documentation for the Murshid application.',
     'murshid.privacy': 'Privacy Policy',
-    'murshid.terms': 'Terms of Use',
+    'murshid.terms': 'Terms of Service',
     'murshid.eula': 'End User License Agreement',
     'legal.back': 'Back',
 

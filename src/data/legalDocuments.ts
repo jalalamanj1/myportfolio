@@ -143,7 +143,7 @@ export const legalDocuments: Record<LegalDocId, LegalDocument> = {
   terms: {
     id: 'terms',
     titleAr: 'شروط الاستخدام',
-    titleEn: 'Terms of Use',
+    titleEn: 'Terms of Service',
     meta: META,
     ar: [
       {
