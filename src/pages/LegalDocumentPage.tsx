@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Scale } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
@@ -20,24 +20,7 @@ export const LegalDocumentPage: React.FC = () => {
   const doc = docId ? legalDocuments[DOC_ROUTE_MAP[docId]] : undefined;
 
   if (!doc) {
-    return (
-      <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="mb-8">
-            <button
-              onClick={() => navigate('/murshid')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
-            >
-              <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />
-              <span>{t('legal.back', lang)}</span>
-            </button>
-          </div>
-          <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15">
-            <p className="text-xs text-neutral-300 font-light">{t('pages.comingSoon', lang)}</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <Navigate to="/murshid" replace />;
   }
 
   const sections = lang === 'ar' ? doc.ar : doc.en;

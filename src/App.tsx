@@ -67,6 +67,7 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/services/Edu" element={<EduPage />} />
             <Route path="/services/Apps" element={<AppsPage />} />
             <Route path="/murshid" element={<MurshidPage />} />
+            <Route path="/murshid/terms_of_use" element={<Navigate to="/murshid/terms_of_service" replace />} />
             <Route path="/murshid/:docId" element={<LegalDocumentPage />} />
             <Route path="/edara" element={<EdaraPage />} />
             <Route path="/services/:categoryId" element={<ServicesPage />} />
