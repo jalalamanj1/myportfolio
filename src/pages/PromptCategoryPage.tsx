@@ -7,7 +7,6 @@ import { fetchPromptCategories } from '../data/promptStore';
 import { PromptCategory, PromptItem } from '../types';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
-
 const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
@@ -22,6 +21,9 @@ const copyToClipboard = async (text: string) => {
     document.body.removeChild(ta);
   }
 };
+
+const chunk = <T,>(arr: T[], size: number): T[][] =>
+  arr.reduce((acc: T[][], _, i) => (i % size === 0 ? [...acc, arr.slice(i, i + size)] : acc), []);
 
 export const PromptCategoryPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -121,6 +123,69 @@ export const PromptCategoryPage: React.FC = () => {
                 <p className="text-xs text-neutral-300 font-light leading-relaxed max-w-md mx-auto">
                   {t('prompts.category.empty.desc', lang)}
                 </p>
+              </div>
+            ) : activeCat.layout === 'pair' ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {chunk(activeCat.prompts, 2).map((pair, cardIdx) => (
+                  <motion.div
+                    key={cardIdx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="glass-card rounded-[28px] border border-white/15 hover:border-[#D7C4A3]/50 overflow-hidden group transition-all duration-300 hover:shadow-2xl"
+                  >
+                    <div className={`grid ${pair.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-1'} divide-y sm:divide-y-0 sm:divide-x sm:divide-x-reverse`}>
+                      {pair.map((prompt) => (
+                        <div key={prompt.id} className="p-4 sm:p-5 flex flex-col">
+                          <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900/40 mb-4">
+                            <img
+                              src={prompt.image}
+                              alt={prompt.title}
+                              referrerPolicy="no-referrer"
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                            />
+                            {prompt.howToUse && prompt.howToUse.length > 0 && (
+                              <button
+                                onClick={() => setInfoPrompt(prompt)}
+                                aria-label={`${t('prompts.howto', lang)}: ${prompt.title}`}
+                                title={t('prompts.howto', lang)}
+                                className="absolute top-3 right-3 p-2 rounded-full bg-black/50 backdrop-blur-sm border border-white/25 text-white/90 hover:text-white hover:bg-black/70 hover:border-[#D7C4A3]/70 transition-all cursor-pointer"
+                              >
+                                <Info className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                          <h3 className="font-serif text-lg font-light text-white mb-3 truncate">
+                            {prompt.title}
+                          </h3>
+                          <button
+                            onClick={() => handleCopy(prompt.id, prompt.promptText)}
+                            className={`w-full py-2.5 px-4 rounded-xl text-xs font-medium tracking-wider uppercase flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg mt-auto ${
+                              copiedId === prompt.id
+                                ? 'bg-[#D7C4A3] text-black font-semibold'
+                                : 'glass-button-primary'
+                            }`}
+                          >
+                            {copiedId === prompt.id ? (
+                              <>
+                                <Check className="w-3.5 h-3.5" />
+                                <span>{t('prompts.copied', lang)}</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3.5 h-3.5" />
+                                <span>{t('prompts.copy', lang)}</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

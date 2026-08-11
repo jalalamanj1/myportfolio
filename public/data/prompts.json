@@ -450,6 +450,7 @@
     "id": "prompts-gym-1785900000000",
     "title": "Gym",
     "iconName": "Dumbbell",
+    "layout": "pair",
     "prompts": [
       {
         "id": "gym-weekly-split-1785900000001",
@@ -517,6 +518,29 @@
             "id": "gym-beginner-plan-howto-3",
             "order": 3,
             "text": "Start week one slowly and focus on form before adding weight."
+          }
+        ]
+      },
+      {
+        "id": "gym-full-body-ab-1785900000004",
+        "title": "Full Body A/B",
+        "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2MDAnIGhlaWdodD0nODAwJz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2cnIHgxPScwJyB5MT0nMCcgeDI9JzEnIHkyPScxJz48c3RvcCBvZmZzZXQ9JzAnIHN0b3AtY29sb3I9JyMxYTFhMmUnLz48c3RvcCBvZmZzZXQ9JzEnIHN0b3AtY29sb3I9JyMwZjBmMWEnLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0nNjAwJyBoZWlnaHQ9JzgwMCcgZmlsbD0ndXJsKCNnKScvPjx0ZXh0IHg9JzMwMCcgeT0nMzgwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nNzAnIGZpbGw9JyNEN0M0QTMnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZvbnQtd2VpZ2h0PSdib2xkJz5HWU08L3RleHQ+PHRleHQgeD0nMzAwJyB5PSc0NjAnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScyOCcgZmlsbD0nI2ZmZmZmZicgdGV4dC1hbmNob3I9J21pZGRsZScgb3BhY2l0eT0nMC44Jz5GdWxsIEJvZHkgQS9CPC90ZXh0Pjwvc3ZnPg==",
+        "promptText": "# ROLE\n\nYou are a pragmatic full-body training coach.\n\n# OBJECTIVE\n\nDesign a two-day Full Body A/B split that can be run twice per week each.\n\n# INPUTS\n\nFill in:\n\n• Goal: [e.g. Strength / Hypertrophy / General fitness]\n• Equipment: [e.g. barbell / dumbbells / machines]\n• Experience: [e.g. beginner / intermediate]\n\n# OUTPUT FORMAT\n\nTwo blocks: Workout A and Workout B. Each block: Exercise | Sets x Reps | Rest | Coaching cue\n\n# RULES\n\n• Include one squat, one hinge, one horizontal push, one horizontal pull, and one carry per block.\n• Alternate vertical and horizontal pressing between A and B.\n• Keep each session under 60 minutes.\n• Provide a load recommendation (e.g. RPE 7-8) for each movement.",
+        "howToUse": [
+          {
+            "id": "gym-full-body-ab-howto-1",
+            "order": 1,
+            "text": "Enter your goal, available equipment, and experience level."
+          },
+          {
+            "id": "gym-full-body-ab-howto-2",
+            "order": 2,
+            "text": "Copy the prompt and run it in your AI tool."
+          },
+          {
+            "id": "gym-full-body-ab-howto-3",
+            "order": 3,
+            "text": "Alternate Workout A and Workout B across your training week."
           }
         ]
       }

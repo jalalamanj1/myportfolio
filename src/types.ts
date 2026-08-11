@@ -89,5 +89,6 @@ export interface PromptCategory {
   title: string;
   iconName: string;
   prompts: PromptItem[];
+  layout?: 'pair';
 }
 
