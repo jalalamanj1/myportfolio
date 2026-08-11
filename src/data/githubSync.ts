@@ -48,7 +48,7 @@ interface QueuedPush {
   token: string;
   repo: string;
   path: string;
-  content: string;
+  encoded: string;
   message: string;
 }
 
@@ -68,8 +68,7 @@ function enqueuePush(item: QueuedPush): Promise<void> {
 }
 
 async function pushFileToGitHubSerial(item: QueuedPush): Promise<void> {
-  const { token, repo, path, content, message } = item;
-  const encoded = toBase64(content);
+  const { token, repo, path, encoded, message } = item;
   const attempt = async (): Promise<void> => {
     const sha = await readFileSha(token, repo, path);
     const body: Record<string, unknown> = {
@@ -119,25 +118,103 @@ export function pushFileToGitHub(
   content: string,
   message: string
 ): Promise<void> {
-  return enqueuePush({ token, repo, path, content, message });
+  return enqueuePush({ token, repo, path, encoded: toBase64(content), message });
+}
+
+/**
+ * Pushes a binary file whose content is already base64-encoded (e.g. an image
+ * extracted from a data: URL). Unlike pushFileToGitHub, the content is NOT
+ * base64-encoded a second time.
+ */
+export function pushRawFileToGitHub(
+  token: string,
+  repo: string,
+  path: string,
+  base64Content: string,
+  message: string
+): Promise<void> {
+  return enqueuePush({ token, repo, path, encoded: base64Content, message });
+}
+
+interface ImageFile {
+  path: string;
+  base64: string;
+}
+
+/**
+ * Creates an image splitter for a given folder. Rewrites inline data: URL
+ * images into relative file paths and queues the decoded images for upload so
+ * pushed JSON stays lightweight and images become individually cacheable files.
+ */
+function makeImageSplitter(dir: string): {
+  files: ImageFile[];
+  rewriteImage: (item: { image?: string; id: string }) => { image?: string; id: string };
+} {
+  const seen = new Map<string, string>();
+  const files: ImageFile[] = [];
+  const rewriteImage = (item: { image?: string; id: string }): { image?: string; id: string } => {
+    const m = item.image?.match(/^data:(image\/(?:[a-z+]+));base64,(.*)$/s);
+    if (!m) return item;
+    let relPath = seen.get(item.image!);
+    if (!relPath) {
+      const mime = m[1];
+      const ext =
+        mime === 'svg+xml' ? 'svg' : mime === 'png' ? 'png' : mime === 'jpeg' ? 'jpg' : 'webp';
+      const safeId = String(item.id ?? `img-${Date.now()}`).replace(/[^a-zA-Z0-9-_]/g, '-');
+      relPath = `data/images/${dir}/${safeId}.${ext}`;
+      seen.set(item.image!, relPath);
+      files.push({ path: `public/${relPath}`, base64: m[2] });
+    }
+    return { ...item, image: relPath };
+  };
+  return { files, rewriteImage };
+}
+
+async function pushDataWithImages(
+  token: string,
+  repo: string,
+  files: ImageFile[],
+  rewritten: unknown,
+  jsonPath: string,
+  message: string
+): Promise<void> {
+  for (const file of files) {
+    await pushRawFileToGitHub(
+      token,
+      repo,
+      file.path,
+      file.base64,
+      'Update image from admin dashboard'
+    );
+  }
+  await pushFileToGitHub(token, repo, jsonPath, JSON.stringify(rewritten, null, 2), message);
 }
 
 export function pushPromptsToGitHub(token: string, repo: string, promptCats: PromptCategory[]): Promise<void> {
-  return pushFileToGitHub(
+  const { files, rewriteImage } = makeImageSplitter('prompts');
+  const categories = promptCats.map((c) => ({
+    ...c,
+    prompts: (c.prompts ?? []).map((p) => rewriteImage(p)),
+  }));
+  return pushDataWithImages(
     token,
     repo,
+    files,
+    categories,
     'public/data/prompts.json',
-    JSON.stringify(promptCats, null, 2),
     'Update prompts from admin dashboard'
   );
 }
 
 export function pushProductsToGitHub(token: string, repo: string, products: Product[]): Promise<void> {
-  return pushFileToGitHub(
+  const { files, rewriteImage } = makeImageSplitter('products');
+  const rewritten = products.map((p) => rewriteImage(p));
+  return pushDataWithImages(
     token,
     repo,
+    files,
+    rewritten,
     'public/data/products.json',
-    JSON.stringify(products, null, 2),
     'Update apps from admin dashboard'
   );
 }

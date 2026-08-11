@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Eye, Sparkles } from 'lucide-react';
 import { Product } from '../types';
 import { useLang } from '../contexts/LanguageContext';
 import { t, localizeProduct } from '../i18n';
+import { assetUrl } from '../utils/asset';
 
 interface ProductCarouselProps {
   products: Product[];
@@ -60,7 +61,7 @@ const ProductCard = memo(function ProductCard({
       {/* Card Image Container */}
       <div className="relative w-full h-[270px] sm:h-[290px] rounded-2xl overflow-hidden group">
         <img
-          src={localized.image}
+          src={assetUrl(localized.image)}
           alt={localized.title}
           referrerPolicy="no-referrer"
           loading={isCenter ? 'eager' : 'lazy'}

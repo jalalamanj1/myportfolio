@@ -7,6 +7,7 @@ import { fetchPromptCategories } from '../data/promptStore';
 import { PromptCategory, PromptItem } from '../types';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
+import { assetUrl } from '../utils/asset';
 const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
@@ -75,7 +76,7 @@ export const PromptCategoryPage: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex items-center justify-between">
           <button
-            onClick={() => navigate('/services/Prompts')}
+            onClick={() => navigate(-1)}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />
@@ -140,7 +141,7 @@ export const PromptCategoryPage: React.FC = () => {
                         <div key={prompt.id} className="p-4 sm:p-5 flex flex-col">
                           <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900/40 mb-4">
                             <img
-                              src={prompt.image}
+                              src={assetUrl(prompt.image)}
                               alt={prompt.title}
                               referrerPolicy="no-referrer"
                               loading="lazy"
@@ -200,7 +201,7 @@ export const PromptCategoryPage: React.FC = () => {
                   >
                     <div className="relative aspect-[3/4] overflow-hidden bg-neutral-900/40">
                       <img
-                        src={prompt.image}
+                        src={assetUrl(prompt.image)}
                         alt={prompt.title}
                         referrerPolicy="no-referrer"
                         loading="lazy"

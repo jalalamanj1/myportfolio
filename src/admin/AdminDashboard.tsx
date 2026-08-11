@@ -17,6 +17,7 @@ import { getGitHubConfig, saveGitHubConfig, pushPromptsToGitHub, pushProductsToG
 import { GitHubSyncCard } from './GitHubSyncCard';
 import { getAboutData, saveStoredAbout, fetchAbout, getStoredAbout } from '../data/aboutStore';
 import { PRODUCTS } from '../data/portfolioData';
+import { assetUrl } from '../utils/asset';
 
 const ADMIN_PASSWORD = 'admin2026';
 const AUTH_KEY = 'portfolio_admin_auth';
@@ -109,7 +110,17 @@ export const AdminDashboard: React.FC = () => {
   const [svcCategoryId, setSvcCategoryId] = useState('');
   const [svcForm, setSvcForm] = useState<ServiceItem>(emptyService());
 
-  const [promptCats, setPromptCats] = useState<PromptCategory[]>(() => getStoredPromptCategories() ?? []);
+  const [promptCats, setPromptCats] = useState<PromptCategory[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    getStoredPromptCategories().then((stored) => {
+      if (cancelled || !stored || stored.length === 0) return;
+      setPromptCats((prev) => (prev.length === 0 ? stored : prev));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [promptsSavedFlash, setPromptsSavedFlash] = useState(false);
 
   const [ghConfig, setGhConfig] = useState<GitHubConfig>(() => getGitHubConfig());
@@ -171,11 +182,15 @@ export const AdminDashboard: React.FC = () => {
       // keep any locally-added prompts that aren't in the file, then persist the
       // merged set so the admin never gets stuck on a stale cache.
       const mergedPrompts = mergePromptCategories(
-        getStoredPromptCategories() ?? [],
+        (await getStoredPromptCategories()) ?? [],
         fetchedPrompts
       );
       setPromptCats(mergedPrompts);
-      saveStoredPromptCategories(mergedPrompts);
+      try {
+        await saveStoredPromptCategories(mergedPrompts);
+      } catch {
+        // Persistence is best-effort here; in-memory state is still usable.
+      }
       if (!getStoredAbout()) {
         setAbout(fetchedAbout);
         saveStoredAbout(fetchedAbout);
@@ -270,9 +285,13 @@ export const AdminDashboard: React.FC = () => {
     if (ghConfig.token) void handlePushServicesToGitHub(false, next);
   };
 
-  const persistPromptCats = (next: PromptCategory[]) => {
+  const persistPromptCats = async (next: PromptCategory[]) => {
     setPromptCats(next);
-    saveStoredPromptCategories(next);
+    try {
+      await saveStoredPromptCategories(next);
+    } catch (err) {
+      console.error('Failed to persist prompts:', err);
+    }
     if (ghConfig.token) void handlePushPromptsToGitHub(false, next);
   };
 
@@ -461,12 +480,17 @@ export const AdminDashboard: React.FC = () => {
     );
   };
 
-  const handleSaveAllPrompts = () => {
-    saveStoredPromptCategories(promptCats);
-    setPromptsSavedFlash(true);
-    setTimeout(() => setPromptsSavedFlash(false), 2000);
+  const handleSaveAllPrompts = async () => {
+    try {
+      await saveStoredPromptCategories(promptCats);
+      setPromptsSavedFlash(true);
+      setTimeout(() => setPromptsSavedFlash(false), 2000);
+    } catch (err) {
+      console.error('Failed to save prompts:', err);
+      setGhStatus('Could not save prompts to browser storage.');
+    }
     if (ghConfig.token) {
-      handlePushPromptsToGitHub(false);
+      void handlePushPromptsToGitHub(false);
     }
   };
 
@@ -1018,7 +1042,7 @@ export const AdminDashboard: React.FC = () => {
                 {form.image.startsWith('data:') ? (
                   <div className="flex items-center gap-3 mt-1">
                     <img
-                      src={form.image}
+                      src={assetUrl(form.image)}
                       alt="Uploaded preview"
                       className="w-16 h-12 object-cover rounded-lg border border-[#D7C4A3]/40"
                     />
@@ -1108,7 +1132,7 @@ export const AdminDashboard: React.FC = () => {
             >
               <div className="w-20 h-14 rounded-xl overflow-hidden border border-white/10 shrink-0">
                 <img
-                  src={product.image}
+                  src={assetUrl(product.image)}
                   alt={product.title}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"
@@ -1628,7 +1652,7 @@ export const AdminDashboard: React.FC = () => {
                     </span>
                     {promptForm.image !== '' && (
                       <img
-                        src={promptForm.image}
+                        src={assetUrl(promptForm.image)}
                         alt="Preview"
                         className="w-16 h-12 object-cover rounded-lg border border-[#D7C4A3]/40"
                       />
@@ -1860,7 +1884,7 @@ export const AdminDashboard: React.FC = () => {
                                 <div className="flex items-center gap-3 min-w-0">
                                   <div className="w-14 h-10 rounded-lg overflow-hidden border border-white/10 shrink-0">
                                     <img
-                                      src={prompt.image}
+                                      src={assetUrl(prompt.image)}
                                       alt={prompt.title}
                                       referrerPolicy="no-referrer"
                                       className="w-full h-full object-cover"

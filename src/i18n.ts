@@ -6,13 +6,6 @@ export const translations: Record<Lang, Record<string, string>> = {
   ar: {
     // Site
     'site.name': 'جلال امانج',
-    // Navbar
-    'nav.home': 'الرئيسية',
-    'nav.products': 'المنتجات',
-    'nav.services': 'الخدمات',
-    'nav.contact': 'تواصل',
-    'nav.brand.subtitle': 'مهندس تطبيقات سطح المكتب',
-    'nav.initiate': 'تواصل معي',
 
     // Hero
     'hero.explore': 'استكشف',
@@ -61,7 +54,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.empty.desc': 'ستظهر فئات الأوامر هنا بعد إضافتها من لوحة التحكم.',
     'prompts.category.empty.title': 'لا توجد أوامر هنا بعد',
     'prompts.category.empty.desc': 'ستظهر أوامر هذه الفئة بعد إضافتها من لوحة التحكم.',
-    'prompts.close': 'إغلاق ✕',
     'prompts.copy': 'نسخ الأمر',
     'prompts.copied': '!تم النسخ',
     'prompts.howto': 'كيف تستخدم',
@@ -113,20 +105,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'contact.send': 'إرسال',
     'contact.or': 'أو استخدم',
 
-    // Service Request Modal
-    'service.request.title': 'تم استلام طلب الخدمة',
-    'service.request.desc': 'شكراً لطلبك. سيراجع jalalamanj متطلباتك وسيرد عبر البريد الإلكتروني خلال 24 ساعة.',
-    'service.request.close': 'إغلاق',
-    'service.request.form': 'طلب خدمة',
-    'service.request.name': 'الاسم الكامل *',
-    'service.request.name.placeholder': 'مثال: أحمد محمد',
-    'service.request.email': 'البريد الإلكتروني *',
-    'service.request.email.placeholder': 'ahmed@company.com',
-    'service.request.details': 'تفاصيل проектك ونطاقه *',
-    'service.request.details.placeholder': 'صف أهدافك لـ',
-    'service.request.cancel': 'إلغاء',
-    'service.request.submit': 'إرسال الطلب',
-
     // Footer
     'footer.rights': '© 2026 جميع الحقوق محفوظة.',
     'footer.admin': 'الإدارة',
@@ -141,13 +119,6 @@ export const translations: Record<Lang, Record<string, string>> = {
   en: {
     // Site
     'site.name': 'JALAL AMANJ',
-    // Navbar
-    'nav.home': 'Home',
-    'nav.products': 'Products',
-    'nav.services': 'Services',
-    'nav.contact': 'Contact',
-    'nav.brand.subtitle': 'Systems & Desktop Architect',
-    'nav.initiate': 'Initiate Contact',
 
     // Hero
     'hero.explore': 'Explore',
@@ -196,7 +167,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.empty.desc': 'Prompt categories will appear here once added through the admin dashboard.',
     'prompts.category.empty.title': 'No Prompts Here Yet',
     'prompts.category.empty.desc': 'Prompts for this category will appear once added through the admin dashboard.',
-    'prompts.close': 'Close ✕',
     'prompts.copy': 'Copy Prompt',
     'prompts.copied': 'Copied!',
     'prompts.howto': 'How to use',
@@ -227,20 +197,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'contact.sending': 'Transmitting...',
     'contact.send': 'Send',
     'contact.or': 'OR USE',
-
-    // Service Request Modal
-    'service.request.title': 'Service Request Received',
-    'service.request.desc': 'Thank you for requesting {title}. Jalal Amanj will review your requirements and respond via email within 24 hours.',
-    'service.request.close': 'Close Window',
-    'service.request.form': 'Request Service',
-    'service.request.name': 'Your Full Name *',
-    'service.request.name.placeholder': 'e.g. Alex Morgan',
-    'service.request.email': 'Email Address *',
-    'service.request.email.placeholder': 'alex@company.com',
-    'service.request.details': 'Project Details & Scope *',
-    'service.request.details.placeholder': 'Describe your goals for',
-    'service.request.cancel': 'Cancel',
-    'service.request.submit': 'Submit Request',
 
     // Footer
     'footer.rights': '© 2026 All rights reserved.',

@@ -33,7 +33,7 @@ export const PromptsPage: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex items-center justify-between">
           <button
-            onClick={() => window.history.back()}
+            onClick={() => navigate(-1)}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />

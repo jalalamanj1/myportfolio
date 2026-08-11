@@ -4,15 +4,18 @@ import { HERO_DATA } from '../data/portfolioData';
 export const Background: React.FC = memo(function Background() {
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Fixed Full Screen Background Image */}
-      <img
-        src={HERO_DATA.bgImage}
-        alt="Background Architectural Interior"
-        referrerPolicy="no-referrer"
-        fetchPriority="high"
-        decoding="async"
-        className="w-full h-full object-cover fixed inset-0 scale-105 filter brightness-95"
-      />
+      {/* Fixed Full Screen Background Image (portrait variant for phones) */}
+      <picture>
+        <source media="(max-width: 767px)" srcSet={HERO_DATA.bgImageMobile} />
+        <img
+          src={HERO_DATA.bgImage}
+          alt="Background Architectural Interior"
+          referrerPolicy="no-referrer"
+          fetchPriority="high"
+          decoding="async"
+          className="w-full h-full object-cover fixed inset-0 scale-105 filter brightness-95"
+        />
+      </picture>
 
       {/* 35% Dark Translucent Overlay + Subtle Radial Vignette for Readability */}
       <div className="absolute inset-0 bg-black/40" />

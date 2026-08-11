@@ -87,6 +87,19 @@
   box-shadow: 0 0 20px rgba(215, 196, 163, 0.15);
 }
 
+/* Respect users who prefer reduced motion: collapse CSS transitions/animations
+   and JS-driven scroll-behavior. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Custom minimal scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

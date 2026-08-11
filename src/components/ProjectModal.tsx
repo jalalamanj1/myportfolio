@@ -4,6 +4,7 @@ import { X, Calendar, ShieldCheck, Download } from 'lucide-react';
 import { Product } from '../types';
 import { useLang } from '../contexts/LanguageContext';
 import { t, localizeProduct } from '../i18n';
+import { assetUrl } from '../utils/asset';
 
 interface ProjectModalProps {
   product: Product | null;
@@ -65,7 +66,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = memo(function ProjectMo
             {/* Modal Image */}
             <div className="lg:col-span-6 rounded-2xl overflow-hidden border border-white/20 bg-neutral-900/40 lg:self-center">
               <img
-                src={localized.image}
+                src={assetUrl(localized.image)}
                 alt={localized.title}
                 referrerPolicy="no-referrer"
                 loading="lazy"
@@ -116,7 +117,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = memo(function ProjectMo
               {/* Action */}
               <div className="pt-1">
                 <a
-                  href={localized.downloadUrl || localized.image}
+                  href={assetUrl(localized.downloadUrl || localized.image)}
                   download={localized.downloadUrl ? undefined : `${localized.id}-specs.jpg`}
                   target="_blank"
                   rel="noopener noreferrer"

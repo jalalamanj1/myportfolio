@@ -1,28 +1,61 @@
 import { PromptCategory } from '../types';
 
+const DB_NAME = 'portfolio';
+const DB_STORE = 'promptStore';
 const STORAGE_KEY = 'portfolio_admin_prompts_v1';
 
-export function getStoredPromptCategories(): PromptCategory[] | null {
+function openDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(DB_STORE)) {
+        db.createObjectStore(DB_STORE);
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function withStore<T>(
+  mode: IDBTransactionMode,
+  run: (store: IDBObjectStore) => IDBRequest
+): Promise<T> {
+  const db = await openDB();
+  return new Promise<T>((resolve, reject) => {
+    const tx = db.transaction(DB_STORE, mode);
+    const request = run(tx.objectStore(DB_STORE));
+    request.onsuccess = () => resolve(request.result as T);
+    request.onerror = () => reject(request.error);
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+export async function getStoredPromptCategories(): Promise<PromptCategory[] | null> {
   try {
+    const stored = await withStore<PromptCategory[] | null>('readonly', (s) =>
+      s.get(STORAGE_KEY)
+    );
+    if (stored) return stored;
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as PromptCategory[]) : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const migrated = Array.isArray(parsed) ? (parsed as PromptCategory[]) : null;
+      if (migrated) {
+        await withStore<void>('readwrite', (s) => s.put(migrated, STORAGE_KEY));
+        localStorage.removeItem(STORAGE_KEY);
+      }
+      return migrated;
+    }
+    return null;
   } catch {
     return null;
   }
 }
 
-export function saveStoredPromptCategories(categories: PromptCategory[]): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
-}
-
-export function clearStoredPromptCategories(): void {
-  localStorage.removeItem(STORAGE_KEY);
-}
-
-export function getAllPromptCategories(): PromptCategory[] {
-  return getStoredPromptCategories() ?? [];
+export async function saveStoredPromptCategories(categories: PromptCategory[]): Promise<void> {
+  await withStore<void>('readwrite', (s) => s.put(categories, STORAGE_KEY));
 }
 
 export function mergePromptCategories(
@@ -67,6 +100,6 @@ export async function fetchPromptCategories(): Promise<PromptCategory[]> {
     if (Array.isArray(parsed)) return parsed as PromptCategory[];
     return [];
   } catch {
-    return getStoredPromptCategories() ?? [];
+    return (await getStoredPromptCategories()) ?? [];
   }
 }
