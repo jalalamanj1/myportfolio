@@ -4,7 +4,7 @@ import {
   Layout, Database, Server, Cpu, Wrench, Zap, Layers, HelpCircle,
   Pentagon, Image, Share2, FileText, Box, Component, Camera,
   Maximize2, Brush, MessageSquare, BookOpen, FileCode, Search,
-  Calendar
+  Calendar, Dumbbell
 } from 'lucide-react';
 
 const iconMap: Record<string, React.FC<{ className?: string }>> = {
@@ -12,7 +12,7 @@ const iconMap: Record<string, React.FC<{ className?: string }>> = {
   Layout, Database, Server, Cpu, Wrench, Zap, Layers, HelpCircle,
   Pentagon, Image, Share2, FileText, Box, Component, Camera,
   Maximize2, Brush, MessageSquare, BookOpen, FileCode, Search,
-  Calendar, Figma: Component
+  Calendar, Dumbbell, Figma: Component
 };
 
 export const getIcon = (iconName: string, className: string = "w-6 h-6"): React.ReactNode => {

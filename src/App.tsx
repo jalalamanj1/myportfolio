@@ -16,6 +16,9 @@ const ServicesPage = lazy(() =>
 const PromptsPage = lazy(() =>
   import('./pages/PromptsPage').then((m) => ({ default: m.PromptsPage }))
 );
+const PromptCategoryPage = lazy(() =>
+  import('./pages/PromptCategoryPage').then((m) => ({ default: m.PromptCategoryPage }))
+);
 const AdminDashboard = lazy(() =>
   import('./admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard }))
 );
@@ -64,6 +67,7 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/Prompts" element={<PromptsPage />} />
+            <Route path="/services/Prompts/:categoryId" element={<PromptCategoryPage />} />
             <Route path="/services/Edu" element={<EduPage />} />
             <Route path="/services/Apps" element={<AppsPage />} />
             <Route path="/murshid" element={<MurshidPage />} />

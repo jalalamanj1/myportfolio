@@ -69,6 +69,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.howto.close': 'إغلاق',
     'prompts.pick': 'اختر فئة، ثم انسخ الأمر الذي تحتاجه.',
     'prompts.active.pick': '— اختر بطاقة وانسخ أمرك.',
+    'prompts.open': 'فتح',
     'prompts.prompt': 'أمر',
     'prompts.prompts': 'أوامر',
 
@@ -203,6 +204,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.howto.close': 'Close how to use',
     'prompts.pick': 'Pick a category, then copy the prompt you need.',
     'prompts.active.pick': '— pick a card and copy its prompt.',
+    'prompts.open': 'Open',
     'prompts.prompt': 'prompt',
     'prompts.prompts': 'prompts',
 

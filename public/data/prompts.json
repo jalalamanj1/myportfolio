@@ -445,5 +445,81 @@
         "promptText": "REFERENCE STYLE ONLY — APPLY THIS AS A FILTER / EDITING EFFECT TO THE INPUT IMAGE. DO NOT CHANGE THE SUBJECT'S IDENTITY, FACE, POSE, EXPRESSION, CAMERA ANGLE, HAIRSTYLE, CLOTHING, OR COMPOSITION.\n\nOBJECTIVE:\nTransform the uploaded image into a premium fine-art editorial portrait using a selective color splash effect. The edit must preserve the original photograph while dramatically enhancing it with artistic masking, monochrome treatment, and ink-splash styling.\n\nEDITING INSTRUCTIONS:\n\n• Remove the original background completely with an extremely accurate, hair-level cutout.\n• Upscale the image to ultra-high resolution (8K quality) while preserving natural facial features, skin texture, beard strands, hair detail, clothing fabric, and eyewear.\n• Sharpen intelligently without creating halos, oversharpening, or artificial edges.\n• Reduce image noise while maintaining authentic skin pores and fine details.\n• Improve micro-contrast and local contrast for a premium editorial finish.\n\nBLACK & WHITE TREATMENT:\n• Convert the ENTIRE image into true monochrome.\n• Use deep cinematic blacks and clean neutral whites.\n• No blue tint.\n• No sepia.\n• No warm or cool color cast.\n• Rich tonal separation with dramatic but realistic contrast.\n• Preserve smooth grayscale transitions.\n\nSELECTIVE COLOR SPLASH:\nCreate an irregular organic splash-shaped mask centered on the subject.\n\nInside this splash:\n• Reveal ONLY the original natural colors already present in the source image.\n• Do NOT invent colors.\n• Do NOT recolor anything.\n• Simply reveal the subject's authentic colors exactly as they exist in the original photograph.\n• Skin tones remain natural.\n• Hair remains natural.\n• Beard remains natural.\n• Glasses retain their real colors and reflections.\n• Clothing keeps its original color.\n• Every visible object inside the splash remains true to the original photo.\n\nOutside the splash:\n• Everything stays completely black and white.\n• Absolutely no color leakage.\n• Perfect transition between colored and monochrome regions.\n\nSPLASH DESIGN:\n• The splash must be irregular and organic.\n• Inspired by watercolor, ink explosion, acrylic paint, smoke, dust, and brush splatter.\n• Soft feathered edges mixed with random paint droplets.\n• Dynamic asymmetrical shape.\n• No geometric circles.\n• No perfect ellipse.\n• No hard masking edges.\n• The splash should naturally wrap around the subject.\n\nBACKGROUND:\nReplace the removed background with a clean pure white (#FFFFFF) canvas.\n\nAround the subject:\n• Add expressive monochrome watercolor splashes.\n• Black ink bursts.\n• Gray paint textures.\n• Charcoal dust.\n• Fine paint speckles.\n• Abstract brush strokes.\n• Soft smoke textures.\n• Layered ink clouds.\n• High-end contemporary fine-art composition.\n\nThese artistic elements must remain BLACK & WHITE ONLY and never introduce color.\n\nLIGHTING:\n• Preserve original lighting direction.\n• Enhance dynamic range.\n• Bright but realistic highlights.\n• Rich shadows.\n• Premium studio-quality tonal depth.\n• Editorial fashion lighting.\n• Soft natural falloff.\n\nQUALITY:\n• Ultra-clean masking.\n• No artifacts.\n• No jagged edges.\n• No AI distortions.\n• No duplicated features.\n• No warped anatomy.\n• Preserve every facial proportion exactly.\n• Maintain original framing unless slight cropping improves composition.\n• Professional gallery-quality finish.\n• Luxury editorial aesthetic.\n• Museum-grade print quality."
       }
     ]
+  },
+  {
+    "id": "prompts-gym-1785900000000",
+    "title": "Gym",
+    "iconName": "Dumbbell",
+    "prompts": [
+      {
+        "id": "gym-weekly-split-1785900000001",
+        "title": "Weekly Workout Split",
+        "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2MDAnIGhlaWdodD0nODAwJz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2cnIHgxPScwJyB5MT0nMCcgeDI9JzEnIHkyPScxJz48c3RvcCBvZmZzZXQ9JzAnIHN0b3AtY29sb3I9JyMxYTFhMmUnLz48c3RvcCBvZmZzZXQ9JzEnIHN0b3AtY29sb3I9JyMwZjBmMWEnLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0nNjAwJyBoZWlnaHQ9JzgwMCcgZmlsbD0ndXJsKCNnKScvPjx0ZXh0IHg9JzMwMCcgeT0nMzgwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nNzAnIGZpbGw9JyNEN0M0QTMnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZvbnQtd2VpZ2h0PSdib2xkJz5HWU08L3RleHQ+PHRleHQgeD0nMzAwJyB5PSc0NjAnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScyOCcgZmlsbD0nI2ZmZmZmZicgdGV4dC1hbmNob3I9J21pZGRsZScgb3BhY2l0eT0nMC44Jz5XZWVrbHkgU3BsaXQ8L3RleHQ+PC9zdmc+",
+        "promptText": "# ROLE\n\nYou are an elite strength and conditioning coach.\n\n# OBJECTIVE\n\nCreate a complete weekly workout split for a busy adult who wants to build muscle and stay consistent.\n\n# INPUTS\n\nFill in:\n\n• Goal: [e.g. Build muscle / Lose fat / Strength]\n• Training days per week: [e.g. 4]\n• Equipment: [e.g. full gym / dumbbells only / home]\n• Experience: [e.g. beginner / intermediate / advanced]\n• Available minutes per session: [e.g. 60]\n\n# OUTPUT FORMAT\n\nDay-by-day table: Day | Focus | Exercises (sets x reps) | Rest\n\n# RULES\n\n• Balance push, pull, and leg work across the week.\n• Progressively overload without overtraining.\n• Include warm-up and cool-down guidance.\n• Keep explanations short and actionable.\n• End with a one-line recovery note (sleep, protein, water).",
+        "howToUse": [
+          {
+            "id": "gym-weekly-split-howto-1",
+            "order": 1,
+            "text": "Fill in your goal, training days, equipment, experience, and session length."
+          },
+          {
+            "id": "gym-weekly-split-howto-2",
+            "order": 2,
+            "text": "Copy the prompt into your favorite AI image or text tool."
+          },
+          {
+            "id": "gym-weekly-split-howto-3",
+            "order": 3,
+            "text": "Follow the day-by-day plan and adjust sets/reps to your level."
+          }
+        ]
+      },
+      {
+        "id": "gym-progressive-overload-1785900000002",
+        "title": "Progressive Overload Plan",
+        "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2MDAnIGhlaWdodD0nODAwJz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2cnIHgxPScwJyB5MT0nMCcgeDI9JzEnIHkyPScxJz48c3RvcCBvZmZzZXQ9JzAnIHN0b3AtY29sb3I9JyMxYTFhMmUnLz48c3RvcCBvZmZzZXQ9JzEnIHN0b3AtY29sb3I9JyMwZjBmMWEnLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0nNjAwJyBoZWlnaHQ9JzgwMCcgZmlsbD0ndXJsKCNnKScvPjx0ZXh0IHg9JzMwMCcgeT0nMzgwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nNzAnIGZpbGw9JyNEN0M0QTMnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZvbnQtd2VpZ2h0PSdib2xkJz5HWU08L3RleHQ+PHRleHQgeD0nMzAwJyB5PSc0NjAnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScyOCcgZmlsbD0nI2ZmZmZmZicgdGV4dC1hbmNob3I9J21pZGRsZScgb3BhY2l0eT0nMC44Jz5Qcm9ncmVzc2l2ZSBPdmVybG9hZDwvdGV4dD48L3N2Zz4=",
+        "promptText": "# ROLE\n\nYou are a periodization coach.\n\n# OBJECTIVE\n\nBuild a 12-week progressive overload plan for a specific lift or full routine.\n\n# INPUTS\n\nFill in:\n\n• Lift or full routine: [e.g. Squat / Bench / Full body]\n• Current max or working weight: [e.g. 100 kg]\n• Weeks to plan: [default 12]\n• Training days per week: [e.g. 3]\n\n# OUTPUT FORMAT\n\nWeek-by-week table: Week | Sets | Reps | Weight (% of max) | Rest\n\n# RULES\n\n• Increase load or volume gradually (about 2.5–5% per week).\n• Include deload weeks every 4–6 weeks.\n• Use RPE or % of max to scale intensity.\n• Track reps in reserve for auto-regulation.\n• End with a note on when to add weight or reps.",
+        "howToUse": [
+          {
+            "id": "gym-progressive-overload-howto-1",
+            "order": 1,
+            "text": "Enter your lift, current working weight, and number of weeks."
+          },
+          {
+            "id": "gym-progressive-overload-howto-2",
+            "order": 2,
+            "text": "Copy and run the prompt in your AI tool."
+          },
+          {
+            "id": "gym-progressive-overload-howto-3",
+            "order": 3,
+            "text": "Follow the weekly plan and log your lifts to stay on track."
+          }
+        ]
+      },
+      {
+        "id": "gym-beginner-plan-1785900000003",
+        "title": "Beginner Gym Plan",
+        "image": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2MDAnIGhlaWdodD0nODAwJz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2cnIHgxPScwJyB5MT0nMCcgeDI9JzEnIHkyPScxJz48c3RvcCBvZmZzZXQ9JzAnIHN0b3AtY29sb3I9JyMxYTFhMmUnLz48c3RvcCBvZmZzZXQ9JzEnIHN0b3AtY29sb3I9JyMwZjBmMWEnLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0nNjAwJyBoZWlnaHQ9JzgwMCcgZmlsbD0ndXJsKCNnKScvPjx0ZXh0IHg9JzMwMCcgeT0nMzgwJyBmb250LWZhbWlseT0nQXJpYWwnIGZvbnQtc2l6ZT0nNzAnIGZpbGw9JyNEN0M0QTMnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZvbnQtd2VpZ2h0PSdib2xkJz5HWU08L3RleHQ+PHRleHQgeD0nMzAwJyB5PSc0NjAnIGZvbnQtZmFtaWx5PSdBcmlhbCcgZm9udC1zaXplPScyOCcgZmlsbD0nI2ZmZmZmZicgdGV4dC1hbmNob3I9J21pZGRsZScgb3BhY2l0eT0nMC44Jz5CZWdpbm5lciBQbGFuPC90ZXh0Pjwvc3ZnPg==",
+        "promptText": "# ROLE\n\nYou are a friendly, no-nonsense beginner fitness coach.\n\n# OBJECTIVE\n\nCreate a simple, safe, and realistic gym plan for someone starting from zero.\n\n# INPUTS\n\nFill in:\n\n• Age: [e.g. 25]\n• Health notes or injuries: [e.g. none]\n• Days per week: [e.g. 3]\n• Available time: [e.g. 45 minutes]\n\n# OUTPUT FORMAT\n\nA 4-week beginner program: Week | Day | Exercise | Sets x Reps | Rest | Notes\n\n# RULES\n\n• Use machine-based and dumbbell movements first for safety.\n• Teach proper form cues for each exercise.\n• Keep weekly volume low and manageable.\n• Include a 5-minute warm-up and 5-minute cool-down every session.\n• Motivate without pushing too hard in week one.",
+        "howToUse": [
+          {
+            "id": "gym-beginner-plan-howto-1",
+            "order": 1,
+            "text": "Enter your age, health notes, days per week, and available time."
+          },
+          {
+            "id": "gym-beginner-plan-howto-2",
+            "order": 2,
+            "text": "Copy the prompt and run it in your AI tool."
+          },
+          {
+            "id": "gym-beginner-plan-howto-3",
+            "order": 3,
+            "text": "Start week one slowly and focus on form before adding weight."
+          }
+        ]
+      }
+    ]
   }
 ]
