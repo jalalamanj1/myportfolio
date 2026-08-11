@@ -31,6 +31,9 @@ const MurshidPage = lazy(() =>
 const EdaraPage = lazy(() =>
   import('./pages/EdaraPage').then((m) => ({ default: m.EdaraPage }))
 );
+const LegalDocumentPage = lazy(() =>
+  import('./pages/LegalDocumentPage').then((m) => ({ default: m.LegalDocumentPage }))
+);
 
 const RouteFallback: React.FC = () => {
   const { lang } = useLang();
@@ -64,6 +67,7 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/services/Edu" element={<EduPage />} />
             <Route path="/services/Apps" element={<AppsPage />} />
             <Route path="/murshid" element={<MurshidPage />} />
+            <Route path="/murshid/:docId" element={<LegalDocumentPage />} />
             <Route path="/edara" element={<EdaraPage />} />
             <Route path="/services/:categoryId" element={<ServicesPage />} />
             <Route path="/thebossadmin" element={<AdminDashboard />} />

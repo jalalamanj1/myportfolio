@@ -45,6 +45,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'edara.title': 'إدارة',
     'pages.comingSoon': 'قريباً!',
 
+    // Murshid legal documents
+    'murshid.legal': 'الوثائق القانونية',
+    'murshid.legal.desc': 'توثيق قانوني لتطبيق Murshid.',
+    'murshid.privacy': 'سياسة الخصوصية',
+    'murshid.terms': 'شروط الاستخدام',
+    'murshid.eula': 'اتفاقية ترخيص المستخدم النهائي',
+    'legal.back': 'رجوع',
+
     // Prompts Page
     'prompts.back': 'رجوع',
     'prompts.title': 'أوامر الذكاء الإصطناعي',
@@ -170,6 +178,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'murshid.title': 'Murshid',
     'edara.title': 'Edara',
     'pages.comingSoon': 'Coming soon!',
+
+    // Murshid legal documents
+    'murshid.legal': 'Legal Documents',
+    'murshid.legal.desc': 'Legal documentation for the Murshid application.',
+    'murshid.privacy': 'Privacy Policy',
+    'murshid.terms': 'Terms of Use',
+    'murshid.eula': 'End User License Agreement',
+    'legal.back': 'Back',
 
     // Prompts Page
     'prompts.back': 'Back',
