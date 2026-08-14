@@ -39,6 +39,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'edara.title': 'إدارة',
     'pages.comingSoon': 'قريباً!',
 
+    // Murshid description
+    'murshid.tagline': 'إدارة آمنة للمستندات والمعلومات — تعمل دون اتصال بالإنترنت',
+    'murshid.desc.1': 'مرشد هو تطبيق سطح مكتب مصمم لتوفير بيئة آمنة وفعالة للمستخدمين لإدارة وتنظيم مستنداتهم ومعلوماتهم الشخصية.',
+    'murshid.desc.2': 'صُمم التطبيق ليعمل في المقام الأول دون اتصال بالإنترنت، مما يتيح للمستخدمين إدارة معلوماتهم محلياً على أجهزتهم دون الحاجة إلى اتصال مستمر بالإنترنت.',
+    'murshid.desc.3': 'يوفر مرشد أيضاً ميزة نسخ احتياطي اختياري عبر الإنترنت من خلال حساب Google Drive الخاص بالمستخدم. عندما يختار المستخدم تفعيل النسخ الاحتياطي عبر الإنترنت ويربط حسابه في Google، يستخدم مرشد صلاحية الوصول المخولة إلى Google Drive حصرياً لإنشاء وإدارة ملفات النسخ الاحتياطي المرتبطة بالتطبيق.',
+    'murshid.desc.4': 'لا يصل مرشد إلى ملفات المستخدم الشخصية غير ذات الصلة أو أي محتوى آخر مخزن في Google Drive الخاص به، ولا يقرأها ولا يعدلها ولا يديرها. يحتفظ المستخدم بالسيطرة الكاملة على حسابه في Google والبيانات المخزنة.',
+    'murshid.desc.5': 'يُستخدم التحقق من حساب Google لتحديد هوية المستخدم والمصادقة عليه ولتوفير وظيفة النسخ الاحتياطي الاختيارية إلى Google Drive التي يطلبها المستخدم. الوصول إلى Google غير مطلوب للوظائف الأساسية دون اتصال لتطبيق مرشد.',
+
     // Murshid legal documents
     'murshid.legal': 'الوثائق القانونية',
     'murshid.legal.desc': 'توثيق قانوني لتطبيق Murshid.',
@@ -375,6 +383,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'murshid.title': 'Murshid',
     'edara.title': 'Edara',
     'pages.comingSoon': 'Coming soon!',
+
+    // Murshid description
+    'murshid.tagline': 'Secure offline document and personal information management',
+    'murshid.desc.1': 'Murshid is a desktop application designed to provide users with a secure and efficient environment for managing and organizing their documents and personal information.',
+    'murshid.desc.2': 'The application is designed to operate primarily offline, allowing users to manage their information locally on their own device without requiring a continuous internet connection.',
+    'murshid.desc.3': 'Murshid also provides an optional online backup feature through the user’s own Google Drive account. When a user chooses to enable online backup and connects their Google account, Murshid uses the authorized Google Drive access solely to create and manage the backup files associated with the application.',
+    'murshid.desc.4': 'Murshid does not access, read, modify, or manage the user’s unrelated personal files or other content stored in their Google Drive. The user retains full control over their Google account and stored data.',
+    'murshid.desc.5': 'Google account authentication is used to identify and authenticate the user and to provide the optional Google Drive backup functionality requested by the user. Google access is not required for the core offline functionality of Murshid.',
 
     // Murshid legal documents
     'murshid.legal': 'Legal Documents',

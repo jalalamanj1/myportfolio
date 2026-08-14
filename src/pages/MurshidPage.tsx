@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, FileText, ScrollText, ShieldCheck, Sparkles } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
+import murshidImg from '../assets/images/murshid.png';
 
 const LEGAL_LINKS = [
   { path: '/murshid/privacy_policy', key: 'murshid.privacy', icon: ShieldCheck },
@@ -35,14 +36,23 @@ export const MurshidPage: React.FC = () => {
           className="text-center max-w-4xl mx-auto"
         >
           <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 max-w-2xl mx-auto">
-            <Sparkles className="w-10 h-10 text-[#D7C4A3] mx-auto mb-4" />
+            <div className="relative w-40 h-40 mx-auto mb-6 rounded-3xl overflow-hidden border border-white/15 shadow-2xl">
+              <img src={murshidImg} alt={t('murshid.title', lang)} className="w-full h-full object-cover" />
+            </div>
             <h1 className="font-serif text-5xl sm:text-6xl font-light text-white tracking-tight mb-4">
               {t('murshid.title', lang)}
             </h1>
             <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mx-auto mb-6" />
-            <p className="text-xs text-neutral-300 font-light leading-relaxed max-w-md mx-auto">
-              {t('pages.comingSoon', lang)}
+            <p className="text-xs text-[#D7C4A3] font-light tracking-widest uppercase mb-8">
+              {t('murshid.tagline', lang)}
             </p>
+            <div className="space-y-4 text-start">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <p key={n} className="text-sm text-neutral-300 font-light leading-relaxed">
+                  {t(`murshid.desc.${n}`, lang)}
+                </p>
+              ))}
+            </div>
           </div>
         </motion.div>
 
