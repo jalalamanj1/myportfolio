@@ -137,35 +137,7 @@
 }
 
 /* Site protection: `site-protected` is added to <body> only in production
-   builds by useSiteProtection(). Keeps inputs/textareas/code blocks usable
-   while blocking selection everywhere else. */
-.site-protected,
-.site-protected * {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.site-protected input,
-.site-protected textarea,
-.site-protected code,
-.site-protected pre,
-.site-protected [contenteditable="true"] {
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
-}
-
-.site-protected .murshid-copy,
-.site-protected .murshid-copy * {
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
-}
-
+   builds by useSiteProtection(). Text selection and copying remain enabled. */
 .site-protected img {
   -webkit-user-drag: none;
   -moz-user-drag: none;

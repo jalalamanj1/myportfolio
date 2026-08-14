@@ -21,9 +21,7 @@ function isEditableTarget(target: EventTarget | null): boolean {
  *
  * - Runs only in production builds (`import.meta.env.PROD`), so the dev server
  *   stays fully usable.
- * - Blocks the context menu, common DevTools shortcuts, image dragging,
- *   text selection (except in inputs/textareas/code), and copying outside
- *   editable fields.
+ * - Blocks the context menu, common DevTools shortcuts, and image dragging.
  * - Never throws, never blocks animations/scrolling, and never shows alerts.
  *   If DevTools are detected, it only logs a single console warning.
  *
@@ -59,14 +57,6 @@ export function useSiteProtection(enabled = import.meta.env.PROD): void {
       }
     };
 
-    const onCopy = (e: ClipboardEvent) => {
-      if (!isEditableTarget(e.target)) e.preventDefault();
-    };
-
-    const onSelectStart = (e: Event) => {
-      if (!isEditableTarget(e.target)) e.preventDefault();
-    };
-
     let warned = false;
     const onResize = () => {
       if (warned) return;
@@ -79,8 +69,6 @@ export function useSiteProtection(enabled = import.meta.env.PROD): void {
     document.addEventListener('contextmenu', onContextMenu, true);
     document.addEventListener('keydown', onKeyDown, true);
     document.addEventListener('dragstart', onDragStart, true);
-    document.addEventListener('copy', onCopy, true);
-    document.addEventListener('selectstart', onSelectStart, true);
     window.addEventListener('resize', onResize);
 
     return () => {
@@ -88,8 +76,6 @@ export function useSiteProtection(enabled = import.meta.env.PROD): void {
       document.removeEventListener('contextmenu', onContextMenu, true);
       document.removeEventListener('keydown', onKeyDown, true);
       document.removeEventListener('dragstart', onDragStart, true);
-      document.removeEventListener('copy', onCopy, true);
-      document.removeEventListener('selectstart', onSelectStart, true);
       window.removeEventListener('resize', onResize);
     };
   }, [enabled]);
