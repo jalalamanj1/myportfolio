@@ -12,9 +12,15 @@ const LEGAL_LINKS = [
   { path: '/murshid/eula', key: 'murshid.eula', icon: ScrollText },
 ];
 
+const BACKUP_SECTIONS = ['backup.1', 'backup.2', 'backup.3', 'backup.4'] as const;
+const WHY_SECTIONS = ['why.1', 'why.2', 'why.3'] as const;
+
 export const MurshidPage: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
+
+  const headingClass = 'font-serif text-2xl font-light text-[#D7C4A3] mt-8 mb-4 text-start';
+  const paragraphClass = 'text-sm text-neutral-300 font-light leading-relaxed text-start';
 
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
@@ -46,44 +52,40 @@ export const MurshidPage: React.FC = () => {
             <p className="text-xs text-[#D7C4A3] font-light tracking-widest uppercase mb-8">
               {t('murshid.tagline', lang)}
             </p>
-            <div className="space-y-4 text-start">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <p key={n} className="text-sm text-neutral-300 font-light leading-relaxed">
-                  {t(`murshid.desc.${n}`, lang)}
-                </p>
-              ))}
-            </div>
-          </div>
-        </motion.div>
 
-        {/* Legal Documents */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          className="max-w-2xl mx-auto mt-10"
-        >
-          <div className="glass-panel p-6 sm:p-8 rounded-[32px] border border-white/15">
-            <h2 className="text-center font-serif text-2xl sm:text-3xl font-light text-white mb-2">
-              {t('murshid.legal', lang)}
-            </h2>
-            <p className="text-center text-xs text-neutral-400 font-light mb-6">
-              {t('murshid.legal.desc', lang)}
-            </p>
-            <div className="space-y-3">
-              {LEGAL_LINKS.map(({ path, key, icon: Icon }) => (
-                <button
-                  key={path}
-                  onClick={() => navigate(path)}
-                  className="w-full flex items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/50 transition-all text-start cursor-pointer group"
-                >
-                  <span className="flex items-center gap-3 text-sm font-light text-white group-hover:text-[#D7C4A3] transition-colors">
-                    <Icon className="w-5 h-5 text-[#D7C4A3] shrink-0" />
-                    {t(key, lang)}
-                  </span>
-                  <ArrowRight className={`w-4 h-4 text-neutral-400 group-hover:text-[#D7C4A3] transition-all ${lang === 'ar' ? 'rotate-180' : ''}`} />
-                </button>
+            <div className="space-y-4 murshid-copy">
+              <p className={paragraphClass}>{t('murshid.about.1', lang)}</p>
+              <p className={paragraphClass}>{t('murshid.about.2', lang)}</p>
+
+              <h2 className={headingClass}>{t('murshid.onlineBackup', lang)}</h2>
+              {BACKUP_SECTIONS.map((key) => (
+                <p key={key} className={paragraphClass}>{t(`murshid.${key}`, lang)}</p>
               ))}
+
+              <h2 className={headingClass}>{t('murshid.why.title', lang)}</h2>
+              {WHY_SECTIONS.map((key) => (
+                <p key={key} className={paragraphClass}>{t(`murshid.${key}`, lang)}</p>
+              ))}
+
+              <h2 className={headingClass}>{t('murshid.privacy.title', lang)}</h2>
+              <p className={paragraphClass}>{t('murshid.privacy.1', lang)}</p>
+              <p className={paragraphClass}>{t('murshid.privacy.2', lang)}</p>
+
+              <div className="space-y-3 pt-4">
+                {LEGAL_LINKS.map(({ path, key, icon: Icon }) => (
+                  <button
+                    key={path}
+                    onClick={() => navigate(path)}
+                    className="w-full flex items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/50 transition-all text-start cursor-pointer group"
+                  >
+                    <span className="flex items-center gap-3 text-sm font-light text-white group-hover:text-[#D7C4A3] transition-colors">
+                      <Icon className="w-5 h-5 text-[#D7C4A3] shrink-0" />
+                      {t(key, lang)}
+                    </span>
+                    <ArrowRight className={`w-4 h-4 text-neutral-400 group-hover:text-[#D7C4A3] transition-all ${lang === 'ar' ? 'rotate-180' : ''}`} />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>

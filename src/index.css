@@ -158,6 +158,14 @@
   user-select: text;
 }
 
+.site-protected .murshid-copy,
+.site-protected .murshid-copy * {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
 .site-protected img {
   -webkit-user-drag: none;
   -moz-user-drag: none;
