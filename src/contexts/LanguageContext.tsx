@@ -8,9 +8,9 @@ interface LanguageContextValue {
 }
 
 export const LanguageContext = createContext<LanguageContextValue>({
-  lang: 'ar',
+  lang: 'en',
   setLang: () => {},
-  dir: 'rtl',
+  dir: 'ltr',
 });
 
 const STORAGE_KEY = 'portfolio_lang';
@@ -21,7 +21,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === 'ar' || stored === 'en') return stored;
     } catch {}
-    return 'ar';
+    return 'en';
   });
 
   const dir = lang === 'ar' ? 'rtl' : 'ltr';
