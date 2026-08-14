@@ -18,8 +18,11 @@ import { GitHubSyncCard } from './GitHubSyncCard';
 import { getAboutData, saveStoredAbout, fetchAbout, getStoredAbout } from '../data/aboutStore';
 import { PRODUCTS } from '../data/portfolioData';
 import { assetUrl } from '../utils/asset';
+import { useLang } from '../contexts/LanguageContext';
+import { t } from '../i18n';
 
-const ADMIN_PASSWORD = 'admin2026';
+const ADMIN_EMAIL = 'thebossadmin@jalalamanj.online';
+const ADMIN_PASSWORD = 'Ja1a1Amanj#OG@1';
 const AUTH_KEY = 'portfolio_admin_auth';
 
 const ICON_OPTIONS = [
@@ -84,9 +87,11 @@ const slugify = (value: string): string =>
   value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 export const AdminDashboard: React.FC = () => {
+  const { lang } = useLang();
   const [isAuthed, setIsAuthed] = useState<boolean>(
     () => sessionStorage.getItem(AUTH_KEY) === '1'
   );
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [products, setProducts] = useState<Product[]>(() => getStoredProducts() ?? PRODUCTS);
@@ -258,18 +263,19 @@ export const AdminDashboard: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    if (email.trim().toLowerCase() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
       setIsAuthed(true);
       setLoginError('');
       sessionStorage.setItem(AUTH_KEY, '1');
     } else {
-      setLoginError('Incorrect password. Try again.');
+      setLoginError(t('admin.wrongCredentials', lang));
     }
   };
 
   const handleLogout = () => {
     setIsAuthed(false);
     sessionStorage.removeItem(AUTH_KEY);
+    setEmail('');
     setPassword('');
   };
 
@@ -487,7 +493,7 @@ export const AdminDashboard: React.FC = () => {
       setTimeout(() => setPromptsSavedFlash(false), 2000);
     } catch (err) {
       console.error('Failed to save prompts:', err);
-      setGhStatus('Could not save prompts to browser storage.');
+      setGhStatus(t('gh.saveFailedPrompts', lang));
     }
     if (ghConfig.token) {
       void handlePushPromptsToGitHub(false);
@@ -496,16 +502,16 @@ export const AdminDashboard: React.FC = () => {
 
   const handlePushProductsToGitHub = async (showErrors = true, data?: Product[]) => {
     if (!ghConfig.token) {
-      if (showErrors) setGhStatus('Enter a GitHub token first.');
+      if (showErrors) setGhStatus(t('gh.tokenFirst', lang));
       return;
     }
     setGhBusy(true);
-    setGhStatus('Pushing apps to GitHub…');
+    setGhStatus(t('gh.pushApps', lang));
     try {
       await pushProductsToGitHub(ghConfig.token, ghConfig.repo, data ?? products);
-      setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
+      setGhStatus(t('gh.pushed', lang));
     } catch (err) {
-      setGhStatus(err instanceof Error ? err.message : 'Push failed.');
+      setGhStatus(err instanceof Error ? err.message : t('gh.failed', lang));
     } finally {
       setGhBusy(false);
     }
@@ -517,12 +523,12 @@ export const AdminDashboard: React.FC = () => {
       return;
     }
     setGhBusy(true);
-    setGhStatus('Pushing services to GitHub…');
+    setGhStatus(t('gh.pushServices', lang));
     try {
       await pushServicesToGitHub(ghConfig.token, ghConfig.repo, data ?? services);
-      setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
+      setGhStatus(t('gh.pushed', lang));
     } catch (err) {
-      setGhStatus(err instanceof Error ? err.message : 'Push failed.');
+      setGhStatus(err instanceof Error ? err.message : t('gh.failed', lang));
     } finally {
       setGhBusy(false);
     }
@@ -534,12 +540,12 @@ export const AdminDashboard: React.FC = () => {
       return;
     }
     setGhBusy(true);
-    setGhStatus('Pushing to GitHub…');
+    setGhStatus(t('gh.pushPrompts', lang));
     try {
       await pushPromptsToGitHub(ghConfig.token, ghConfig.repo, data ?? promptCats);
-      setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
+      setGhStatus(t('gh.pushed', lang));
     } catch (err) {
-      setGhStatus(err instanceof Error ? err.message : 'Push failed.');
+      setGhStatus(err instanceof Error ? err.message : t('gh.failed', lang));
     } finally {
       setGhBusy(false);
     }
@@ -564,12 +570,12 @@ export const AdminDashboard: React.FC = () => {
       return;
     }
     setGhBusy(true);
-    setGhStatus('Pushing about data to GitHub…');
+    setGhStatus(t('gh.pushAbout', lang));
     try {
       await pushAboutToGitHub(ghConfig.token, ghConfig.repo, data ?? about);
-      setGhStatus('Pushed — site is redeploying. Visitors see updates in ~2 min.');
+      setGhStatus(t('gh.pushed', lang));
     } catch (err) {
-      setGhStatus(err instanceof Error ? err.message : 'Push failed.');
+      setGhStatus(err instanceof Error ? err.message : t('gh.failed', lang));
     } finally {
       setGhBusy(false);
     }
@@ -652,7 +658,7 @@ export const AdminDashboard: React.FC = () => {
 
   const handleSaveGhConfig = () => {
     saveGitHubConfig(ghConfig);
-    setGhStatus('GitHub connection saved.');
+    setGhStatus(t('gh.connectionSaved', lang));
   };
 
   const handleDownloadPrompts = () => {
@@ -790,19 +796,28 @@ export const AdminDashboard: React.FC = () => {
             <div className="w-14 h-14 rounded-2xl bg-[#D7C4A3]/20 border border-[#D7C4A3]/40 flex items-center justify-center mb-4">
               <Lock className="w-6 h-6 text-[#D7C4A3]" />
             </div>
-            <h1 className="font-serif text-3xl font-light tracking-wide">Admin Access</h1>
+            <h1 className="font-serif text-3xl font-light tracking-wide">{t('admin.access', lang)}</h1>
             <p className="text-xs text-neutral-300 font-light mt-2">
-              Enter the admin password to manage portfolio apps.
+              {t('admin.access.desc', lang)}
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t('admin.emailPlaceholder', lang)}
+              autoFocus
+              required
+              className="glass-input w-full px-4 py-3.5 text-sm font-light text-white placeholder-neutral-500"
+            />
+            <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              autoFocus
+              placeholder={t('admin.password', lang)}
+              required
               className="glass-input w-full px-4 py-3.5 text-sm font-light text-white placeholder-neutral-500"
             />
             {loginError && (
@@ -812,7 +827,7 @@ export const AdminDashboard: React.FC = () => {
               type="submit"
               className="w-full glass-button-primary py-3.5 rounded-xl text-xs font-medium uppercase tracking-[0.2em] cursor-pointer"
             >
-              Unlock Dashboard
+              {t('admin.unlock', lang)}
             </button>
           </form>
         </motion.div>
@@ -831,22 +846,22 @@ export const AdminDashboard: React.FC = () => {
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="font-serif text-3xl sm:text-4xl font-light tracking-wide">
-              Admin Control
+              {t('admin.control', lang)}
             </h1>
             <p className="text-xs text-neutral-300 font-light mt-1">
-              Manage the apps and services shown on the site. Changes persist in this browser.
+              {t('admin.control.desc', lang)}
             </p>
           </div>
           <div className="flex items-center gap-2">
             {savedFlash && (
-              <span className="text-xs text-[#D7C4A3] font-light">Saved</span>
+              <span className="text-xs text-[#D7C4A3] font-light">{t('admin.saved', lang)}</span>
             )}
             <button
               onClick={handleLogout}
               className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Logout
+              {t('admin.logout', lang)}
             </button>
           </div>
         </div>
@@ -860,7 +875,7 @@ export const AdminDashboard: React.FC = () => {
                 : 'glass-button text-neutral-300 hover:text-white'
             }`}
           >
-            Apps
+            {t('admin.tab.apps', lang)}
           </button>
           <button
             onClick={() => setTab('services')}
@@ -870,7 +885,7 @@ export const AdminDashboard: React.FC = () => {
                 : 'glass-button text-neutral-300 hover:text-white'
             }`}
           >
-            Services
+            {t('admin.tab.services', lang)}
           </button>
           <button
             onClick={() => setTab('prompts')}
@@ -880,7 +895,7 @@ export const AdminDashboard: React.FC = () => {
                 : 'glass-button text-neutral-300 hover:text-white'
             }`}
           >
-            Prompts
+            {t('admin.tab.prompts', lang)}
           </button>
           <button
             onClick={() => setTab('profile')}
@@ -890,7 +905,7 @@ export const AdminDashboard: React.FC = () => {
                 : 'glass-button text-neutral-300 hover:text-white'
             }`}
           >
-            Profile
+            {t('admin.tab.profile', lang)}
           </button>
         </div>
 
@@ -903,7 +918,7 @@ export const AdminDashboard: React.FC = () => {
             className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
           >
             <Plus className="w-4 h-4" />
-            Add New App
+            {t('admin.addApp', lang)}
           </button>
           <div className="flex items-center gap-2">
             <button
@@ -911,14 +926,14 @@ export const AdminDashboard: React.FC = () => {
               className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
             >
               <Save className="w-3.5 h-3.5" />
-              Save Changes
+              {t('admin.saveChanges', lang)}
             </button>
             <button
               onClick={handleReset}
               className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              Reset to Defaults
+              {t('admin.resetDefaults', lang)}
             </button>
           </div>
         </div>
@@ -930,19 +945,19 @@ export const AdminDashboard: React.FC = () => {
           busy={ghBusy}
           onSaveConfig={handleSaveGhConfig}
           onPush={() => handlePushProductsToGitHub(true)}
-          pushLabel="Push Apps to GitHub"
+          pushLabel={t('gh.pushAppsLabel', lang)}
         />
 
         {isFormOpen && (
           <form id="product-form" onSubmit={handleSaveForm} onPaste={handleImagePaste} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
             <div className="flex items-center justify-between mb-2">
               <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
-                {editingId ? 'Edit App' : 'Add New App'}
+                {t(editingId ? 'admin.editApp' : 'admin.addApp', lang)}
               </h2>
               <button
                 type="button"
                 onClick={() => setIsFormOpen(false)}
-                aria-label="Close form"
+                aria-label={t('admin.closeForm', lang)}
                 className="p-2 rounded-full glass-button cursor-pointer"
               >
                 <X className="w-4 h-4" />
@@ -951,7 +966,7 @@ export const AdminDashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                Title *
+                {t('admin.title', lang)} *
                 <input
                   required
                   value={form.title}
@@ -960,7 +975,7 @@ export const AdminDashboard: React.FC = () => {
                 />
               </label>
               <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                Category *
+                {t('admin.category', lang)} *
                 <input
                   required
                   value={form.category}
@@ -969,7 +984,7 @@ export const AdminDashboard: React.FC = () => {
                 />
               </label>
               <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                Year
+                {t('admin.year', lang)}
                 <input
                   value={form.year}
                   onChange={(e) => handleFormField('year', e.target.value)}
@@ -977,7 +992,7 @@ export const AdminDashboard: React.FC = () => {
                 />
               </label>
               <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                Client
+                {t('admin.client', lang)}
                 <input
                   value={form.client}
                   onChange={(e) => handleFormField('client', e.target.value)}
@@ -987,7 +1002,7 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-              Short Description *
+              {t('admin.shortDesc', lang)} *
               <input
                 required
                 value={form.shortDescription}
@@ -997,7 +1012,7 @@ export const AdminDashboard: React.FC = () => {
             </label>
 
             <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-              Full Description
+              {t('admin.fullDesc', lang)}
               <textarea
                 rows={3}
                 value={form.fullDescription}
@@ -1007,7 +1022,7 @@ export const AdminDashboard: React.FC = () => {
                 </label>
 
               <div className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                Image
+                {t('admin.image', lang)}
                 <div className="flex flex-wrap gap-2 items-center">
                   <button
                     type="button"
@@ -1015,7 +1030,7 @@ export const AdminDashboard: React.FC = () => {
                     className="flex items-center gap-1.5 p-2 rounded-xl border border-white/15 text-[10px] uppercase tracking-wider text-neutral-300 hover:text-white hover:border-[#D7C4A3]/60 transition-all cursor-pointer"
                   >
                     <Upload className="w-3.5 h-3.5" />
-                    Upload Image
+                    {t('admin.uploadImage', lang)}
                   </button>
                   <input
                     ref={fileInputRef}
@@ -1033,21 +1048,21 @@ export const AdminDashboard: React.FC = () => {
                         : 'border-white/15 text-neutral-400 hover:border-white/40'
                     }`}
                   >
-                    Custom URL
+                    {t('admin.customUrl', lang)}
                   </button>
                   <span className="text-[10px] text-neutral-400 font-light">
-                    or paste an image (Ctrl+V)
+                    {t('admin.pasteImage', lang)}
                   </span>
                 </div>
                 {form.image.startsWith('data:') ? (
                   <div className="flex items-center gap-3 mt-1">
                     <img
                       src={assetUrl(form.image)}
-                      alt="Uploaded preview"
+                      alt={t('admin.uploadedPreview', lang)}
                       className="w-16 h-12 object-cover rounded-lg border border-[#D7C4A3]/40"
                     />
                     <span className="text-[10px] text-neutral-400 font-light">
-                      Uploaded image (stored in this browser)
+                      {t('admin.uploadedPreview', lang)}
                     </span>
                   </div>
                 ) : (
@@ -1055,7 +1070,7 @@ export const AdminDashboard: React.FC = () => {
                     <input
                       value={form.image}
                       onChange={(e) => handleFormField('image', e.target.value)}
-                      placeholder="or paste an image URL here"
+                      placeholder={t('admin.pasteUrl', lang)}
                       className="glass-input px-4 py-3 text-sm font-light text-white"
                     />
                   )
@@ -1068,19 +1083,19 @@ export const AdminDashboard: React.FC = () => {
                   <input
                     value={row.label}
                     onChange={(e) => updateTagRow(i, 'label', e.target.value)}
-                    placeholder="Label"
+                    placeholder={t('admin.label', lang)}
                     className="glass-input px-3 py-2.5 text-sm font-light text-white flex-1"
                   />
                   <input
                     value={row.value}
                     onChange={(e) => updateTagRow(i, 'value', e.target.value)}
-                    placeholder="Value"
+                    placeholder={t('admin.value', lang)}
                     className="glass-input px-3 py-2.5 text-sm font-light text-white flex-1"
                   />
                   <button
                     type="button"
                     onClick={() => removeTagRow(i)}
-                    aria-label="Remove tag"
+                    aria-label={t('admin.removeTag', lang)}
                     className="p-2 rounded-xl text-neutral-400 hover:text-red-400 hover:bg-white/10 transition-colors shrink-0"
                   >
                     <X size={16} />
@@ -1092,12 +1107,12 @@ export const AdminDashboard: React.FC = () => {
                 onClick={addTagRow}
                 className="flex items-center gap-1.5 self-start px-3 py-2 rounded-xl text-xs text-neutral-300 border border-white/15 hover:border-[#D7C4A3]/50 hover:text-[#D7C4A3] transition-colors"
               >
-                <Plus size={14} /> Add Tag
+                <Plus size={14} /> {t('admin.addTag', lang)}
               </button>
             </div>
 
             <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-              Download URL
+              {t('admin.downloadUrl', lang)}
               <input
                 value={form.downloadUrl ?? ''}
                 onChange={(e) => handleFormField('downloadUrl', e.target.value)}
@@ -1111,7 +1126,7 @@ export const AdminDashboard: React.FC = () => {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
               >
                 <Save className="w-4 h-4" />
-                {editingId ? 'Update App' : 'Add App'}
+                {t(editingId ? 'admin.updateApp' : 'admin.addAppShort', lang)}
               </button>
               <button
                 type="button"
@@ -1141,20 +1156,20 @@ export const AdminDashboard: React.FC = () => {
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-medium text-white truncate">{product.title}</h3>
                 <p className="text-xs text-neutral-400 font-light truncate">
-                  {product.category} · {product.year} · {product.client || 'No client'}
+                  {product.category} · {product.year} · {product.client || t('admin.noClient', lang)}
                 </p>
               </div>
               <div className="flex items-center gap-1.5 shrink-0">
                 <button
                   onClick={() => openEditForm(product)}
-                  aria-label={`Edit ${product.title}`}
+                  aria-label={t('admin.editX', lang, { name: product.title })}
                   className="p-2.5 rounded-full glass-button cursor-pointer"
                 >
                   <Pencil className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDelete(product.id)}
-                  aria-label={`Delete ${product.title}`}
+                  aria-label={t('admin.deleteX', lang, { name: product.title })}
                   className="p-2.5 rounded-full glass-button cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4 text-red-400" />
@@ -1166,14 +1181,14 @@ export const AdminDashboard: React.FC = () => {
 
         <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs text-neutral-400 font-light">
-            {products.length} app{products.length === 1 ? '' : 's'} · Click "Save Changes" to persist.
+            {t('admin.appsNote', lang, { count: String(products.length) })}
           </p>
           <a
             href="/"
             className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
           >
             <Eye className="w-3.5 h-3.5" />
-            View Site
+            {t('admin.viewSite', lang)}
           </a>
         </div>
         </>
@@ -1187,18 +1202,18 @@ export const AdminDashboard: React.FC = () => {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
-                Add Category
+                {t('admin.addCategory', lang)}
               </button>
               <div className="flex items-center gap-2">
                 {servicesSavedFlash && (
-                  <span className="text-xs text-[#D7C4A3] font-light">Saved</span>
+                  <span className="text-xs text-[#D7C4A3] font-light">{t('admin.saved', lang)}</span>
                 )}
                 <button
                   onClick={handleSaveAllServices}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <Save className="w-3.5 h-3.5" />
-                  Save Services
+                  {t('admin.saveServices', lang)}
                 </button>
                 <button
                   onClick={handleResetServices}
@@ -1215,28 +1230,28 @@ export const AdminDashboard: React.FC = () => {
               onConfigChange={setGhConfig}
               status={ghStatus}
               busy={ghBusy}
-              onSaveConfig={handleSaveGhConfig}
-              onPush={() => handlePushServicesToGitHub(true)}
-              pushLabel="Push Services to GitHub"
-            />
+          onSaveConfig={handleSaveGhConfig}
+          onPush={() => handlePushServicesToGitHub(true)}
+          pushLabel={t('gh.pushServicesLabel', lang)}
+        />
 
             {catFormOpen && (
               <form id="service-category-form" onSubmit={handleSaveCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
-                    {catEditingId ? 'Edit Category' : 'Add Category'}
+                    {t(catEditingId ? 'admin.editCategory' : 'admin.addCategory', lang)}
                   </h2>
                   <button
                     type="button"
                     onClick={() => setCatFormOpen(false)}
-                    aria-label="Close form"
+                    aria-label={t('admin.closeForm', lang)}
                     className="p-2 rounded-full glass-button cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Title *
+                  {t('admin.title', lang)} *
                   <input
                     required
                     value={catForm.title}
@@ -1245,7 +1260,7 @@ export const AdminDashboard: React.FC = () => {
                   />
                 </label>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Subtitle
+                  {t('admin.subtitle', lang)}
                   <input
                     value={catForm.subtitle}
                     onChange={(e) => setCatForm({ ...catForm, subtitle: e.target.value })}
@@ -1253,7 +1268,7 @@ export const AdminDashboard: React.FC = () => {
                   />
                 </label>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Description
+                  {t('admin.description', lang)}
                   <textarea
                     rows={3}
                     value={catForm.description}
@@ -1262,7 +1277,7 @@ export const AdminDashboard: React.FC = () => {
                   />
                 </label>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Icon
+                  {t('admin.icon', lang)}
                   <select
                     value={catForm.iconName}
                     onChange={(e) => setCatForm({ ...catForm, iconName: e.target.value })}
@@ -1281,14 +1296,14 @@ export const AdminDashboard: React.FC = () => {
                     className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
                   >
                     <Save className="w-4 h-4" />
-                    {catEditingId ? 'Update Category' : 'Add Category'}
+                    {t(catEditingId ? 'admin.updateCategory' : 'admin.addCategory', lang)}
                   </button>
                   <button
                     type="button"
                     onClick={() => setCatFormOpen(false)}
                     className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                   >
-                    Cancel
+                    {t('admin.cancel', lang)}
                   </button>
                 </div>
               </form>
@@ -1298,19 +1313,19 @@ export const AdminDashboard: React.FC = () => {
               <form id="service-item-form" onSubmit={handleSaveService} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
-                    {svcEditingId ? 'Edit Service' : 'Add Service'}
+                    {t(svcEditingId ? 'admin.editService' : 'admin.addService', lang)}
                   </h2>
                   <button
                     type="button"
                     onClick={() => setSvcFormOpen(false)}
-                    aria-label="Close form"
+                    aria-label={t('admin.closeForm', lang)}
                     className="p-2 rounded-full glass-button cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Title *
+                  {t('admin.title', lang)} *
                   <input
                     required
                     value={svcForm.title}
@@ -1319,7 +1334,7 @@ export const AdminDashboard: React.FC = () => {
                   />
                 </label>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Description *
+                  {t('admin.description', lang)} *
                   <textarea
                     required
                     rows={3}
@@ -1329,7 +1344,7 @@ export const AdminDashboard: React.FC = () => {
                   />
                 </label>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Icon
+                  {t('admin.icon', lang)}
                   <select
                     value={svcForm.iconName}
                     onChange={(e) => setSvcForm({ ...svcForm, iconName: e.target.value })}
@@ -1343,7 +1358,7 @@ export const AdminDashboard: React.FC = () => {
                   </select>
                 </label>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Deliverables (one per line)
+                  {t('admin.deliverables', lang)}
                   <textarea
                     rows={3}
                     value={(svcForm.deliverables ?? []).join('\n')}
@@ -1354,7 +1369,7 @@ export const AdminDashboard: React.FC = () => {
                   />
                 </label>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Button Action
+                  {t('admin.buttonAction', lang)}
                   <select
                     value={svcForm.actionType ?? 'request'}
                     onChange={(e) =>
@@ -1365,14 +1380,14 @@ export const AdminDashboard: React.FC = () => {
                     }
                     className="glass-input px-4 py-3 text-sm font-light text-white bg-black/40"
                   >
-                    <option value="request" className="bg-black text-white">Request Service</option>
-                    <option value="link" className="bg-black text-white">Open Link</option>
-                    <option value="download" className="bg-black text-white">Download</option>
+                    <option value="request" className="bg-black text-white">{t('admin.actionRequest', lang)}</option>
+                    <option value="link" className="bg-black text-white">{t('admin.actionLink', lang)}</option>
+                    <option value="download" className="bg-black text-white">{t('admin.actionDownload', lang)}</option>
                   </select>
                 </label>
                 {(svcForm.actionType === 'link' || svcForm.actionType === 'download') && (
                   <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                    Link / File URL *
+                    {t('admin.linkUrl', lang)} *
                     <input
                       required
                       value={svcForm.actionUrl ?? ''}
@@ -1383,11 +1398,11 @@ export const AdminDashboard: React.FC = () => {
                   </label>
                 )}
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Button Label (optional)
+                  {t('admin.buttonLabel', lang)}
                   <input
                     value={svcForm.actionLabel ?? ''}
                     onChange={(e) => setSvcForm({ ...svcForm, actionLabel: e.target.value })}
-                    placeholder="Leave empty for default (e.g. Request Service)"
+                    placeholder={t('admin.buttonLabelPlaceholder', lang)}
                     className="glass-input px-4 py-3 text-sm font-light text-white"
                   />
                 </label>
@@ -1397,14 +1412,14 @@ export const AdminDashboard: React.FC = () => {
                     className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
                   >
                     <Save className="w-4 h-4" />
-                    {svcEditingId ? 'Update Service' : 'Add Service'}
+                    {t(svcEditingId ? 'admin.updateService' : 'admin.addService', lang)}
                   </button>
                   <button
                     type="button"
                     onClick={() => setSvcFormOpen(false)}
                     className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                   >
-                    Cancel
+                    {t('admin.cancel', lang)}
                   </button>
                 </div>
               </form>
@@ -1413,9 +1428,9 @@ export const AdminDashboard: React.FC = () => {
             {services.length === 0 ? (
               <div className="p-10 text-center rounded-2xl bg-white/5 border border-white/10">
                 <Layers className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4" />
-                <h3 className="font-serif text-xl font-light text-white mb-1">No categories yet</h3>
+                <h3 className="font-serif text-xl font-light text-white mb-1">{t('admin.noCategories', lang)}</h3>
                 <p className="text-xs text-neutral-400 font-light">
-                  Click "Add Category" to create your first service category, then add services inside it.
+                  {t('admin.noCategories.desc', lang)}
                 </p>
               </div>
             ) : (
@@ -1430,21 +1445,21 @@ export const AdminDashboard: React.FC = () => {
                         <div className="min-w-0">
                           <h3 className="text-sm font-medium text-white truncate">{cat.title}</h3>
                           <p className="text-xs text-neutral-400 font-light">
-                            {cat.services.length} service{cat.services.length === 1 ? '' : 's'}
+                            {t('admin.servicesCount', lang, { count: String(cat.services.length) })}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0">
                         <button
                           onClick={() => openEditCategory(cat)}
-                          aria-label={`Edit ${cat.title}`}
+                          aria-label={t('admin.editX', lang, { name: cat.title })}
                           className="p-2.5 rounded-full glass-button cursor-pointer"
                         >
                           <Pencil className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteCategory(cat.id)}
-                          aria-label={`Delete ${cat.title}`}
+                          aria-label={t('admin.deleteX', lang, { name: cat.title })}
                           className="p-2.5 rounded-full glass-button cursor-pointer"
                         >
                           <Trash2 className="w-4 h-4 text-red-400" />
@@ -1465,14 +1480,14 @@ export const AdminDashboard: React.FC = () => {
                           <div className="flex items-center gap-1.5 shrink-0">
                             <button
                               onClick={() => openEditService(cat, svc)}
-                              aria-label={`Edit ${svc.title}`}
+                              aria-label={t('admin.editX', lang, { name: svc.title })}
                               className="p-2 rounded-lg glass-button cursor-pointer"
                             >
                               <Pencil className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => handleDeleteService(cat.id, svc.id)}
-                              aria-label={`Delete ${svc.title}`}
+                              aria-label={t('admin.deleteX', lang, { name: svc.title })}
                               className="p-2 rounded-lg glass-button cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5 text-red-400" />
@@ -1484,7 +1499,7 @@ export const AdminDashboard: React.FC = () => {
                         onClick={() => openServiceForm(cat.id)}
                         className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs text-neutral-300 border border-dashed border-white/20 hover:border-[#D7C4A3]/50 hover:text-[#D7C4A3] transition-colors"
                       >
-                        <Plus size={14} /> Add Service
+                        <Plus size={14} /> {t('admin.addService', lang)}
                       </button>
                     </div>
                   </div>
@@ -1494,7 +1509,7 @@ export const AdminDashboard: React.FC = () => {
 
             <div className="mt-8 pt-6 border-t border-white/10">
               <p className="text-xs text-neutral-400 font-light">
-                {services.length} categor{services.length === 1 ? 'y' : 'ies'} · Click "Save Services" to persist.
+                {t('admin.servicesNote', lang, { count: String(services.length) })}
               </p>
             </div>
           </div>
@@ -1508,32 +1523,32 @@ export const AdminDashboard: React.FC = () => {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
-                Add Category
+                {t('admin.addCategory', lang)}
               </button>
               <div className="flex items-center gap-2">
                 {promptsSavedFlash && (
-                  <span className="text-xs text-[#D7C4A3] font-light">Saved</span>
+                  <span className="text-xs text-[#D7C4A3] font-light">{t('admin.saved', lang)}</span>
                 )}
                 <button
                   onClick={handleSaveAllPrompts}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <Save className="w-3.5 h-3.5" />
-                  Save Prompts
+                  {t('admin.savePrompts', lang)}
                 </button>
                 <button
                   onClick={handleDownloadPrompts}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  Download Prompts JSON
+                  {t('admin.downloadPromptsJson', lang)}
                 </button>
                 <button
                   onClick={handleResetPrompts}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  Reset Prompts
+                  {t('admin.resetPrompts', lang)}
                 </button>
               </div>
             </div>
@@ -1543,28 +1558,28 @@ export const AdminDashboard: React.FC = () => {
               onConfigChange={setGhConfig}
               status={ghStatus}
               busy={ghBusy}
-              onSaveConfig={handleSaveGhConfig}
-              onPush={() => handlePushPromptsToGitHub(true)}
-              pushLabel="Push Prompts to GitHub"
-            />
+          onSaveConfig={handleSaveGhConfig}
+          onPush={() => handlePushPromptsToGitHub(true)}
+          pushLabel={t('gh.pushPromptsLabel', lang)}
+        />
 
             {promptCatFormOpen && (
               <form id="prompt-category-form" onSubmit={handleSavePromptCategory} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
-                    {promptCatEditingId ? 'Edit Category' : 'Add Category'}
+                    {t(promptCatEditingId ? 'admin.editCategory' : 'admin.addCategory', lang)}
                   </h2>
                   <button
                     type="button"
                     onClick={() => setPromptCatFormOpen(false)}
-                    aria-label="Close form"
+                    aria-label={t('admin.closeForm', lang)}
                     className="p-2 rounded-full glass-button cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Title *
+                  {t('admin.title', lang)} *
                   <input
                     required
                     value={promptCatForm.title}
@@ -1573,7 +1588,15 @@ export const AdminDashboard: React.FC = () => {
                   />
                 </label>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Icon
+                  {t('admin.titleAr', lang)}
+                  <input
+                    value={promptCatForm.titleAr ?? ''}
+                    onChange={(e) => setPromptCatForm({ ...promptCatForm, titleAr: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white"
+                  />
+                </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  {t('admin.icon', lang)}
                   <select
                     value={promptCatForm.iconName}
                     onChange={(e) => setPromptCatForm({ ...promptCatForm, iconName: e.target.value })}
@@ -1592,14 +1615,14 @@ export const AdminDashboard: React.FC = () => {
                     className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
                   >
                     <Save className="w-4 h-4" />
-                    {promptCatEditingId ? 'Update Category' : 'Add Category'}
+                    {t(promptCatEditingId ? 'admin.updateCategory' : 'admin.addCategory', lang)}
                   </button>
                   <button
                     type="button"
                     onClick={() => setPromptCatFormOpen(false)}
                     className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                   >
-                    Cancel
+                    {t('admin.cancel', lang)}
                   </button>
                 </div>
               </form>
@@ -1609,19 +1632,19 @@ export const AdminDashboard: React.FC = () => {
               <form id="prompt-form" onSubmit={handleSavePrompt} onPaste={handlePromptImagePaste} className="mb-8 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="font-serif text-xl font-light text-[#D7C4A3]">
-                    {promptEditingId ? 'Edit Prompt' : 'Add Prompt'}
+                    {t(promptEditingId ? 'admin.editPrompt' : 'admin.addPrompt', lang)}
                   </h2>
                   <button
                     type="button"
                     onClick={() => setPromptFormOpen(false)}
-                    aria-label="Close form"
+                    aria-label={t('admin.closeForm', lang)}
                     className="p-2 rounded-full glass-button cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Title *
+                  {t('admin.title', lang)} *
                   <input
                     required
                     value={promptForm.title}
@@ -1629,8 +1652,16 @@ export const AdminDashboard: React.FC = () => {
                     className="glass-input px-4 py-3 text-sm font-light text-white"
                   />
                 </label>
+                <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+                  {t('admin.titleAr', lang)}
+                  <input
+                    value={promptForm.titleAr ?? ''}
+                    onChange={(e) => setPromptForm({ ...promptForm, titleAr: e.target.value })}
+                    className="glass-input px-4 py-3 text-sm font-light text-white"
+                  />
+                </label>
                 <div className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Image
+                  {t('admin.image', lang)}
                   <div className="flex flex-wrap gap-2 items-center">
                     <button
                       type="button"
@@ -1638,7 +1669,7 @@ export const AdminDashboard: React.FC = () => {
                       className="flex items-center gap-1.5 p-2 rounded-xl border border-white/15 text-[10px] uppercase tracking-wider text-neutral-300 hover:text-white hover:border-[#D7C4A3]/60 transition-all cursor-pointer"
                     >
                       <Upload className="w-3.5 h-3.5" />
-                      Upload Image
+                      {t('admin.uploadImage', lang)}
                     </button>
                     <input
                       ref={promptFileInputRef}
@@ -1648,12 +1679,12 @@ export const AdminDashboard: React.FC = () => {
                       className="hidden"
                     />
                     <span className="text-[10px] text-neutral-400 font-light">
-                      or paste an image (Ctrl+V)
+                      {t('admin.pasteImage', lang)}
                     </span>
                     {promptForm.image !== '' && (
                       <img
                         src={assetUrl(promptForm.image)}
-                        alt="Preview"
+                        alt={t('admin.preview', lang)}
                         className="w-16 h-12 object-cover rounded-lg border border-[#D7C4A3]/40"
                       />
                     )}
@@ -1662,19 +1693,19 @@ export const AdminDashboard: React.FC = () => {
                     <input
                       value={promptForm.image}
                       onChange={(e) => setPromptForm({ ...promptForm, image: e.target.value })}
-                      placeholder="or paste an image URL here"
+                      placeholder={t('admin.pasteUrl', lang)}
                       className="glass-input px-4 py-3 text-sm font-light text-white"
                     />
                   )}
                 </div>
                 <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                  Prompt Text (hidden from visitors — only copied to clipboard)
+                  {t('admin.promptText', lang)}
                   <textarea
                     required
                     rows={5}
                     value={promptForm.promptText}
                     onChange={(e) => setPromptForm({ ...promptForm, promptText: e.target.value })}
-                    placeholder="Paste the prompt text here..."
+                    placeholder={t('admin.promptTextPlaceholder', lang)}
                     className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
                   />
                 </label>
@@ -1683,7 +1714,7 @@ export const AdminDashboard: React.FC = () => {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <label className="text-xs text-neutral-300 font-light">
-                      How to Use (optional)
+                      {t('admin.howToUse', lang)}
                     </label>
                     <button
                       type="button"
@@ -1699,7 +1730,7 @@ export const AdminDashboard: React.FC = () => {
                       className="text-xs text-[#D7C4A3] hover:text-white transition-colors cursor-pointer flex items-center gap-1"
                     >
                       <Plus className="w-3.5 h-3.5" />
-                      Add Step
+                      {t('admin.addStep', lang)}
                     </button>
                   </div>
                   {promptForm.howToUse.length > 0 && (
@@ -1715,20 +1746,36 @@ export const AdminDashboard: React.FC = () => {
                             <span className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-[#D7C4A3]/20 border border-[#D7C4A3]/40 text-[#D7C4A3] text-[10px] flex items-center justify-center font-mono">
                               {index + 1}
                             </span>
-                            <textarea
-                              value={step.text}
-                              onChange={(e) =>
-                                setPromptForm((prev) => ({
-                                  ...prev,
-                                  howToUse: prev.howToUse.map((s) =>
-                                    s.id === step.id ? { ...s, text: e.target.value } : s
-                                  ),
-                                }))
-                              }
-                              placeholder={`Step ${index + 1}...`}
-                              rows={2}
-                              className="flex-1 glass-input px-3 py-2 text-sm font-light text-white resize-none bg-transparent"
-                            />
+                            <div className="flex flex-col gap-2 flex-1 min-w-0">
+                              <textarea
+                                value={step.text}
+                                onChange={(e) =>
+                                  setPromptForm((prev) => ({
+                                    ...prev,
+                                    howToUse: prev.howToUse.map((s) =>
+                                      s.id === step.id ? { ...s, text: e.target.value } : s
+                                    ),
+                                  }))
+                                }
+                                placeholder={t('admin.stepPlaceholder', lang, { n: String(index + 1) })}
+                                rows={2}
+                                className="glass-input px-3 py-2 text-sm font-light text-white resize-none bg-transparent"
+                              />
+                              <textarea
+                                value={step.textAr ?? ''}
+                                onChange={(e) =>
+                                  setPromptForm((prev) => ({
+                                    ...prev,
+                                    howToUse: prev.howToUse.map((s) =>
+                                      s.id === step.id ? { ...s, textAr: e.target.value } : s
+                                    ),
+                                  }))
+                                }
+                                placeholder={t('admin.stepTextAr', lang)}
+                                rows={2}
+                                className="glass-input px-3 py-2 text-sm font-light text-white resize-none bg-transparent"
+                              />
+                            </div>
                             <div className="flex flex-col gap-1">
                               {index > 0 && (
                                 <button
@@ -1747,7 +1794,7 @@ export const AdminDashboard: React.FC = () => {
                                     })
                                   }
                                   className="p-1 rounded glass-button hover:bg-white/10 cursor-pointer"
-                                  title="Move up"
+                                  title={t('admin.moveUp', lang)}
                                 >
                                   <ChevronUp className="w-3.5 h-3.5" />
                                 </button>
@@ -1769,7 +1816,7 @@ export const AdminDashboard: React.FC = () => {
                                     })
                                   }
                                   className="p-1 rounded glass-button hover:bg-white/10 cursor-pointer"
-                                  title="Move down"
+                                  title={t('admin.moveDown', lang)}
                                 >
                                   <ChevronDown className="w-3.5 h-3.5" />
                                 </button>
@@ -1783,7 +1830,7 @@ export const AdminDashboard: React.FC = () => {
                                   }))
                                 }
                                 className="p-1 rounded glass-button hover:bg-red-500/20 hover:text-red-400 cursor-pointer"
-                                title="Delete step"
+                                title={t('admin.deleteStep', lang)}
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -1800,14 +1847,14 @@ export const AdminDashboard: React.FC = () => {
                     className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
                   >
                     <Save className="w-4 h-4" />
-                    {promptEditingId ? 'Update Prompt' : 'Add Prompt'}
+                    {t(promptEditingId ? 'admin.updatePrompt' : 'admin.addPrompt', lang)}
                   </button>
                   <button
                     type="button"
                     onClick={() => setPromptFormOpen(false)}
                     className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                   >
-                    Cancel
+                    {t('admin.cancel', lang)}
                   </button>
                 </div>
               </form>
@@ -1816,9 +1863,9 @@ export const AdminDashboard: React.FC = () => {
             {promptCats.length === 0 ? (
               <div className="p-10 text-center rounded-2xl bg-white/5 border border-white/10">
                 <Layers className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4" />
-                <h3 className="font-serif text-xl font-light text-white mb-1">No prompt categories yet</h3>
+                <h3 className="font-serif text-xl font-light text-white mb-1">{t('admin.noPromptCats', lang)}</h3>
                 <p className="text-xs text-neutral-400 font-light">
-                  Click "Add Category" to create your first prompt category, then add prompts inside it.
+                  {t('admin.noPromptCats.desc', lang)}
                 </p>
               </div>
             ) : (
@@ -1840,7 +1887,10 @@ export const AdminDashboard: React.FC = () => {
                           <div className="min-w-0 flex-1">
                             <h3 className="text-sm font-medium text-white truncate">{cat.title}</h3>
                             <p className="text-xs text-neutral-400 font-light">
-                              {cat.prompts.length} prompt{cat.prompts.length === 1 ? '' : 's'} · click to {isOpen ? 'collapse' : 'expand'}
+                              {t('admin.promptMeta', lang, {
+                                count: String(cat.prompts.length),
+                                action: t(isOpen ? 'admin.collapse' : 'admin.expand', lang),
+                              })}
                             </p>
                           </div>
                           {isOpen ? (
@@ -1852,14 +1902,14 @@ export const AdminDashboard: React.FC = () => {
                         <div className="flex items-center gap-1.5 shrink-0">
                           <button
                             onClick={() => openEditPromptCategory(cat)}
-                            aria-label={`Edit ${cat.title}`}
+                            aria-label={t('admin.editX', lang, { name: cat.title })}
                             className="p-2.5 rounded-full glass-button cursor-pointer"
                           >
                             <Pencil className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeletePromptCategory(cat.id)}
-                            aria-label={`Delete ${cat.title}`}
+                            aria-label={t('admin.deleteX', lang, { name: cat.title })}
                             className="p-2.5 rounded-full glass-button cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4 text-red-400" />
@@ -1893,21 +1943,21 @@ export const AdminDashboard: React.FC = () => {
                                   <div className="min-w-0">
                                     <h4 className="text-sm font-light text-white truncate">{prompt.title}</h4>
                                     <p className="text-[10px] text-neutral-500 font-light truncate">
-                                      {prompt.promptText.length} chars · hidden
+                                      {t('admin.hiddenChars', lang, { count: String(prompt.promptText.length) })}
                                     </p>
                                   </div>
                                 </div>
                                 <div className="flex items-center gap-1.5 shrink-0">
                                   <button
                                     onClick={() => openEditPrompt(cat, prompt)}
-                                    aria-label={`Edit ${prompt.title}`}
+                                    aria-label={t('admin.editX', lang, { name: prompt.title })}
                                     className="p-2 rounded-lg glass-button cursor-pointer"
                                   >
                                     <Pencil className="w-3.5 h-3.5" />
                                   </button>
                                   <button
                                     onClick={() => handleDeletePrompt(cat.id, prompt.id)}
-                                    aria-label={`Delete ${prompt.title}`}
+                                    aria-label={t('admin.deleteX', lang, { name: prompt.title })}
                                     className="p-2 rounded-lg glass-button cursor-pointer"
                                   >
                                     <Trash2 className="w-3.5 h-3.5 text-red-400" />
@@ -1919,7 +1969,7 @@ export const AdminDashboard: React.FC = () => {
                               onClick={() => openPromptForm(cat.id)}
                               className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs text-neutral-300 border border-dashed border-white/20 hover:border-[#D7C4A3]/50 hover:text-[#D7C4A3] transition-colors"
                             >
-                              <Plus size={14} /> Add Prompt
+                              <Plus size={14} /> {t('admin.addPrompt', lang)}
                             </button>
                           </div>
                         </motion.div>
@@ -1932,7 +1982,7 @@ export const AdminDashboard: React.FC = () => {
 
             <div className="mt-8 pt-6 border-t border-white/10">
               <p className="text-xs text-neutral-400 font-light">
-                {promptCats.length} categor{promptCats.length === 1 ? 'y' : 'ies'} · Click "Save Prompts" to persist.
+                {t('admin.promptsNote', lang, { count: String(promptCats.length) })}
               </p>
             </div>
           </div>
@@ -1946,25 +1996,25 @@ export const AdminDashboard: React.FC = () => {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
-                Add Experience
+                {t('admin.addExperience', lang)}
               </button>
               <div className="flex items-center gap-2">
                 {aboutSavedFlash && (
-                  <span className="text-xs text-[#D7C4A3] font-light">Saved</span>
+                  <span className="text-xs text-[#D7C4A3] font-light">{t('admin.saved', lang)}</span>
                 )}
                 <button
                   onClick={handleSaveAllAbout}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <Save className="w-3.5 h-3.5" />
-                  Save Profile
+                  {t('admin.saveProfile', lang)}
                 </button>
                 <button
                   onClick={handleResetAbout}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  Reset Profile
+                  {t('admin.resetProfile', lang)}
                 </button>
               </div>
             </div>
@@ -1976,7 +2026,7 @@ export const AdminDashboard: React.FC = () => {
               busy={ghBusy}
               onSaveConfig={handleSaveGhConfig}
               onPush={() => handlePushAboutToGitHub(true)}
-              pushLabel="Push Profile to GitHub"
+              pushLabel={t('gh.pushProfileLabel', lang)}
             />
 
             {/* Experience */}
@@ -1984,14 +2034,14 @@ export const AdminDashboard: React.FC = () => {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-serif text-xl font-light text-[#D7C4A3] flex items-center gap-2">
                   <Briefcase className="w-5 h-5" />
-                  Experience
+                  {t('admin.experience', lang)}
                 </h2>
                 <button
                   onClick={() => openExpForm()}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  Add Experience
+                  {t('admin.addExperience', lang)}
                 </button>
               </div>
 
@@ -1999,12 +2049,12 @@ export const AdminDashboard: React.FC = () => {
                 <form id="exp-form" onSubmit={handleSaveExp} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
-                      {expEditingIdx !== null ? 'Edit Experience' : 'Add Experience'}
+                      {t(expEditingIdx !== null ? 'admin.editExperience' : 'admin.addExperience', lang)}
                     </h3>
                     <button
                       type="button"
                       onClick={() => setExpFormOpen(false)}
-                      aria-label="Close form"
+                      aria-label={t('admin.closeForm', lang)}
                       className="p-2 rounded-full glass-button cursor-pointer"
                     >
                       <X className="w-4 h-4" />
@@ -2012,60 +2062,60 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                      Year *
+                      {t('admin.year', lang)} *
                       <input
                         required
                         value={expForm.year}
                         onChange={(e) => setExpForm({ ...expForm, year: e.target.value })}
-                        placeholder="2023 — Present"
+                        placeholder={t('admin.yearPlaceholder', lang)}
                         className="glass-input px-4 py-3 text-sm font-light text-white"
                       />
                     </label>
                     <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                      Role *
+                      {t('admin.role', lang)} *
                       <input
                         required
                         value={expForm.role}
                         onChange={(e) => setExpForm({ ...expForm, role: e.target.value })}
-                        placeholder="Lead Developer"
+                        placeholder={t('admin.rolePlaceholder', lang)}
                         className="glass-input px-4 py-3 text-sm font-light text-white"
                       />
                     </label>
                   </div>
                   <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                    Company *
+                    {t('admin.company', lang)} *
                     <input
                       required
                       value={expForm.company}
                       onChange={(e) => setExpForm({ ...expForm, company: e.target.value })}
-                      placeholder="Company name"
+                      placeholder={t('admin.companyPlaceholder', lang)}
                       className="glass-input px-4 py-3 text-sm font-light text-white"
                     />
                   </label>
                   <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                    Description
+                    {t('admin.description', lang)}
                     <textarea
                       rows={3}
                       value={expForm.description}
                       onChange={(e) => setExpForm({ ...expForm, description: e.target.value })}
-                      placeholder="What you did in this role..."
+                      placeholder={t('admin.expDescPlaceholder', lang)}
                       className="glass-input px-4 py-3 text-sm font-light text-white resize-none"
                     />
-</label>
-                <div className="flex gap-2 pt-2">
+                  </label>
+                  <div className="flex gap-2 pt-2">
                     <button
                       type="submit"
                       className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
                     >
                       <Save className="w-4 h-4" />
-                      {expEditingIdx !== null ? 'Update Experience' : 'Add Experience'}
+                      {t(expEditingIdx !== null ? 'admin.updateExperience' : 'admin.addExperience', lang)}
                     </button>
                     <button
                       type="button"
                       onClick={() => setExpFormOpen(false)}
                       className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                     >
-                      Cancel
+                      {t('admin.cancel', lang)}
                     </button>
                   </div>
                 </form>
@@ -2087,14 +2137,14 @@ export const AdminDashboard: React.FC = () => {
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
                         onClick={() => openExpForm(i)}
-                        aria-label="Edit experience"
+                        aria-label={t('admin.editExperience', lang)}
                         className="p-2 rounded-lg glass-button cursor-pointer"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteExp(i)}
-                        aria-label="Delete experience"
+                        aria-label={t('admin.deleteExperience', lang)}
                         className="p-2 rounded-lg glass-button cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5 text-red-400" />
@@ -2103,7 +2153,7 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                 ))}
                 {about.experiences.length === 0 && (
-                  <p className="text-xs text-neutral-400 font-light">No experience added yet.</p>
+                  <p className="text-xs text-neutral-400 font-light">{t('admin.noExperience', lang)}</p>
                 )}
               </div>
             </div>
@@ -2113,14 +2163,14 @@ export const AdminDashboard: React.FC = () => {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-serif text-xl font-light text-[#D7C4A3] flex items-center gap-2">
                   <Award className="w-5 h-5" />
-                  Certifications
+                  {t('admin.certifications', lang)}
                 </h2>
                 <button
                   onClick={() => openCertForm()}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  Add Certification
+                  {t('admin.addCertification', lang)}
                 </button>
               </div>
 
@@ -2128,12 +2178,12 @@ export const AdminDashboard: React.FC = () => {
                 <form id="cert-form" onSubmit={handleSaveCert} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
-                      {certEditingIdx !== null ? 'Edit Certification' : 'Add Certification'}
+                      {t(certEditingIdx !== null ? 'admin.editCertification' : 'admin.addCertification', lang)}
                     </h3>
                     <button
                       type="button"
                       onClick={() => setCertFormOpen(false)}
-                      aria-label="Close form"
+                      aria-label={t('admin.closeForm', lang)}
                       className="p-2 rounded-full glass-button cursor-pointer"
                     >
                       <X className="w-4 h-4" />
@@ -2141,42 +2191,42 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                      Name *
+                      {t('admin.name', lang)} *
                       <input
                         required
                         value={certForm.name}
                         onChange={(e) => setCertForm({ ...certForm, name: e.target.value })}
-                        placeholder="Certification name"
+                        placeholder={t('admin.certNamePlaceholder', lang)}
                         className="glass-input px-4 py-3 text-sm font-light text-white"
                       />
                     </label>
                     <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                      Issuer *
+                      {t('admin.issuer', lang)} *
                       <input
                         required
                         value={certForm.issuer}
                         onChange={(e) => setCertForm({ ...certForm, issuer: e.target.value })}
-                        placeholder="Issuing organization"
+                        placeholder={t('admin.issuerPlaceholder', lang)}
                         className="glass-input px-4 py-3 text-sm font-light text-white"
                       />
                     </label>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                      Year
+                      {t('admin.year', lang)}
                       <input
                         value={certForm.year}
                         onChange={(e) => setCertForm({ ...certForm, year: e.target.value })}
-                        placeholder="2024"
+                        placeholder={t('admin.certYearPlaceholder', lang)}
                         className="glass-input px-4 py-3 text-sm font-light text-white"
                       />
                     </label>
                     <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                      Credential ID (optional)
+                      {t('admin.credentialId', lang)}
                       <input
                         value={certForm.credentialId ?? ''}
                         onChange={(e) => setCertForm({ ...certForm, credentialId: e.target.value })}
-                        placeholder="CERT-12345"
+                        placeholder={t('admin.credentialIdPlaceholder', lang)}
                         className="glass-input px-4 py-3 text-sm font-light text-white"
                       />
                     </label>
@@ -2187,14 +2237,14 @@ export const AdminDashboard: React.FC = () => {
                       className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
                     >
                       <Save className="w-4 h-4" />
-                      {certEditingIdx !== null ? 'Update Certification' : 'Add Certification'}
+                      {t(certEditingIdx !== null ? 'admin.updateCertification' : 'admin.addCertification', lang)}
                     </button>
                     <button
                       type="button"
                       onClick={() => setCertFormOpen(false)}
                       className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                     >
-                      Cancel
+                      {t('admin.cancel', lang)}
                     </button>
                   </div>
                 </form>
@@ -2218,14 +2268,14 @@ export const AdminDashboard: React.FC = () => {
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
                         onClick={() => openCertForm(i)}
-                        aria-label="Edit certification"
+                        aria-label={t('admin.editCertification', lang)}
                         className="p-2 rounded-lg glass-button cursor-pointer"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteCert(i)}
-                        aria-label="Delete certification"
+                        aria-label={t('admin.deleteCertification', lang)}
                         className="p-2 rounded-lg glass-button cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5 text-red-400" />
@@ -2234,7 +2284,7 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                 ))}
                 {about.certifications.length === 0 && (
-                  <p className="text-xs text-neutral-400 font-light">No certifications added yet.</p>
+                  <p className="text-xs text-neutral-400 font-light">{t('admin.noCertifications', lang)}</p>
                 )}
               </div>
             </div>
@@ -2244,14 +2294,14 @@ export const AdminDashboard: React.FC = () => {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-serif text-xl font-light text-[#D7C4A3] flex items-center gap-2">
                   <Globe className="w-5 h-5" />
-                  Languages
+                  {t('admin.languages', lang)}
                 </h2>
                 <button
                   onClick={() => openLangForm()}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  Add Language
+                  {t('admin.addLanguage', lang)}
                 </button>
               </div>
 
@@ -2259,12 +2309,12 @@ export const AdminDashboard: React.FC = () => {
                 <form id="lang-form" onSubmit={handleSaveLang} className="mb-6 p-6 rounded-2xl bg-white/5 border border-[#D7C4A3]/30 space-y-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-serif text-lg font-light text-[#D7C4A3]">
-                      {langEditingIdx !== null ? 'Edit Language' : 'Add Language'}
+                      {t(langEditingIdx !== null ? 'admin.editLanguage' : 'admin.addLanguage', lang)}
                     </h3>
                     <button
                       type="button"
                       onClick={() => setLangFormOpen(false)}
-                      aria-label="Close form"
+                      aria-label={t('admin.closeForm', lang)}
                       className="p-2 rounded-full glass-button cursor-pointer"
                     >
                       <X className="w-4 h-4" />
@@ -2272,22 +2322,22 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                      Language *
+                      {t('admin.languageLabel', lang)} *
                       <input
                         required
                         value={langForm.language}
                         onChange={(e) => setLangForm({ ...langForm, language: e.target.value })}
-                        placeholder="English"
+                        placeholder={t('admin.languagePlaceholder', lang)}
                         className="glass-input px-4 py-3 text-sm font-light text-white"
                       />
                     </label>
                     <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
-                      Level *
+                      {t('admin.levelLabel', lang)} *
                       <input
                         required
                         value={langForm.level}
                         onChange={(e) => setLangForm({ ...langForm, level: e.target.value })}
-                        placeholder="Native"
+                        placeholder={t('admin.levelPlaceholder', lang)}
                         className="glass-input px-4 py-3 text-sm font-light text-white"
                       />
                     </label>
@@ -2298,37 +2348,37 @@ export const AdminDashboard: React.FC = () => {
                       className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-button-primary text-xs font-medium uppercase tracking-wider cursor-pointer"
                     >
                       <Save className="w-4 h-4" />
-                      {langEditingIdx !== null ? 'Update Language' : 'Add Language'}
+                      {t(langEditingIdx !== null ? 'admin.updateLanguage' : 'admin.addLanguage', lang)}
                     </button>
                     <button
                       type="button"
                       onClick={() => setLangFormOpen(false)}
                       className="px-5 py-2.5 rounded-full glass-button text-xs uppercase tracking-wider cursor-pointer"
                     >
-                      Cancel
+                      {t('admin.cancel', lang)}
                     </button>
                   </div>
                 </form>
               )}
 
               <div className="space-y-3">
-                {about.languages.map((lang, i) => (
+                {about.languages.map((languageItem, i) => (
                   <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-wrap items-center justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-sm font-medium text-white">{lang.language}</h3>
-                      <p className="text-xs text-[#D7C4A3] font-light">{lang.level}</p>
+                      <h3 className="text-sm font-medium text-white">{languageItem.language}</h3>
+                      <p className="text-xs text-[#D7C4A3] font-light">{languageItem.level}</p>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
                         onClick={() => openLangForm(i)}
-                        aria-label="Edit language"
+                        aria-label={t('admin.editLanguage', lang)}
                         className="p-2 rounded-lg glass-button cursor-pointer"
                       >
                         <Pencil className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteLang(i)}
-                        aria-label="Delete language"
+                        aria-label={t('admin.deleteLanguage', lang)}
                         className="p-2 rounded-lg glass-button cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5 text-red-400" />
@@ -2337,14 +2387,14 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                 ))}
                 {about.languages.length === 0 && (
-                  <p className="text-xs text-neutral-400 font-light">No languages added yet.</p>
+                  <p className="text-xs text-neutral-400 font-light">{t('admin.noLanguages', lang)}</p>
                 )}
               </div>
             </div>
 
             <div className="mt-8 pt-6 border-t border-white/10">
               <p className="text-xs text-neutral-400 font-light">
-                Experience, certifications, and languages · Click "Save Profile" to persist.
+                {t('admin.profileNote', lang)}
               </p>
             </div>
           </div>

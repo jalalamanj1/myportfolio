@@ -1,7 +1,10 @@
 import React, { memo } from 'react';
 import { HERO_DATA } from '../data/portfolioData';
+import { useLang } from '../contexts/LanguageContext';
+import { t } from '../i18n';
 
 export const Background: React.FC = memo(function Background() {
+  const { lang } = useLang();
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {/* Fixed Full Screen Background Image (portrait variant for phones) */}
@@ -9,7 +12,7 @@ export const Background: React.FC = memo(function Background() {
         <source media="(max-width: 767px)" srcSet={HERO_DATA.bgImageMobile} />
         <img
           src={HERO_DATA.bgImage}
-          alt="Background Architectural Interior"
+          alt={t('background.alt', lang)}
           referrerPolicy="no-referrer"
           fetchPriority="high"
           decoding="async"

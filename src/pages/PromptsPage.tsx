@@ -6,7 +6,7 @@ import { getIcon } from '../utils/iconMap';
 import { fetchPromptCategories } from '../data/promptStore';
 import { PromptCategory } from '../types';
 import { useLang } from '../contexts/LanguageContext';
-import { t } from '../i18n';
+import { t, localizePromptCategory } from '../i18n';
 
 export const PromptsPage: React.FC = () => {
   const { lang } = useLang();
@@ -85,7 +85,7 @@ export const PromptsPage: React.FC = () => {
                   {getIcon(cat.iconName, "w-7 h-7")}
                 </div>
                 <h3 className="font-serif text-2xl font-light text-white group-hover:text-[#D7C4A3] transition-colors">
-                  {cat.title}
+                  {localizePromptCategory(cat, lang).title}
                 </h3>
                 <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-neutral-400 uppercase tracking-widest">
                   {cat.prompts.length} {promptLabel(cat.prompts.length)}

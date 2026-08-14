@@ -134,7 +134,7 @@ export const ContactSection: React.FC = memo(function ContactSection() {
           <div className="grid grid-cols-2 gap-3 w-full max-w-3xl">
             <a
               href={`mailto:${CONTACT_DATA.email}`}
-              aria-label="Email"
+              aria-label={t('contact.email', lang)}
               className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/60 hover:bg-[#D7C4A3]/10 flex items-center justify-center transition-all text-neutral-200 hover:text-white group"
             >
               <Mail className="w-5 h-5 text-[#D7C4A3]" />
@@ -144,7 +144,7 @@ export const ContactSection: React.FC = memo(function ContactSection() {
               href={CONTACT_DATA.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Instagram"
+              aria-label={t('contact.instagram', lang)}
               className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/60 hover:bg-[#D7C4A3]/10 flex items-center justify-center transition-all text-neutral-200 hover:text-white group"
             >
               <Instagram className="w-5 h-5 text-[#D7C4A3]" />

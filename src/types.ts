@@ -73,6 +73,7 @@ export interface ServiceCategory {
 export interface PromptItem {
   id: string;
   title: string;
+  titleAr?: string;
   image: string;
   promptText: string;
   howToUse?: HowToUseStep[];
@@ -82,11 +83,13 @@ export interface HowToUseStep {
   id: string;
   order: number;
   text: string;
+  textAr?: string;
 }
 
 export interface PromptCategory {
   id: string;
   title: string;
+  titleAr?: string;
   iconName: string;
   prompts: PromptItem[];
   layout?: 'pair';

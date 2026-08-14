@@ -56,7 +56,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = memo(function ProjectMo
           {/* Close Button */}
           <button
             onClick={onClose}
-            aria-label="Close Project Modal"
+            aria-label={t('modal.close', lang)}
             className="absolute top-4 right-4 p-2.5 rounded-full glass-button group hover:rotate-90 transition-transform duration-300 cursor-pointer"
           >
             <X className="w-4 h-4 text-white group-hover:text-[#D7C4A3]" />

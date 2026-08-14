@@ -7,7 +7,7 @@ interface LanguageContextValue {
   dir: 'ltr' | 'rtl';
 }
 
-const LanguageContext = createContext<LanguageContextValue>({
+export const LanguageContext = createContext<LanguageContextValue>({
   lang: 'ar',
   setLang: () => {},
   dir: 'rtl',

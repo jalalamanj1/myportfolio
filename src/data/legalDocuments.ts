@@ -27,7 +27,7 @@ const META: LegalDocMetaRow[] = [
   { labelAr: 'المنتج', labelEn: 'Product', valueAr: 'Murshid / مُرشِد', valueEn: 'Murshid / مُرشِد' },
   { labelAr: 'المالك', labelEn: 'Owner', valueAr: 'جلال أمانج عبد العزيز', valueEn: 'Jalal Amanj Abdulaziz' },
   { labelAr: 'المطور', labelEn: 'Developer', valueAr: 'جلال أمانج', valueEn: 'Jalal Amanj' },
-  { labelAr: 'البريد الإلكتروني', labelEn: 'Email', valueAr: 'jalaldev001@yahoo.com', valueEn: 'jalaldev001@yahoo.com' },
+  { labelAr: 'البريد الإلكتروني', labelEn: 'Email', valueAr: 'devjalalamanj@gmail.com', valueEn: 'devjalalamanj@gmail.com' },
   { labelAr: 'الموقع', labelEn: 'Website', valueAr: 'jalalamanj.online', valueEn: 'jalalamanj.online' },
   { labelAr: 'تاريخ الإصدار', labelEn: 'Issue Date', valueAr: '10 أغسطس 2026', valueEn: '10 August 2026' },
 ];
@@ -81,7 +81,7 @@ export const legalDocuments: Record<LegalDocId, LegalDocument> = {
       {
         heading: '9. حقوق العميل والتواصل',
         body: 'يمكن للعميل التواصل لطلب تصحيح بياناته أو الاستفسار عنها أو طلب التعامل مع طلب متعلق بها، بما لا يتعارض مع متطلبات السجلات القانونية أو إثبات الملكية أو الدعم.',
-        after: 'البريد الإلكتروني: jalaldev001@yahoo.com | الموقع: jalalamanj.online',
+        after: 'البريد الإلكتروني: devjalalamanj@gmail.com | الموقع: jalalamanj.online',
       },
       {
         heading: '10. القانون الحاكم والتغييرات',
@@ -131,7 +131,7 @@ export const legalDocuments: Record<LegalDocId, LegalDocument> = {
       {
         heading: '9. Customer Requests and Contact',
         body: 'A customer may contact the Developer to request correction of customer information, ask about it, or request handling of a related matter, subject to legal-record, ownership-proof, and support requirements.',
-        after: 'Email: jalaldev001@yahoo.com | Website: jalalamanj.online',
+        after: 'Email: devjalalamanj@gmail.com | Website: jalalamanj.online',
       },
       {
         heading: '10. Governing Law and Changes',
@@ -184,7 +184,7 @@ export const legalDocuments: Record<LegalDocId, LegalDocument> = {
       },
       {
         heading: '10. القانون الحاكم والتواصل',
-        body: 'تخضع هذه الشروط لقوانين جمهورية العراق، وتختص المحاكم المختصة في كركوك بالنظر في النزاعات ذات الصلة. للتواصل: jalaldev001@yahoo.com | jalalamanj.online',
+        body: 'تخضع هذه الشروط لقوانين جمهورية العراق، وتختص المحاكم المختصة في كركوك بالنظر في النزاعات ذات الصلة. للتواصل: devjalalamanj@gmail.com | jalalamanj.online',
       },
     ],
     en: [
@@ -226,7 +226,7 @@ export const legalDocuments: Record<LegalDocId, LegalDocument> = {
       },
       {
         heading: '10. Governing Law and Contact',
-        body: 'These Terms are governed by the laws of the Republic of Iraq. The competent courts in Baghdad have jurisdiction over related disputes. Contact: jalaldev001@yahoo.com | jalalamanj.online.',
+        body: 'These Terms are governed by the laws of the Republic of Iraq. The competent courts in Baghdad have jurisdiction over related disputes. Contact: devjalalamanj@gmail.com | jalalamanj.online.',
       },
     ],
   },

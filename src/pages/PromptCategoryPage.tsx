@@ -6,7 +6,7 @@ import { getIcon } from '../utils/iconMap';
 import { fetchPromptCategories } from '../data/promptStore';
 import { PromptCategory, PromptItem } from '../types';
 import { useLang } from '../contexts/LanguageContext';
-import { t } from '../i18n';
+import { t, localizePromptCategory, localizePromptItem } from '../i18n';
 import { assetUrl } from '../utils/asset';
 const copyToClipboard = async (text: string) => {
   try {
@@ -60,7 +60,8 @@ export const PromptCategoryPage: React.FC = () => {
     };
   }, [infoPrompt]);
 
-  const activeCat = categories.find((c) => c.id === categoryId) ?? null;
+  const activeCatRaw = categories.find((c) => c.id === categoryId) ?? null;
+  const activeCat = activeCatRaw ? localizePromptCategory(activeCatRaw, lang) : null;
 
   const handleCopy = (id: string, text: string) => {
     copyToClipboard(text).then(() => {
@@ -137,7 +138,9 @@ export const PromptCategoryPage: React.FC = () => {
                     className="glass-card rounded-[28px] border border-white/15 hover:border-[#D7C4A3]/50 overflow-hidden group transition-all duration-300 hover:shadow-2xl"
                   >
                     <div className={`grid ${pair.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-1'} divide-y sm:divide-y-0 sm:divide-x sm:divide-x-reverse`}>
-                      {pair.map((prompt) => (
+                      {pair.map((raw) => {
+                        const prompt = localizePromptItem(raw, lang);
+                        return (
                         <div key={prompt.id} className="p-4 sm:p-5 flex flex-col">
                           <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900/40 mb-4">
                             <img
@@ -183,14 +186,17 @@ export const PromptCategoryPage: React.FC = () => {
                             )}
                           </button>
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </motion.div>
                 ))}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {activeCat.prompts.map((prompt) => (
+                {activeCat.prompts.map((raw) => {
+                  const prompt = localizePromptItem(raw, lang);
+                  return (
                   <motion.div
                     key={prompt.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -245,7 +251,8 @@ export const PromptCategoryPage: React.FC = () => {
                       </button>
                     </div>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </motion.div>

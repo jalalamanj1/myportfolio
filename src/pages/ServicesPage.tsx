@@ -17,13 +17,13 @@ export const ServicesPage: React.FC = () => {
       path: '/services/Prompts',
     },
     {
-      title: lang === 'ar' ? 'التعليم' : 'Edu',
+      title: t('edu.title', lang),
       description: t('services.edu.desc', lang),
       icon: GraduationCap,
       path: '/services/Edu',
     },
     {
-      title: lang === 'ar' ? 'التطبيقات' : 'Apps',
+      title: t('apps.title', lang),
       description: t('services.apps.desc', lang),
       icon: Smartphone,
       path: '/services/Apps',

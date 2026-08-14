@@ -24,7 +24,7 @@ export const MurshidPage: React.FC = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />
-            <span>{t('apps.back', lang)}</span>
+            <span>{t('common.back', lang)}</span>
           </button>
         </div>
 

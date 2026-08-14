@@ -200,7 +200,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, onSe
           {/* Navigation Buttons */}
           <button
             onClick={handlePrev}
-            aria-label="Previous Product"
+            aria-label={t('carousel.prev', lang)}
             className="absolute left-2 sm:left-6 md:left-12 z-40 p-3.5 sm:p-4 rounded-full glass-button group hover:scale-110 cursor-pointer shadow-2xl"
           >
             <ChevronLeft className="w-5 h-5 text-white group-hover:text-[#D7C4A3] transition-colors" />
@@ -208,7 +208,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, onSe
 
           <button
             onClick={handleNext}
-            aria-label="Next Product"
+            aria-label={t('carousel.next', lang)}
             className="absolute right-2 sm:right-6 md:right-12 z-40 p-3.5 sm:p-4 rounded-full glass-button group hover:scale-110 cursor-pointer shadow-2xl"
           >
             <ChevronRight className="w-5 h-5 text-white group-hover:text-[#D7C4A3] transition-colors" />
@@ -284,7 +284,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({ products, onSe
                   ? 'w-8 bg-[#D7C4A3] shadow-[0_0_12px_rgba(215,196,163,0.6)]'
                   : 'w-2 bg-white/30 hover:bg-white/60'
               }`}
-              aria-label={`Go to slide ${idx + 1}`}
+              aria-label={t('carousel.goToSlide', lang, { n: String(idx + 1) })}
             />
           ))}
         </div>

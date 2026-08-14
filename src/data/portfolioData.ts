@@ -95,13 +95,13 @@ export const PRODUCTS: Product[] = [
 export const CONTACT_DATA = {
   title: "Contact Me.",
   subtitle: "Available for desktop app engineering, technical consulting, system architecture, and tech services.",
-  email: "jalaldev001@yahoo.com",
+  email: "devjalalamanj@gmail.com",
   instagram: "https://instagram.com/jalalamanj1",
   linkedin: "https://linkedin.com/in/jalalamanj",
   github: "https://github.com/jalalamanj",
   location: "Global / Remote",
   socials: [
-    { name: "Email", href: "mailto:jalaldev001@yahoo.com", icon: "Mail" },
+    { name: "Email", href: "mailto:devjalalamanj@gmail.com", icon: "Mail" },
     { name: "Instagram", href: "https://instagram.com/jalalamanj1", icon: "Instagram" }
   ]
 };
