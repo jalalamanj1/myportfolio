@@ -64,6 +64,34 @@ export const translations: Record<Lang, Record<string, string>> = {
     'murshid.eula': 'اتفاقية ترخيص المستخدم النهائي',
     'legal.back': 'رجوع',
 
+    // Edara description
+    'edara.tagline': 'نظام الإدارة المدرسية والإدارية',
+    'edara.about.1': 'إدارة هو تطبيق سطح مكتب مصمم لمساعدة المدارس والإدارات التعليمية على إدارة سجلاتها الإدارية والتعليمية في بيئة واحدة منظمة.',
+    'edara.about.2': 'يتيح إدارة للموظفين المصرح لهم في المدرسة إدارة معلومات المدرسة الأساسية، بما في ذلك سجلات الطلاب والموظفين والمستندات ومراسلات الوزارة والقوالب والتصديرات وغيرها من البيانات الإدارية المطلوبة للعمليات اليومية للمدرسة.',
+    'edara.about.3': 'صُمم إدارة بشكل أساسي كتطبيق سطح مكتب محلي. تُخزَّن بيانات المدرسة محلياً على حاسوب المستخدم، مما يتيح للمدارس إدارة معلوماتها دون الحاجة إلى اتصال مستمر بالإنترنت أو تخزين قاعدة بياناتها التشغيلية على خوادم إدارة.',
+    'edara.local.title': 'إدارة البيانات المحلية',
+    'edara.local.1': 'يحتفظ إدارة بمعلومات المدرسة التشغيلية على الحاسوب المثبت عليه التطبيق. قد تشمل هذه المعلومات سجلات الطلاب ومعلومات الموظفين وبيانات المدرسة والمستندات ومستندات الوزارة والقوالب وغيرها من المعلومات التي تُدخلها المدرسة.',
+    'edara.local.2': 'تبقى المدرسة مسؤولة عن المعلومات التي تُدخلها إلى إدارة وتتحكم في البيانات المخزنة محلياً.',
+    'edara.cloud.title': 'النسخ الاحتياطي والتخزين السحابي',
+    'edara.cloud.1': 'يوفر إدارة وظيفة نسخ احتياطي اختيارية من خلال خدمات سحابية مدعومة، بما في ذلك Google Drive وMicrosoft OneDrive.',
+    'edara.cloud.2': 'عندما يختار المستخدم تفعيل النسخ الاحتياطي السحابي، يخزن إدارة النسخة الاحتياطية في حساب Google Drive أو Microsoft OneDrive المتصل الخاص بالمستخدم.',
+    'edara.cloud.3': 'النسخ الاحتياطي السحابي اختياري وغير مطلوب للوظائف المحلية الأساسية لإدارة.',
+    'edara.cloud.4': 'لا يستخدم إدارة مساحة التخزين السحابية الشخصية للمطور لتخزين بيانات المدرسة، ولا يتلقى المطور نسخاً من قاعدة بيانات المدرسة أو محتويات النسخ الاحتياطي بشكل روتيني ولا يخزنها.',
+    'edara.licensing.title': 'الترخيص',
+    'edara.licensing.1': 'إدارة تطبيق مدفوع يُقدم وفق نموذج قائم على الترخيص.',
+    'edara.licensing.2': 'يمكن شراء التراخيص كشراء لمرة واحدة، وتكون مرتبطة بجهاز مصرح به واحد.',
+    'edara.licensing.3': 'يُستخدم نظام الترخيص لتفعيل وإدارة النسخة المصرح بها للمستخدم من إدارة.',
+    'edara.privacy.title': 'الخصوصية والأمان',
+    'edara.privacy.1': 'صُمم إدارة وفق نهج محلي أولاً لإدارة بيانات المدرسة. لا يستخدم التطبيق بيانات المدرسة للإعلانات أو التنميط السلوكي أو التسويق الموجّه.',
+    'edara.privacy.2': 'لمزيد من المعلومات حول كيفية تعامل إدارة مع المعلومات، يرجى مراجعة:',
+
+    // Edara legal documents
+    'edara.legal': 'الوثائق القانونية',
+    'edara.legal.desc': 'توثيق قانوني لتطبيق إدارة.',
+    'edara.privacy': 'سياسة الخصوصية',
+    'edara.terms': 'شروط الاستخدام',
+    'edara.eula': 'اتفاقية ترخيص المستخدم النهائي',
+
     // Prompts Page
     'prompts.back': 'رجوع',
     'prompts.title': 'أوامر الذكاء الإصطناعي',
@@ -417,6 +445,34 @@ export const translations: Record<Lang, Record<string, string>> = {
     'murshid.terms': 'Terms of Service',
     'murshid.eula': 'End User License Agreement',
     'legal.back': 'Back',
+
+    // Edara description
+    'edara.tagline': 'School Management and Administrative System',
+    'edara.about.1': 'Edara is a desktop application designed to help schools and educational administrations manage their administrative and educational records in one organized environment.',
+    'edara.about.2': 'Edara allows authorized school personnel to manage essential school information, including student and staff records, documents, ministry correspondence, templates, exports, and other administrative data required for day-to-day school operations.',
+    'edara.about.3': 'Edara is designed primarily as a local desktop application. School data is stored locally on the user\'s computer, allowing schools to manage their information without requiring continuous internet access or storing their operational database on Edara\'s servers.',
+    'edara.local.title': 'Local Data Management',
+    'edara.local.1': 'Edara keeps the school\'s operational information on the computer where the application is installed. This may include student records, staff information, school details, documents, ministry documents, templates, and other information entered by the school.',
+    'edara.local.2': 'The school remains responsible for the information it enters into Edara and controls the locally stored data.',
+    'edara.cloud.title': 'Backup and Cloud Storage',
+    'edara.cloud.1': 'Edara provides optional backup functionality through supported cloud services, including Google Drive and Microsoft OneDrive.',
+    'edara.cloud.2': 'When a user chooses to enable cloud backup, Edara stores the backup in the user\'s own connected Google Drive or Microsoft OneDrive account.',
+    'edara.cloud.3': 'Cloud backup is optional and is not required for the core local functionality of Edara.',
+    'edara.cloud.4': 'Edara does not use the developer\'s personal cloud storage to store school data, and the developer does not routinely receive or store copies of the user\'s school database or backup contents.',
+    'edara.licensing.title': 'Licensing',
+    'edara.licensing.1': 'Edara is a paid application provided through a license-based model.',
+    'edara.licensing.2': 'Licenses can be purchased as a one-time purchase and are associated with a single authorized device.',
+    'edara.licensing.3': 'The license system is used to activate and manage the user\'s authorized copy of Edara.',
+    'edara.privacy.title': 'Privacy and Security',
+    'edara.privacy.1': 'Edara is designed with a local-first approach to school data management. The application does not use school data for advertising, behavioral profiling, or targeted marketing.',
+    'edara.privacy.2': 'For more information about how Edara handles information, please review our:',
+
+    // Edara legal documents
+    'edara.legal': 'Legal Documents',
+    'edara.legal.desc': 'Legal documentation for the Edara application.',
+    'edara.privacy': 'Privacy Policy',
+    'edara.terms': 'Terms of Service',
+    'edara.eula': 'End User License Agreement',
 
     // Prompts Page
     'prompts.back': 'Back',
