@@ -1,0 +1,33 @@
+# Jalal Amanj
+
+> Jalal Amanj builds practical digital solutions, desktop applications, and AI-powered tools.
+
+## Services
+- [Services](https://jalalamanj.online/services): Online free and paid services by Jalal Amanj.
+- [AI Prompts Library](https://jalalamanj.online/services/Prompts): Ready-to-use AI prompts for posters, design styles, and creative projects.
+- Car Posters Prompts: https://jalalamanj.online/services/Prompts/prompts-1785606327432
+- Diverse Design Styles Prompts: https://jalalamanj.online/services/Prompts/general-prompts-1785665632142
+- Miscellaneous Prompts: https://jalalamanj.online/services/Prompts/diverse-prompts-1785757000977
+- Gym Prompts: https://jalalamanj.online/services/Prompts/prompts-gym-1785900000000
+- [Education Services](https://jalalamanj.online/services/Edu): Education resources and tools.
+- [Apps & Software](https://jalalamanj.online/services/Apps): Desktop applications by Jalal Amanj.
+
+## Apps
+- [Murshid](https://jalalamanj.online/murshid): Secure document and personal data management desktop application with optional Google Drive backup.
+- [Murshid Privacy Policy](https://jalalamanj.online/murshid/privacy_policy)
+- [Murshid Terms of Service](https://jalalamanj.online/murshid/terms_of_service)
+- [Murshid EULA](https://jalalamanj.online/murshid/eula)
+- [Edara](https://jalalamanj.online/edara): School management and administrative system desktop application.
+- [Edara Privacy Policy](https://jalalamanj.online/edara/privacy_policy)
+- [Edara Terms of Service](https://jalalamanj.online/edara/terms_of_service)
+- [Edara EULA](https://jalalamanj.online/edara/eula)
+
+## Products
+- OmniPulse Audio Engine: Real-time audio synthesis and spectral DSP desktop software.
+- NovaStudio Local AI IDE: Ultra-fast code editor with integrated local LLM inference.
+- QuantumTrace Suite: Network packet diagnostic and threat detection desktop software.
+- HyperFlow 3D Simulator: Hardware-accelerated 3D physics and structural CAD software.
+
+## Contact
+- Email: devjalalamanj@gmail.com
+- Website: https://jalalamanj.online

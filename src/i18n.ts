@@ -28,32 +28,21 @@ export const translations: Record<Lang, Record<string, string>> = {
     // Services Preview
     'services.eyebrow': 'خدماتي',
     'services.sectionTitle': 'خدمات بسيطة، قيمة حقيقية',
-    'services.sectionSubtitle': 'أقدم ثلاث خدمات ملموسة تلبي احتياجاتك.',
-    'svc.prompts.title': 'أوامر جاهزة للنسخ',
-    'svc.prompts.desc': 'أوامر عالية الجودة ومُختبَرة، جاهزة للاستخدام مباشرة.',
-    'svc.prompts.cta': 'تصفح الأوامر',
-    'svc.generation.title': 'توليد الأوامر',
-    'svc.generation.desc': 'أوامر مخصصة تُنشأ خصيصاً لاحتياجاتك وأهدافك وسير عملك.',
-    'svc.generation.cta': 'اطلب أمراً',
-    'svc.wheel.title': 'عجلة الأسئلة والأسماء',
-    'svc.wheel.desc': 'عجلات تفاعلية للأسئلة والأسماء والاختيارات والأنشطة.',
-    'svc.wheel.cta': 'تواصل معي',
+    'services.sectionSubtitle': 'خدمات عملية عبر الإنترنت تلبي احتياجاتك.',
+    'services.discover': 'اكتشف',
 
     // Services Page
     'services.page.title': 'الخدمات',
-    'services.back': 'العودة للرئيسية',
     'services.prompts.desc': 'مكتبة أوامر الذكاء الاصطناعي للتصميم والإنتاجية.',
     'services.edu.desc': 'الموارد التعليمية ومواد التعلم.',
     'services.apps.desc': 'تطبيقات سطح المكتب والمشاريع البرمجية.',
 
     // Edu Page
     'edu.title': 'التعليم',
-    'edu.back': 'رجوع',
     'edu.desc': 'الموارد التعليمية ومواد التعلم قريباً.',
 
     // Apps Page
     'apps.title': 'التطبيقات',
-    'apps.back': 'رجوع',
     'apps.desc': 'تطبيقات سطح المكتب والمشاريع البرمجية قريباً.',
 
     // Murshid / Edara Pages
@@ -84,7 +73,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'murshid.privacy': 'سياسة الخصوصية',
     'murshid.terms': 'شروط الاستخدام',
     'murshid.eula': 'اتفاقية ترخيص المستخدم النهائي',
-    'legal.back': 'رجوع',
 
     // Edara description
     'edara.tagline': 'نظام الإدارة المدرسية والإدارية',
@@ -115,7 +103,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'edara.eula': 'اتفاقية ترخيص المستخدم النهائي',
 
     // Prompts Page
-    'prompts.back': 'رجوع',
     'prompts.title': 'أوامر الذكاء الإصطناعي',
     'prompts.loading': 'جاري تحميل أوامر الذكاء الاصطناعي...',
     'prompts.empty.title': 'لا توجد فئات أوامر بعد',
@@ -139,6 +126,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.open': 'فتح',
     'prompts.prompt': 'أمر',
     'prompts.prompts': 'أوامر',
+    'breadcrumb.home': 'الرئيسية',
+    'notFound.title': 'الصفحة غير موجودة',
+    'notFound.desc': 'الصفحة التي تبحث عنها غير موجودة أو تم نقلها.',
+    'notFound.home': 'العودة إلى الرئيسية',
 
     // Product Carousel
     'products.featured': 'أحدث التطبيقات',
@@ -232,7 +223,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'loading': 'جاري التحميل…',
 
     // Common
-    'common.back': 'رجوع',
     'lang.switch': 'تغيير اللغة',
 
     // Modal / Carousel / Contact
@@ -438,31 +428,20 @@ export const translations: Record<Lang, Record<string, string>> = {
     'services.eyebrow': 'My Services',
     'services.sectionTitle': 'Simple Services, Real Value',
     'services.sectionSubtitle': 'Online free and paid services.',
-    'svc.prompts.title': 'Ready-to-Copy Prompts',
-    'svc.prompts.desc': 'High-quality, tested prompts that are ready to use.',
-    'svc.prompts.cta': 'Browse Prompts',
-    'svc.generation.title': 'Prompt Generation',
-    'svc.generation.desc': 'Custom prompts created for specific needs, goals, and workflows.',
-    'svc.generation.cta': 'Request a Prompt',
-    'svc.wheel.title': 'Questions and Names Wheel',
-    'svc.wheel.desc': 'Interactive wheels for questions, names, selections, and activities.',
-    'svc.wheel.cta': 'Contact Me',
+    'services.discover': 'Discover',
 
     // Services Page
     'services.page.title': 'Services',
-    'services.back': 'Back to Home',
     'services.prompts.desc': 'AI prompt library for design and productivity.',
     'services.edu.desc': 'Educational resources and learning materials.',
     'services.apps.desc': 'Desktop applications and software projects.',
 
     // Edu Page
     'edu.title': 'Edu',
-    'edu.back': 'Back',
     'edu.desc': 'Educational resources and learning materials coming soon.',
 
     // Apps Page
     'apps.title': 'Apps',
-    'apps.back': 'Back',
     'apps.desc': 'Desktop applications and software projects coming soon.',
 
     // Murshid / Edara Pages
@@ -493,7 +472,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'murshid.privacy': 'Privacy Policy',
     'murshid.terms': 'Terms of Service',
     'murshid.eula': 'End User License Agreement',
-    'legal.back': 'Back',
 
     // Edara description
     'edara.tagline': 'School Management and Administrative System',
@@ -524,7 +502,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'edara.eula': 'End User License Agreement',
 
     // Prompts Page
-    'prompts.back': 'Back',
     'prompts.title': 'Prompts',
     'prompts.loading': 'Loading Prompts...',
     'prompts.empty.title': 'No Prompt Categories Yet',
@@ -548,6 +525,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.open': 'Open',
     'prompts.prompt': 'prompt',
     'prompts.prompts': 'prompts',
+    'breadcrumb.home': 'Home',
+    'notFound.title': 'Page Not Found',
+    'notFound.desc': 'The page you are looking for does not exist or has been moved.',
+    'notFound.home': 'Back to Home',
 
     // Product Carousel
     'products.featured': 'Latest Apps',
@@ -579,7 +560,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'loading': 'Loading…',
 
     // Common
-    'common.back': 'Back',
     'lang.switch': 'Switch language',
 
     // Modal / Carousel / Contact

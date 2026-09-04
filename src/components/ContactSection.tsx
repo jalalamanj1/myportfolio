@@ -37,7 +37,6 @@ export const ContactSection: React.FC = memo(function ContactSection() {
           <h2 className="font-serif text-4xl sm:text-5xl font-light text-ink tracking-tight">
             {t('contact.lead', lang)}
           </h2>
-          <p className="mt-3 text-ink-muted text-base leading-relaxed">{t('contact.leadSubtitle', lang)}</p>
         </motion.div>
 
         {submitted ? (

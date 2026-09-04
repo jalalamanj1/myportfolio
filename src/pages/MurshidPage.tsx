@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, ArrowRight, FileText, ScrollText, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, FileText, ScrollText, ShieldCheck, Sparkles } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
-import murshidImg from '../assets/images/murshid.png';
+import { Seo, breadcrumbJsonLd, SITE_NAME, SITE_URL } from '../components/Seo';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import murshidImg from '../assets/images/murshid.webp';
 
 const LEGAL_LINKS = [
   { path: '/murshid/privacy_policy', key: 'murshid.privacy', icon: ShieldCheck },
@@ -19,20 +21,37 @@ export const MurshidPage: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
 
+  const crumbs = [
+    { label: t('breadcrumb.home', lang), to: '/' },
+    { label: t('murshid.title', lang) },
+  ];
+
+  const softwareJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Murshid',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Windows, macOS',
+    description:
+      'Murshid is a desktop application for secure document and personal data management, operating mainly offline with optional Google Drive backup.',
+    url: `${SITE_URL}/murshid`,
+    author: { '@type': 'Person', name: SITE_NAME },
+  };
+
   const headingClass = 'font-serif text-2xl font-light text-ink mt-8 mb-4 text-start';
   const paragraphClass = 'text-sm text-ink font-light leading-relaxed text-start';
 
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+      <Seo
+        title="Murshid — Secure Document Management App | Jalal Amanj"
+        description="Murshid is a desktop application for secure document and personal data management, operating mainly offline with optional Google Drive backup."
+        path="/murshid"
+        jsonLd={[breadcrumbJsonLd(crumbs), softwareJsonLd]}
+      />
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <button
-            onClick={() => window.history.back()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-ink text-xs font-medium uppercase tracking-wider hover:border-accent transition-all cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4 text-accent" />
-            <span>{t('common.back', lang)}</span>
-          </button>
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+          <Breadcrumbs items={crumbs} />
         </div>
 
         <motion.div

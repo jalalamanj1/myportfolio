@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Private admin area
+Disallow: /thebossadmin
+
+Sitemap: https://jalalamanj.online/sitemap.xml

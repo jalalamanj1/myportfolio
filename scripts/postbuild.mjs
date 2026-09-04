@@ -64,6 +64,10 @@ function generateStaticPage(route, title, description, bodyExtra = '') {
     .replace(
       /<meta name="description"[^>]*>/,
       `<meta name="description" content="${escapeHtml(description)}" />`
+    )
+    .replace(
+      /<link rel="canonical"[^>]*>/,
+      `<link rel="canonical" href="https://jalalamanj.online${route}" />`
     );
 
   const headExtra = `
@@ -71,9 +75,11 @@ function generateStaticPage(route, title, description, bodyExtra = '') {
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:url" content="https://jalalamanj.online${route}" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://jalalamanj.online/social-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHtml(title)}" />
-    <meta name="twitter:description" content="${escapeHtml(description)}" />`;
+    <meta name="twitter:description" content="${escapeHtml(description)}" />
+    <meta name="twitter:image" content="https://jalalamanj.online/social-cover.png" />`;
 
   html = html.replace('</head>', `${headExtra}\n  </head>`);
 

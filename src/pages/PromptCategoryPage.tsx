@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, ArrowLeft, Copy, Check, FolderOpen, Info, X, LayoutGrid, LayoutList, ClipboardList } from 'lucide-react';
+import { Sparkles, Copy, Check, FolderOpen, Info, X, LayoutGrid, LayoutList, ClipboardList } from 'lucide-react';
 import { getIcon } from '../utils/iconMap';
 import { fetchPromptCategories } from '../data/promptStore';
 import { PromptCategory, PromptItem } from '../types';
 import { useLang } from '../contexts/LanguageContext';
 import { t, localizePromptCategory, localizePromptItem } from '../i18n';
 import { assetUrl } from '../utils/asset';
+import { Seo, breadcrumbJsonLd, itemListJsonLd } from '../components/Seo';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
@@ -54,7 +56,6 @@ const chunk = <T,>(arr: T[], size: number): T[][] =>
 
 export const PromptCategoryPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
-  const navigate = useNavigate();
   const { lang } = useLang();
   const [categories, setCategories] = useState<PromptCategory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -95,6 +96,25 @@ export const PromptCategoryPage: React.FC = () => {
   const activeCatRaw = categories.find((c) => c.id === categoryId) ?? null;
   const activeCat = activeCatRaw ? localizePromptCategory(activeCatRaw, lang) : null;
 
+  const crumbs = [
+    { label: t('breadcrumb.home', lang), to: '/' },
+    { label: t('services.page.title', lang), to: '/services' },
+    { label: t('prompts.title', lang), to: '/services/Prompts' },
+    ...(activeCat ? [{ label: activeCat.title }] : []),
+  ];
+
+  const seoTitle = activeCat
+    ? `${activeCat.title} — AI Prompts | Jalal Amanj`
+    : 'AI Prompts — Jalal Amanj';
+  const seoDescription = activeCat
+    ? `${activeCat.title} — ${activeCat.prompts.length} ready-to-use AI prompts by Jalal Amanj.`
+    : 'Browse ready-to-use AI prompts by category on Jalal Amanj.';
+
+  const seoJsonLd = [
+    breadcrumbJsonLd(crumbs),
+    ...(activeCat ? [itemListJsonLd(activeCat.prompts.map((p) => p.title))] : []),
+  ];
+
   const handleCopy = (id: string, text: string) => {
     copyToClipboard(text).then(() => {
       setCopiedId(id);
@@ -130,15 +150,15 @@ export const PromptCategoryPage: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+      <Seo
+        title={seoTitle}
+        description={seoDescription}
+        path={`/services/Prompts/${categoryId ?? ''}`}
+        jsonLd={seoJsonLd}
+      />
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8 flex items-center justify-between">
-          <button
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-ink text-xs font-medium uppercase tracking-wider hover:border-accent transition-all cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4 text-accent" />
-            <span>{t('prompts.back', lang)}</span>
-          </button>
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+          <Breadcrumbs items={crumbs} />
         </div>
 
         {loading ? (

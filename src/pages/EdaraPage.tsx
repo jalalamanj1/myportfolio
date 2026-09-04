@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, ArrowRight, FileText, ScrollText, ShieldCheck } from 'lucide-react';
+import { ArrowRight, FileText, ScrollText, ShieldCheck } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
-import edaraImg from '../assets/images/edara.png';
+import { Seo, breadcrumbJsonLd, SITE_NAME, SITE_URL } from '../components/Seo';
+import { Breadcrumbs } from '../components/Breadcrumbs';
+import edaraImg from '../assets/images/edara.webp';
 
 const LEGAL_LINKS = [
   { path: '/edara/privacy_policy', key: 'edara.privacy', icon: ShieldCheck },
@@ -20,20 +22,37 @@ export const EdaraPage: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
 
+  const crumbs = [
+    { label: t('breadcrumb.home', lang), to: '/' },
+    { label: t('edara.title', lang) },
+  ];
+
+  const softwareJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Edara',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Windows, macOS',
+    description:
+      'Edara is a school management desktop application for organizing administrative and educational records locally, with optional cloud backup.',
+    url: `${SITE_URL}/edara`,
+    author: { '@type': 'Person', name: SITE_NAME },
+  };
+
   const headingClass = 'font-serif text-2xl font-light text-ink mt-8 mb-4 text-start';
   const paragraphClass = 'text-sm text-ink font-light leading-relaxed text-start';
 
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+      <Seo
+        title="Edara — School Management System | Jalal Amanj"
+        description="Edara is a school management desktop application for organizing administrative and educational records locally, with optional cloud backup."
+        path="/edara"
+        jsonLd={[breadcrumbJsonLd(crumbs), softwareJsonLd]}
+      />
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <button
-            onClick={() => window.history.back()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-ink text-xs font-medium uppercase tracking-wider hover:border-accent transition-all cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4 text-accent" />
-            <span>{t('common.back', lang)}</span>
-          </button>
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+          <Breadcrumbs items={crumbs} />
         </div>
 
         <motion.div

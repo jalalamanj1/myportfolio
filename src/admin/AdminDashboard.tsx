@@ -20,6 +20,7 @@ import { PRODUCTS } from '../data/portfolioData';
 import { assetUrl } from '../utils/asset';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
+import { Seo } from '../components/Seo';
 
 const ADMIN_EMAIL = 'thebossadmin@jalalamanj.online';
 const ADMIN_PASSWORD = 'Ja1a1Amanj#OG@1';
@@ -837,6 +838,12 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <section className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <Seo
+        title="Admin — Jalal Amanj"
+        description="Private admin dashboard for Jalal Amanj's portfolio."
+        path="/thebossadmin"
+        noindex
+      />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

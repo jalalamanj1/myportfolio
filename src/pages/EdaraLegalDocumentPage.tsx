@@ -1,11 +1,13 @@
 import React from 'react';
-import { useNavigate, useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Scale } from 'lucide-react';
+import { Scale } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
 import { LegalDocId } from '../data/legalDocuments';
 import { edaraLegalDocuments } from '../data/edaraLegalDocuments';
+import { Seo, breadcrumbJsonLd } from '../components/Seo';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 const DOC_ROUTE_MAP: Record<string, LegalDocId> = {
   privacy_policy: 'privacy',
@@ -15,7 +17,6 @@ const DOC_ROUTE_MAP: Record<string, LegalDocId> = {
 
 export const EdaraLegalDocumentPage: React.FC = () => {
   const { docId } = useParams<{ docId: string }>();
-  const navigate = useNavigate();
   const { lang } = useLang();
 
   const doc = docId ? edaraLegalDocuments[DOC_ROUTE_MAP[docId]] : undefined;
@@ -27,17 +28,23 @@ export const EdaraLegalDocumentPage: React.FC = () => {
   const sections = lang === 'ar' ? doc.ar : doc.en;
   const title = lang === 'ar' ? doc.titleAr : doc.titleEn;
 
+  const crumbs = [
+    { label: t('breadcrumb.home', lang), to: '/' },
+    { label: t('edara.title', lang), to: '/edara' },
+    { label: title },
+  ];
+
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+      <Seo
+        title={`${title} | Edara — Jalal Amanj`}
+        description={`${title} — the legal document that governs how the Edara school management system handles your data and rights.`}
+        path={`/edara/${docId ?? ''}`}
+        jsonLd={[breadcrumbJsonLd(crumbs)]}
+      />
       <div className="max-w-3xl mx-auto">
-        <div className="mb-8">
-          <button
-            onClick={() => navigate('/edara')}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-ink text-xs font-medium uppercase tracking-wider hover:border-accent transition-all cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4 text-accent" />
-            <span>{t('legal.back', lang)}</span>
-          </button>
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+          <Breadcrumbs items={crumbs} />
         </div>
 
         <motion.div
