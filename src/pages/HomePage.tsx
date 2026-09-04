@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, lazy, Suspense } from 'react';
 import { HeroSection } from '../components/HeroSection';
-import { ProductCarousel } from '../components/ProductCarousel';
-import { ServicesPreviewSection } from '../components/ServicesPreviewSection';
+import { MyWorkSection } from '../components/MyWorkSection';
+import { ServicesSection } from '../components/ServicesSection';
 import { ContactSection } from '../components/ContactSection';
 import { Footer } from '../components/Footer';
 import { getAllProducts, fetchProducts } from '../data/productStore';
@@ -35,34 +35,29 @@ export const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative z-10 flex flex-col w-full min-h-screen">
-      {/* Section 1: Hero */}
-      <div id="hero">
-        <HeroSection />
-      </div>
+    <main className="flex flex-col w-full min-h-screen">
+      {/* Hero */}
+      <HeroSection />
 
-      {/* Section 2: Products Horizontal Carousel */}
-      <ProductCarousel
-        products={products}
-        onSelectProduct={handleSelectProduct}
-      />
+      {/* My Work — centerpiece product grid */}
+      <MyWorkSection products={products} onSelectProduct={handleSelectProduct} />
 
-      {/* Section 4: Services Preview */}
-      <ServicesPreviewSection />
+      {/* Services */}
+      <ServicesSection />
 
-      {/* Section 5: Contact */}
+      {/* Contact */}
       <ContactSection />
 
       {/* Footer */}
       <Footer />
 
-      {/* Project Detail Glass Modal */}
+      {/* Project Detail Modal */}
       <Suspense fallback={null}>
         <ProjectModal
           product={selectedProduct}
           onClose={handleCloseModal}
         />
       </Suspense>
-    </div>
+    </main>
   );
 };

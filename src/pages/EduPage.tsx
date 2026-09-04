@@ -13,9 +13,9 @@ export const EduPage: React.FC = () => {
         <div className="mb-8">
           <button
             onClick={() => window.history.back()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-ink text-xs font-medium uppercase tracking-wider hover:border-accent transition-all cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />
+            <ArrowLeft className="w-4 h-4 text-accent" />
             <span>{t('edu.back', lang)}</span>
           </button>
         </div>
@@ -26,13 +26,13 @@ export const EduPage: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 max-w-2xl mx-auto">
-            <GraduationCap className="w-10 h-10 text-[#D7C4A3] mx-auto mb-4" />
-            <h1 className="font-serif text-5xl sm:text-6xl font-light text-white tracking-tight mb-4">
+          <div className="card p-10 text-center rounded-[32px] border border-line max-w-2xl mx-auto">
+            <GraduationCap className="w-10 h-10 text-accent mx-auto mb-4" />
+            <h1 className="font-serif text-5xl sm:text-6xl font-light text-ink tracking-tight mb-4">
               {t('edu.title', lang)}
             </h1>
-            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mx-auto mb-6" />
-            <p className="text-xs text-neutral-300 font-light leading-relaxed max-w-md mx-auto">
+            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent mx-auto mb-6" />
+            <p className="text-xs text-ink font-light leading-relaxed max-w-md mx-auto">
               {t('edu.desc', lang)}
             </p>
           </div>

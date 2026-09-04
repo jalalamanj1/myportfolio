@@ -19,8 +19,8 @@ export const MurshidPage: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
 
-  const headingClass = 'font-serif text-2xl font-light text-[#D7C4A3] mt-8 mb-4 text-start';
-  const paragraphClass = 'text-sm text-neutral-300 font-light leading-relaxed text-start';
+  const headingClass = 'font-serif text-2xl font-light text-ink mt-8 mb-4 text-start';
+  const paragraphClass = 'text-sm text-ink font-light leading-relaxed text-start';
 
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
@@ -28,9 +28,9 @@ export const MurshidPage: React.FC = () => {
         <div className="mb-8">
           <button
             onClick={() => window.history.back()}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-ink text-xs font-medium uppercase tracking-wider hover:border-accent transition-all cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />
+            <ArrowLeft className="w-4 h-4 text-accent" />
             <span>{t('common.back', lang)}</span>
           </button>
         </div>
@@ -41,15 +41,15 @@ export const MurshidPage: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 max-w-2xl mx-auto">
-            <div className="relative w-40 h-40 mx-auto mb-6 rounded-3xl overflow-hidden border border-white/15 shadow-2xl">
+          <div className="card p-10 text-center rounded-[32px] border border-line max-w-2xl mx-auto">
+            <div className="relative w-40 h-40 mx-auto mb-6 rounded-3xl overflow-hidden border border-line shadow-2xl">
               <img src={murshidImg} alt={t('murshid.title', lang)} className="w-full h-full object-cover" />
             </div>
-            <h1 className="font-serif text-5xl sm:text-6xl font-light text-white tracking-tight mb-4">
+            <h1 className="font-serif text-5xl sm:text-6xl font-light text-ink tracking-tight mb-4">
               {t('murshid.title', lang)}
             </h1>
-            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mx-auto mb-6" />
-            <p className="text-xs text-[#D7C4A3] font-light tracking-widest uppercase mb-8">
+            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent mx-auto mb-6" />
+            <p className="text-xs text-accent font-light tracking-widest uppercase mb-8">
               {t('murshid.tagline', lang)}
             </p>
 
@@ -76,13 +76,13 @@ export const MurshidPage: React.FC = () => {
                   <button
                     key={path}
                     onClick={() => navigate(path)}
-                    className="w-full flex items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/50 transition-all text-start cursor-pointer group"
+                    className="w-full flex items-center justify-between gap-4 p-4 rounded-2xl bg-accent-soft border border-line hover:border-accent transition-all text-start cursor-pointer group"
                   >
-                    <span className="flex items-center gap-3 text-sm font-light text-white group-hover:text-[#D7C4A3] transition-colors">
-                      <Icon className="w-5 h-5 text-[#D7C4A3] shrink-0" />
+                    <span className="flex items-center gap-3 text-sm font-light text-ink group-hover:text-accent transition-colors">
+                      <Icon className="w-5 h-5 text-accent shrink-0" />
                       {t(key, lang)}
                     </span>
-                    <ArrowRight className={`w-4 h-4 text-neutral-400 group-hover:text-[#D7C4A3] transition-all ${lang === 'ar' ? 'rotate-180' : ''}`} />
+                    <ArrowRight className={`w-4 h-4 text-ink group-hover:text-accent transition-all ${lang === 'ar' ? 'rotate-180' : ''}`} />
                   </button>
                 ))}
               </div>

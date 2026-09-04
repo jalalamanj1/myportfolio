@@ -1,6 +1,6 @@
 import React, { useState, memo } from 'react';
 import { motion } from 'motion/react';
-import { Send, CheckCircle, Instagram, Mail } from 'lucide-react';
+import { Send, CheckCircle, Mail, Instagram } from 'lucide-react';
 import { CONTACT_DATA } from '../data/portfolioData';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
@@ -24,47 +24,48 @@ export const ContactSection: React.FC = memo(function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="glass-panel p-6 sm:p-10 md:p-14 text-white overflow-hidden relative"
-      >
-        <div className="flex flex-col items-center text-center mb-10">
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-wide text-white">
-            {t('contact.title', lang)}
+    <section id="contact" className="w-full py-24 sm:py-28 px-6 sm:px-8">
+      <div className="max-w-xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-12"
+        >
+          <p className="eyebrow mb-4">{t('contact.eyebrow', lang)}</p>
+          <h2 className="font-serif text-4xl sm:text-5xl font-light text-ink tracking-tight">
+            {t('contact.lead', lang)}
           </h2>
-          <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mt-4" />
-        </div>
+          <p className="mt-3 text-ink-muted text-base leading-relaxed">{t('contact.leadSubtitle', lang)}</p>
+        </motion.div>
 
         {submitted ? (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="p-8 rounded-2xl bg-white/5 border border-[#D7C4A3]/40 text-center flex flex-col items-center space-y-4 my-8"
+            className="card p-10 text-center flex flex-col items-center"
           >
-            <div className="w-14 h-14 rounded-full bg-[#D7C4A3]/20 border border-[#D7C4A3] flex items-center justify-center text-[#D7C4A3]">
+            <div className="w-14 h-14 rounded-full bg-accent-soft text-accent flex items-center justify-center mb-5">
               <CheckCircle className="w-7 h-7" />
             </div>
-            <h3 className="font-serif text-2xl text-white font-light">{t('contact.received.title', lang)}</h3>
-            <p className="text-xs text-neutral-300 max-w-sm font-light leading-relaxed">
+            <h3 className="font-serif text-2xl font-normal text-ink">{t('contact.received.title', lang)}</h3>
+            <p className="mt-3 text-sm text-ink-muted max-w-sm leading-relaxed">
               {t('contact.received.desc', lang)}
             </p>
             <button
               onClick={() => setSubmitted(false)}
-              className="mt-4 px-6 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider cursor-pointer"
+              className="mt-6 btn-secondary"
             >
               {t('contact.received.again', lang)}
             </button>
           </motion.div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col space-y-2">
-                <label htmlFor="contact-name" className="text-xs font-light text-neutral-300 tracking-wider uppercase">
-                  {t('contact.name', lang)} <span className="text-[#D7C4A3]">*</span>
+                <label htmlFor="contact-name" className="text-[13px] font-medium text-ink">
+                  {t('contact.name', lang)} <span className="text-accent">*</span>
                 </label>
                 <input
                   id="contact-name"
@@ -72,39 +73,37 @@ export const ContactSection: React.FC = memo(function ContactSection() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder={t('contact.name.placeholder', lang)}
-                  className="glass-input px-4 py-3.5 text-sm font-light text-white placeholder-neutral-500"
+                  className="input-field"
                 />
               </div>
 
               <div className="flex flex-col space-y-2">
-                <label htmlFor="contact-email" className="text-xs font-light text-neutral-300 tracking-wider uppercase">
-                  {t('contact.email', lang)} <span className="text-[#D7C4A3]">*</span>
+                <label htmlFor="contact-email" className="text-[13px] font-medium text-ink">
+                  {t('contact.email', lang)} <span className="text-accent">*</span>
                 </label>
                 <input
                   id="contact-email"
-                  type="email"
+                  type="text"
                   required
+                  dir="auto"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder={t('contact.email.placeholder', lang)}
-                  className="glass-input px-4 py-3.5 text-sm font-light text-white placeholder-neutral-500"
+                  className="input-field"
                 />
               </div>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <label htmlFor="contact-message" className="text-xs font-light text-neutral-300 tracking-wider uppercase">
-                {t('contact.message', lang)} <span className="text-[#D7C4A3]">*</span>
+              <label htmlFor="contact-message" className="text-[13px] font-medium text-ink">
+                {t('contact.message', lang)} <span className="text-accent">*</span>
               </label>
               <textarea
                 id="contact-message"
                 required
-                rows={4}
+                rows={5}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                placeholder={t('contact.message.placeholder', lang)}
-                className="glass-input px-4 py-3.5 text-sm font-light text-white placeholder-neutral-500 resize-none"
+                className="input-field resize-none"
               />
             </div>
 
@@ -112,13 +111,13 @@ export const ContactSection: React.FC = memo(function ContactSection() {
               id="send-inquiry-btn"
               type="submit"
               disabled={isSubmitting}
-              className="w-full glass-button-primary py-4 rounded-xl text-xs font-medium tracking-[0.2em] uppercase flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 disabled:opacity-50"
+              className="btn-primary w-full !py-4 disabled:opacity-50"
             >
               {isSubmitting ? (
                 <span>{t('contact.sending', lang)}</span>
               ) : (
                 <>
-                  <Send className="w-4 h-4 text-[#D7C4A3]" />
+                  <Send className="w-4 h-4" />
                   <span>{t('contact.send', lang)}</span>
                 </>
               )}
@@ -126,33 +125,25 @@ export const ContactSection: React.FC = memo(function ContactSection() {
           </form>
         )}
 
-        <div className="mt-12 pt-8 border-t border-white/15 flex flex-col items-center space-y-6">
-          <p className="text-[11px] font-light uppercase tracking-widest text-neutral-300">
-            {t('contact.or', lang)}
-          </p>
-
-          <div className="grid grid-cols-2 gap-3 w-full max-w-3xl">
-            <a
-              href={`mailto:${CONTACT_DATA.email}`}
-              aria-label={t('contact.email', lang)}
-              className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/60 hover:bg-[#D7C4A3]/10 flex items-center justify-center transition-all text-neutral-200 hover:text-white group"
-            >
-              <Mail className="w-5 h-5 text-[#D7C4A3]" />
-            </a>
-
-            <a
-              href={CONTACT_DATA.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t('contact.instagram', lang)}
-              className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#D7C4A3]/60 hover:bg-[#D7C4A3]/10 flex items-center justify-center transition-all text-neutral-200 hover:text-white group"
-            >
-              <Instagram className="w-5 h-5 text-[#D7C4A3]" />
-            </a>
-          </div>
+        <div className="mt-10 pt-8 border-t border-line flex items-center justify-center gap-3">
+          <a
+            href={`mailto:${CONTACT_DATA.email}`}
+            aria-label={t('contact.email', lang)}
+            className="w-11 h-11 rounded-full border border-line text-ink-soft hover:text-accent hover:border-accent flex items-center justify-center transition-colors"
+          >
+            <Mail className="w-5 h-5" />
+          </a>
+          <a
+            href={CONTACT_DATA.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t('contact.instagram', lang)}
+            className="w-11 h-11 rounded-full border border-line text-ink-soft hover:text-accent hover:border-accent flex items-center justify-center transition-colors"
+          >
+            <Instagram className="w-5 h-5" />
+          </a>
         </div>
-
-      </motion.div>
+      </div>
     </section>
   );
 });

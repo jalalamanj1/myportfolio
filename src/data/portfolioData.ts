@@ -12,7 +12,6 @@ export const HERO_DATA = {
   name: "JALAL AMANJ",
   title: "",
   description: "",
-  tagline: "TECH DESKTOP APPS & SERVICES • PORTFOLIO 2026",
   bgImage: bgImage,
   bgImageMobile: bgImageMobile,
 };

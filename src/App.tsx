@@ -1,8 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Background } from './components/Background';
-import { LanguageSwitch } from './components/LanguageSwitch';
+import { Navbar } from './components/Navbar';
 import { HomePage } from './pages/HomePage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useSiteProtection } from './hooks/useSiteProtection';
@@ -45,7 +44,7 @@ const RouteFallback: React.FC = () => {
   const { lang } = useLang();
   return (
     <div className="w-full min-h-[50vh] flex items-center justify-center" aria-busy="true">
-      <span className="text-xs tracking-[0.3em] uppercase text-neutral-400 font-light animate-pulse">
+      <span className="text-xs tracking-[0.3em] uppercase text-ink-muted font-light animate-pulse">
         {t('loading', lang)}
       </span>
     </div>
@@ -92,12 +91,9 @@ export default function App() {
   useSiteProtection();
   return (
     <BrowserRouter>
-      <div className="relative min-h-screen w-full bg-black text-white font-sans overflow-x-hidden selection:bg-[#D7C4A3]/30 selection:text-white">
-        {/* Fixed Full Screen Ambient Dark Background */}
-        <Background />
-
-        {/* Floating Language Switch (top corner) */}
-        <LanguageSwitch />
+      <div className="relative min-h-screen w-full bg-ivory text-ink font-sans overflow-x-hidden selection:bg-accent/15 selection:text-ink">
+        {/* Clean top navigation */}
+        <Navbar />
 
         {/* Animated Application Routes */}
         <main className="relative z-10 w-full min-h-screen">

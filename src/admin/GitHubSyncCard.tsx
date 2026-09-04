@@ -25,31 +25,31 @@ export const GitHubSyncCard: React.FC<GitHubSyncCardProps> = ({
 }) => {
   const { lang } = useLang();
   return (
-    <div className="mb-8 p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-4">
+    <div className="mb-8 p-5 rounded-2xl bg-accent-soft border border-line space-y-4">
       <div className="flex items-center gap-2">
-        <Github className="w-4 h-4 text-[#D7C4A3]" />
-        <h2 className="font-serif text-lg font-light text-[#D7C4A3]">
+        <Github className="w-4 h-4 text-accent" />
+        <h2 className="font-serif text-lg font-light text-accent">
           {t('gh.title', lang)}
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+        <label className="flex flex-col space-y-1.5 text-xs text-ink">
           {t('gh.tokenLabel', lang)}
           <input
             type="password"
             value={config.token}
             onChange={(e) => onConfigChange({ ...config, token: e.target.value })}
             placeholder={t('gh.tokenPlaceholder', lang)}
-            className="glass-input px-4 py-3 text-sm font-light text-white"
+            className="glass-input px-4 py-3 text-sm font-light text-ink"
           />
         </label>
-        <label className="flex flex-col space-y-1.5 text-xs text-neutral-300">
+        <label className="flex flex-col space-y-1.5 text-xs text-ink">
           {t('gh.repoLabel', lang)}
           <input
             value={config.repo}
             onChange={(e) => onConfigChange({ ...config, repo: e.target.value })}
             placeholder={t('gh.repoPlaceholder', lang)}
-            className="glass-input px-4 py-3 text-sm font-light text-white"
+            className="glass-input px-4 py-3 text-sm font-light text-ink"
           />
         </label>
       </div>
@@ -69,9 +69,9 @@ export const GitHubSyncCard: React.FC<GitHubSyncCardProps> = ({
           <Github className="w-3.5 h-3.5" />
           {busy ? t('gh.pushing', lang) : pushLabel}
         </button>
-        <span className="text-xs text-neutral-400 font-light">{status}</span>
+        <span className="text-xs text-ink-muted font-light">{status}</span>
       </div>
-      <p className="text-[10px] text-neutral-500 font-light leading-relaxed">
+      <p className="text-[10px] text-ink-muted font-light leading-relaxed">
         {t('gh.note', lang)}
       </p>
     </div>

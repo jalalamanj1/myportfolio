@@ -93,5 +93,6 @@ export interface PromptCategory {
   iconName: string;
   prompts: PromptItem[];
   layout?: 'pair';
+  hasFillForm?: boolean;
 }
 

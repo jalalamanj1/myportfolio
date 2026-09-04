@@ -9,13 +9,35 @@ export const translations: Record<Lang, Record<string, string>> = {
     'background.alt': 'خلفية معمارية داخلية',
 
     // Hero
-    'hero.explore': 'استكشف',
-    'hero.contact': 'تواصل',
-    'hero.scroll': 'اسحب للاستكشاف',
+    'hero.statement': 'أصنع حلولاً رقمية عملية وتطبيقات وأدوات مدعومة بالذكاء الاصطناعي — برمجيات أنيقة ومدروسة تُنجز الأهداف.',
+    'hero.explore': 'استكشف أعمالي',
+    'hero.contact': 'تواصل معي',
+
+    // Navigation
+    'nav.home': 'الرئيسية',
+    'nav.work': 'أعمالي',
+    'nav.services': 'الخدمات',
+    'nav.contact': 'تواصل',
+    'nav.cta': 'راسلنا',
+
+    // My Work
+    'work.eyebrow': 'أعمالي',
+    'work.title': 'تطبيقات أنشأتها',
+    'work.subtitle': 'تطبيقات سطح مكتب وأدوات رقمية صُممت للعمل بشكل عملي وموثوق.',
 
     // Services Preview
-    'services.title': 'اكتشف الخدمات',
-    'services.explore': 'اكتشف',
+    'services.eyebrow': 'خدماتي',
+    'services.sectionTitle': 'خدمات بسيطة، قيمة حقيقية',
+    'services.sectionSubtitle': 'أقدم ثلاث خدمات ملموسة تلبي احتياجاتك.',
+    'svc.prompts.title': 'أوامر جاهزة للنسخ',
+    'svc.prompts.desc': 'أوامر عالية الجودة ومُختبَرة، جاهزة للاستخدام مباشرة.',
+    'svc.prompts.cta': 'تصفح الأوامر',
+    'svc.generation.title': 'توليد الأوامر',
+    'svc.generation.desc': 'أوامر مخصصة تُنشأ خصيصاً لاحتياجاتك وأهدافك وسير عملك.',
+    'svc.generation.cta': 'اطلب أمراً',
+    'svc.wheel.title': 'عجلة الأسئلة والأسماء',
+    'svc.wheel.desc': 'عجلات تفاعلية للأسئلة والأسماء والاختيارات والأنشطة.',
+    'svc.wheel.cta': 'تواصل معي',
 
     // Services Page
     'services.page.title': 'الخدمات',
@@ -107,6 +129,13 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.howto.close': 'إغلاق',
     'prompts.pick': 'اختر فئة، ثم انسخ الأمر الذي تحتاجه.',
     'prompts.active.pick': '— اختر بطاقة وانسخ أمرك.',
+    'prompts.view.list': 'عرض القائمة',
+    'prompts.view.grid': 'عرض الشبكة',
+    'prompts.fill.title': 'جهّز أمرك',
+    'prompts.fill.desc': 'املأ الحقول أدناه، ثم انسخ الأمر جاهزاً.',
+    'prompts.fill.copy': 'نسخ الأمر الآن',
+    'prompts.fill.cancel': 'إلغاء',
+    'prompts.fill.close': 'إغلاق',
     'prompts.open': 'فتح',
     'prompts.prompt': 'أمر',
     'prompts.prompts': 'أوامر',
@@ -179,16 +208,15 @@ export const translations: Record<Lang, Record<string, string>> = {
     'product.spec.value.Supports (English, Arabic, Kurdish (Sorani) and Turkish)': 'يدعم (الإنجليزية، العربية، الكردية (سورانية) والتركية)',
 
     // Contact
+    'contact.eyebrow': 'تواصل',
+    'contact.lead': 'لنتواصل',
     'contact.title': 'تواصل معي.',
     'contact.received.title': 'تم استلام الرسالة',
     'contact.received.desc': 'شكراً لتواصلك. سيراجع jalalamanj استفسارك الفني وسيرد خلال 24 ساعة عمل.',
     'contact.received.again': 'إرسال رسالة أخرى',
     'contact.name': 'اسمك',
-    'contact.name.placeholder': 'مثال: أحمد محمد',
-    'contact.email': 'البريد الإلكتروني',
-    'contact.email.placeholder': 'مثال: ahmed@example.com',
+    'contact.email': 'البريد الإلكتروني أو رقم الهاتف',
     'contact.message': 'رؤية المشروع / الاستفسار',
-    'contact.message.placeholder': 'صف متطلبات تطبيق سطح المكتب أو مواصفات التقنية...',
     'contact.sending': 'جاري الإرسال...',
     'contact.send': 'إرسال',
     'contact.or': 'أو استخدم',
@@ -391,13 +419,34 @@ export const translations: Record<Lang, Record<string, string>> = {
     'background.alt': 'Background Architectural Interior',
 
     // Hero
-    'hero.explore': 'Explore',
-    'hero.contact': 'Contact',
-    'hero.scroll': 'Scroll to explore',
+    'hero.statement': 'I create practical digital solutions, applications, and AI-powered tools — thoughtful software that gets things done.','hero.explore': 'Explore My Work',
+    'hero.contact': 'Get in Touch',
+
+    // Navigation
+    'nav.home': 'Home',
+    'nav.work': 'My Work',
+    'nav.services': 'Services',
+    'nav.contact': 'Contact',
+    'nav.cta': 'Get in Touch',
+
+    // My Work
+    'work.eyebrow': 'My Work',
+    'work.title': "Applications I've Built",
+    'work.subtitle': 'Desktop applications and digital tools, designed to be practical, reliable, and considered.',
 
     // Services Preview
-    'services.title': 'Discover Services',
-    'services.explore': 'Discover',
+    'services.eyebrow': 'My Services',
+    'services.sectionTitle': 'Simple Services, Real Value',
+    'services.sectionSubtitle': 'Online free and paid services.',
+    'svc.prompts.title': 'Ready-to-Copy Prompts',
+    'svc.prompts.desc': 'High-quality, tested prompts that are ready to use.',
+    'svc.prompts.cta': 'Browse Prompts',
+    'svc.generation.title': 'Prompt Generation',
+    'svc.generation.desc': 'Custom prompts created for specific needs, goals, and workflows.',
+    'svc.generation.cta': 'Request a Prompt',
+    'svc.wheel.title': 'Questions and Names Wheel',
+    'svc.wheel.desc': 'Interactive wheels for questions, names, selections, and activities.',
+    'svc.wheel.cta': 'Contact Me',
 
     // Services Page
     'services.page.title': 'Services',
@@ -489,6 +538,13 @@ export const translations: Record<Lang, Record<string, string>> = {
     'prompts.howto.close': 'Close how to use',
     'prompts.pick': 'Pick a category, then copy the prompt you need.',
     'prompts.active.pick': '— pick a card and copy its prompt.',
+    'prompts.view.list': 'List view',
+    'prompts.view.grid': 'Grid view',
+    'prompts.fill.title': 'Prepare Your Prompt',
+    'prompts.fill.desc': 'Fill the fields below, then copy your ready prompt.',
+    'prompts.fill.copy': 'Copy Prompt',
+    'prompts.fill.cancel': 'Cancel',
+    'prompts.fill.close': 'Close',
     'prompts.open': 'Open',
     'prompts.prompt': 'prompt',
     'prompts.prompts': 'prompts',
@@ -499,16 +555,15 @@ export const translations: Record<Lang, Record<string, string>> = {
     'products.view': 'View Project',
 
     // Contact
+    'contact.eyebrow': 'Contact',
+    'contact.lead': "Let's Connect",
     'contact.title': 'Contact Me.',
     'contact.received.title': 'Dialogue Received',
     'contact.received.desc': 'Thank you for reaching out. Jalal Amanj will review your technical inquiry and respond within 24 business hours.',
     'contact.received.again': 'Send Another Inquiry',
     'contact.name': 'Your Name',
-    'contact.name.placeholder': 'e.g. Lord Sterling',
-    'contact.email': 'Email Address',
-    'contact.email.placeholder': 'e.g. sterling@atelier.com',
+    'contact.email': 'Email or Phone',
     'contact.message': 'Project Vision / Inquiry',
-    'contact.message.placeholder': 'Describe your desktop app engineering requirements, tech stack specs, or service inquiry...',
     'contact.sending': 'Transmitting...',
     'contact.send': 'Send',
     'contact.or': 'OR USE',

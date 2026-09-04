@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { ArrowUp } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
 
@@ -11,23 +10,24 @@ export const Footer: React.FC = memo(function Footer() {
   };
 
   return (
-    <footer className="relative z-10 w-full pb-12 px-4 text-center">
-      <div className="max-w-4xl mx-auto p-6 glass-panel text-xs text-neutral-300 font-light text-center">
-        <div>
-          <span className="font-serif text-sm font-medium text-white tracking-widest uppercase mr-2">
-            {t('site.name', lang)}
-          </span>
-          <span>{t('footer.rights', lang)}</span>
-        </div>
-      </div>
-      <div className="mt-6">
+    <footer className="w-full border-t border-line bg-paper px-6 sm:px-8 pb-10 pt-12">
+      <div className="max-w-7xl mx-auto flex flex-col items-center gap-6">
         <button
           onClick={scrollToTop}
-          className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full glass-button text-xs uppercase tracking-widest text-neutral-300 hover:text-[#D7C4A3] hover:border-[#D7C4A3]/60 transition-all cursor-pointer"
+          className="flex items-center gap-3 cursor-pointer group"
+          aria-label={t('site.name', lang)}
         >
-          <ArrowUp className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-          {t('footer.top', lang)}
+          <img
+            src={`${import.meta.env.BASE_URL}logo.webp`}
+            alt={t('site.name', lang)}
+            className="w-9 h-9 rounded-full object-cover border border-line"
+          />
+          <span className="font-serif text-[15px] font-medium tracking-[0.14em] text-ink uppercase">
+            {t('site.name', lang)}
+          </span>
         </button>
+
+        <p className="text-[13px] text-ink-muted">{t('footer.rights', lang)}</p>
       </div>
     </footer>
   );

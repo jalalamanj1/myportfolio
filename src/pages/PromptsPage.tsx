@@ -34,9 +34,9 @@ export const PromptsPage: React.FC = () => {
         <div className="mb-8 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-button text-xs font-medium uppercase tracking-wider text-neutral-300 hover:text-white transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-ink text-xs font-medium uppercase tracking-wider hover:border-accent transition-all cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#D7C4A3]" />
+            <ArrowLeft className="w-4 h-4 text-accent" />
             <span>{t('prompts.back', lang)}</span>
           </button>
         </div>
@@ -47,25 +47,25 @@ export const PromptsPage: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="text-center max-w-4xl mx-auto mb-16"
         >
-          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl font-light text-white tracking-tight leading-[0.95]">
+          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl font-light text-ink tracking-tight leading-[0.95]">
             {t('prompts.title', lang)}
           </h1>
-          <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#D7C4A3] to-transparent mx-auto mt-8" />
-          <p className="text-xs text-neutral-300 font-light mt-6 max-w-lg mx-auto leading-relaxed">
+          <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent mx-auto mt-8" />
+          <p className="text-xs text-ink font-light mt-6 max-w-lg mx-auto leading-relaxed">
             {t('prompts.pick', lang)}
           </p>
         </motion.div>
 
         {loading ? (
-          <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 my-8 max-w-2xl mx-auto">
-            <Sparkles className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4 animate-pulse" />
-            <h3 className="font-serif text-2xl font-light text-white mb-2">{t('prompts.loading', lang)}</h3>
+          <div className="card p-10 text-center rounded-[32px] border border-line my-8 max-w-2xl mx-auto">
+            <Sparkles className="w-8 h-8 text-accent mx-auto mb-4 animate-pulse" />
+            <h3 className="font-serif text-2xl font-light text-ink mb-2">{t('prompts.loading', lang)}</h3>
           </div>
         ) : categories.length === 0 ? (
-          <div className="glass-panel p-10 text-center rounded-[32px] border border-white/15 my-8 max-w-2xl mx-auto">
-            <Sparkles className="w-8 h-8 text-[#D7C4A3] mx-auto mb-4" />
-            <h3 className="font-serif text-2xl font-light text-white mb-2">{t('prompts.empty.title', lang)}</h3>
-            <p className="text-xs text-neutral-300 font-light leading-relaxed max-w-md mx-auto">
+          <div className="card p-10 text-center rounded-[32px] border border-line my-8 max-w-2xl mx-auto">
+            <Sparkles className="w-8 h-8 text-accent mx-auto mb-4" />
+            <h3 className="font-serif text-2xl font-light text-ink mb-2">{t('prompts.empty.title', lang)}</h3>
+            <p className="text-xs text-ink font-light leading-relaxed max-w-md mx-auto">
               {t('prompts.empty.desc', lang)}
             </p>
           </div>
@@ -79,18 +79,18 @@ export const PromptsPage: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
                 onClick={() => navigate(`/services/Prompts/${cat.id}`)}
-                className="glass-card p-8 rounded-[28px] border border-white/15 hover:border-[#D7C4A3]/50 flex flex-col items-center text-center gap-4 group transition-all duration-300 hover:shadow-2xl cursor-pointer"
+                className="card p-8 rounded-[28px] border border-line hover:border-accent flex flex-col items-center text-center gap-4 group transition-all duration-300 hover:shadow-2xl cursor-pointer"
               >
-                <div className="p-4 rounded-2xl bg-white/10 border border-white/15 text-[#D7C4A3] group-hover:bg-[#D7C4A3]/20 group-hover:scale-110 transition-all">
+                <div className="p-4 rounded-2xl bg-accent-soft border border-line text-accent group-hover:bg-accent group-hover:text-white group-hover:scale-110 transition-all">
                   {getIcon(cat.iconName, "w-7 h-7")}
                 </div>
-                <h3 className="font-serif text-2xl font-light text-white group-hover:text-[#D7C4A3] transition-colors">
+                <h3 className="font-serif text-2xl font-light text-ink group-hover:text-accent transition-colors">
                   {localizePromptCategory(cat, lang).title}
                 </h3>
-                <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-neutral-400 uppercase tracking-widest">
+                <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-accent-soft border border-line text-ink uppercase tracking-widest">
                   {cat.prompts.length} {promptLabel(cat.prompts.length)}
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-neutral-500 group-hover:text-[#D7C4A3] transition-colors">
+                <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-ink group-hover:text-accent transition-colors">
                   {t('prompts.open', lang)}
                   <ArrowRight className={`w-3.5 h-3.5 ${lang === 'ar' ? 'rotate-180' : ''}`} />
                 </span>
