@@ -27,7 +27,7 @@ export const ServicesPage: React.FC = () => {
       title: t('services.wheel.title', lang),
       description: t('services.wheel.desc', lang),
       icon: CircleDot,
-      href: 'https://6ly5v3ttzn8efx4o0a7i98f6vp.ai.studio',
+      href: 'https://sdgdg587hdfklgknoigewr5827.ai.studio',
       tag: t('services.freeTag', lang),
     },
     {
