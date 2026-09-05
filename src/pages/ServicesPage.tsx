@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Sparkles, GraduationCap, Smartphone } from 'lucide-react';
+import { Sparkles, GraduationCap, Smartphone, CircleDot } from 'lucide-react';
 import { useLang } from '../contexts/LanguageContext';
 import { t } from '../i18n';
 import { Seo, breadcrumbJsonLd } from '../components/Seo';
@@ -24,6 +24,13 @@ export const ServicesPage: React.FC = () => {
       path: '/services/Prompts',
     },
     {
+      title: t('services.wheel.title', lang),
+      description: t('services.wheel.desc', lang),
+      icon: CircleDot,
+      href: 'https://6ly5v3ttzn8efx4o0a7i98f6vp.ai.studio',
+      tag: t('services.freeTag', lang),
+    },
+    {
       title: t('edu.title', lang),
       description: t('services.edu.desc', lang),
       icon: GraduationCap,
@@ -36,6 +43,14 @@ export const ServicesPage: React.FC = () => {
       path: '/services/Apps',
     },
   ];
+
+  const handleCardClick = (card: (typeof cards)[number]) => {
+    if (card.href) {
+      window.open(card.href, '_blank', 'noopener,noreferrer');
+    } else if (card.path) {
+      navigate(card.path);
+    }
+  };
 
   return (
     <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
@@ -62,16 +77,21 @@ export const ServicesPage: React.FC = () => {
           <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent mx-auto mt-8" />
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {cards.map((card, i) => (
             <motion.button
               key={card.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              onClick={() => navigate(card.path)}
-              className="card p-8 rounded-[28px] border border-line hover:border-accent flex flex-col items-center text-center gap-4 group transition-all duration-300 hover:shadow-2xl cursor-pointer"
+              onClick={() => handleCardClick(card)}
+              className="card p-8 rounded-[28px] border border-line hover:border-accent flex flex-col items-center text-center gap-4 group relative transition-all duration-300 hover:shadow-2xl cursor-pointer"
             >
+              {card.tag && (
+                <span className="absolute top-4 right-4 text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accent text-white">
+                  {card.tag}
+                </span>
+              )}
               <div className="p-4 rounded-2xl bg-accent-soft border border-line text-accent group-hover:bg-accent group-hover:text-white group-hover:scale-110 transition-all">
                 <card.icon className="w-7 h-7" />
               </div>

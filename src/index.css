@@ -202,6 +202,16 @@ body {
   background: rgba(32, 36, 31, 0.32);
 }
 
+/* Hide scrollbars on horizontal carousels while keeping scroll/swipe */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

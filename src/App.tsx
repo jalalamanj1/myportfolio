@@ -24,6 +24,9 @@ const AdminDashboard = lazy(() =>
 const EduPage = lazy(() =>
   import('./pages/EduPage').then((m) => ({ default: m.EduPage }))
 );
+const AiToolsPage = lazy(() =>
+  import('./pages/AiToolsPage').then((m) => ({ default: m.AiToolsPage }))
+);
 const AppsPage = lazy(() =>
   import('./pages/AppsPage').then((m) => ({ default: m.AppsPage }))
 );
@@ -74,6 +77,7 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/services/Prompts" element={<PromptsPage />} />
             <Route path="/services/Prompts/:categoryId" element={<PromptCategoryPage />} />
             <Route path="/services/Edu" element={<EduPage />} />
+            <Route path="/services/Edu/ai-tools" element={<AiToolsPage />} />
             <Route path="/services/Apps" element={<AppsPage />} />
             <Route path="/murshid" element={<MurshidPage />} />
             <Route path="/murshid/terms_of_use" element={<Navigate to="/murshid/terms_of_service" replace />} />

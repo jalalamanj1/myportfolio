@@ -44,6 +44,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://jalalamanj.online/services/Edu/ai-tools</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://jalalamanj.online/services/Apps</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

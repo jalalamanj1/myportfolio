@@ -1,0 +1,672 @@
+[
+  {
+    "name": "Gamma",
+    "url": "https://gamma.app",
+    "logo": "gamma.app.svg"
+  },
+  {
+    "name": "MagicSchool AI",
+    "url": "https://www.magicschool.ai",
+    "logo": "www.magicschool.ai.webp"
+  },
+  {
+    "name": "Khanmigo",
+    "url": "https://www.khanmigo.ai",
+    "logo": "www.khanmigo.ai.webp"
+  },
+  {
+    "name": "SchoolAI",
+    "url": "https://schoolai.com",
+    "logo": "schoolai.com.webp"
+  },
+  {
+    "name": "Brisk Teaching",
+    "url": "https://www.briskteaching.com",
+    "logo": "www.briskteaching.com.webp"
+  },
+  {
+    "name": "Curipod",
+    "url": "https://curipod.com",
+    "logo": "curipod.com.webp"
+  },
+  {
+    "name": "Diffit",
+    "url": "https://www.diffit.me",
+    "logo": "www.diffit.me.webp"
+  },
+  {
+    "name": "Eduaide.AI",
+    "url": "https://www.eduaide.ai",
+    "logo": "www.eduaide.ai.webp"
+  },
+  {
+    "name": "TeachMateAI",
+    "url": "https://www.teachmateai.com",
+    "logo": null
+  },
+  {
+    "name": "QuestionWell",
+    "url": "https://www.questionwell.org",
+    "logo": "www.questionwell.org.webp"
+  },
+  {
+    "name": "Quizizz / Wayground",
+    "url": "https://wayground.com",
+    "logo": "wayground.com.svg"
+  },
+  {
+    "name": "ClassPoint AI",
+    "url": "https://www.classpoint.io/ai",
+    "logo": "www.classpoint.io.webp"
+  },
+  {
+    "name": "Canva AI",
+    "url": "https://www.canva.com/ai",
+    "logo": "www.canva.com.webp"
+  },
+  {
+    "name": "NotebookLM",
+    "url": "https://notebooklm.google.com",
+    "logo": "notebooklm.google.com.webp"
+  },
+  {
+    "name": "ChatGPT",
+    "url": "https://chatgpt.com",
+    "logo": "chatgpt.com.svg"
+  },
+  {
+    "name": "Claude",
+    "url": "https://claude.ai",
+    "logo": "claude.ai.svg"
+  },
+  {
+    "name": "Google Gemini",
+    "url": "https://gemini.google.com",
+    "logo": "gemini.google.com.webp"
+  },
+  {
+    "name": "Microsoft Copilot",
+    "url": "https://copilot.microsoft.com",
+    "logo": "copilot.microsoft.com.svg"
+  },
+  {
+    "name": "Perplexity",
+    "url": "https://www.perplexity.ai",
+    "logo": "www.perplexity.ai.svg"
+  },
+  {
+    "name": "Poe",
+    "url": "https://poe.com",
+    "logo": "poe.com.svg"
+  },
+  {
+    "name": "You.com",
+    "url": "https://you.com",
+    "logo": "you.com.webp"
+  },
+  {
+    "name": "Phind",
+    "url": "https://www.phind.com",
+    "logo": null
+  },
+  {
+    "name": "Consensus",
+    "url": "https://consensus.app",
+    "logo": "consensus.app.svg"
+  },
+  {
+    "name": "Elicit",
+    "url": "https://elicit.com",
+    "logo": "elicit.com.webp"
+  },
+  {
+    "name": "SciSpace",
+    "url": "https://scispace.com",
+    "logo": "scispace.com.webp"
+  },
+  {
+    "name": "ResearchRabbit",
+    "url": "https://www.researchrabbit.ai",
+    "logo": "www.researchrabbit.ai.webp"
+  },
+  {
+    "name": "Connected Papers",
+    "url": "https://www.connectedpapers.com",
+    "logo": "www.connectedpapers.com.webp"
+  },
+  {
+    "name": "Semantic Scholar",
+    "url": "https://www.semanticscholar.org",
+    "logo": "www.semanticscholar.org.webp"
+  },
+  {
+    "name": "Gradescope",
+    "url": "https://www.gradescope.com",
+    "logo": "www.gradescope.com.webp"
+  },
+  {
+    "name": "Class Companion",
+    "url": "https://classcompanion.com",
+    "logo": "classcompanion.com.webp"
+  },
+  {
+    "name": "Turnitin",
+    "url": "https://www.turnitin.com",
+    "logo": "www.turnitin.com.webp"
+  },
+  {
+    "name": "Grammarly",
+    "url": "https://www.grammarly.com",
+    "logo": "www.grammarly.com.webp"
+  },
+  {
+    "name": "QuillBot",
+    "url": "https://quillbot.com",
+    "logo": "quillbot.com.svg"
+  },
+  {
+    "name": "LanguageTool",
+    "url": "https://languagetool.org",
+    "logo": "languagetool.org.webp"
+  },
+  {
+    "name": "Scribbr",
+    "url": "https://www.scribbr.com",
+    "logo": "www.scribbr.com.webp"
+  },
+  {
+    "name": "Paperpal",
+    "url": "https://paperpal.com",
+    "logo": "paperpal.com.webp"
+  },
+  {
+    "name": "Jenni AI",
+    "url": "https://jenni.ai",
+    "logo": "jenni.ai.svg"
+  },
+  {
+    "name": "Otter.ai",
+    "url": "https://otter.ai",
+    "logo": "otter.ai.webp"
+  },
+  {
+    "name": "Fireflies.ai",
+    "url": "https://fireflies.ai",
+    "logo": "fireflies.ai.webp"
+  },
+  {
+    "name": "Notta",
+    "url": "https://www.notta.ai",
+    "logo": "www.notta.ai.webp"
+  },
+  {
+    "name": "Fathom",
+    "url": "https://fathom.video",
+    "logo": "fathom.video.webp"
+  },
+  {
+    "name": "Descript",
+    "url": "https://www.descript.com",
+    "logo": "www.descript.com.svg"
+  },
+  {
+    "name": "ElevenLabs",
+    "url": "https://elevenlabs.io",
+    "logo": "elevenlabs.io.svg"
+  },
+  {
+    "name": "Murf AI",
+    "url": "https://murf.ai",
+    "logo": "murf.ai.webp"
+  },
+  {
+    "name": "HeyGen",
+    "url": "https://www.heygen.com",
+    "logo": "www.heygen.com.webp"
+  },
+  {
+    "name": "Synthesia",
+    "url": "https://www.synthesia.io",
+    "logo": "www.synthesia.io.webp"
+  },
+  {
+    "name": "Colossyan",
+    "url": "https://www.colossyan.com",
+    "logo": "www.colossyan.com.webp"
+  },
+  {
+    "name": "VEED AI",
+    "url": "https://www.veed.io",
+    "logo": "www.veed.io.webp"
+  },
+  {
+    "name": "InVideo AI",
+    "url": "https://invideo.io",
+    "logo": "invideo.io.webp"
+  },
+  {
+    "name": "Runway",
+    "url": "https://runwayml.com",
+    "logo": "runwayml.com.webp"
+  },
+  {
+    "name": "Adobe Firefly",
+    "url": "https://firefly.adobe.com",
+    "logo": "firefly.adobe.com.webp"
+  },
+  {
+    "name": "Leonardo AI",
+    "url": "https://leonardo.ai",
+    "logo": "leonardo.ai.webp"
+  },
+  {
+    "name": "Ideogram",
+    "url": "https://ideogram.ai",
+    "logo": "ideogram.ai.svg"
+  },
+  {
+    "name": "Midjourney",
+    "url": "https://www.midjourney.com",
+    "logo": "www.midjourney.com.webp"
+  },
+  {
+    "name": "DALL·E",
+    "url": "https://openai.com/dall-e",
+    "logo": "openai.com.svg"
+  },
+  {
+    "name": "Microsoft Designer",
+    "url": "https://designer.microsoft.com",
+    "logo": "designer.microsoft.com.webp"
+  },
+  {
+    "name": "Tome",
+    "url": "https://tome.app",
+    "logo": "tome.app.webp"
+  },
+  {
+    "name": "Beautiful.ai",
+    "url": "https://www.beautiful.ai",
+    "logo": "www.beautiful.ai.webp"
+  },
+  {
+    "name": "Pitch",
+    "url": "https://pitch.com",
+    "logo": "pitch.com.webp"
+  },
+  {
+    "name": "SlidesAI",
+    "url": "https://www.slidesai.io",
+    "logo": "www.slidesai.io.webp"
+  },
+  {
+    "name": "Plus AI",
+    "url": "https://www.plusdocs.com/plus-ai",
+    "logo": "www.plusdocs.com.svg"
+  },
+  {
+    "name": "MagicSlides",
+    "url": "https://www.magicslides.app",
+    "logo": "www.magicslides.app.svg"
+  },
+  {
+    "name": "ClassPoint",
+    "url": "https://www.classpoint.io",
+    "logo": "www.classpoint.io.webp"
+  },
+  {
+    "name": "Mentimeter",
+    "url": "https://www.mentimeter.com",
+    "logo": "www.mentimeter.com.webp"
+  },
+  {
+    "name": "Nearpod",
+    "url": "https://nearpod.com",
+    "logo": "nearpod.com.webp"
+  },
+  {
+    "name": "Pear Deck",
+    "url": "https://www.peardeck.com",
+    "logo": "www.peardeck.com.webp"
+  },
+  {
+    "name": "Formative",
+    "url": "https://www.formative.com",
+    "logo": "www.formative.com.webp"
+  },
+  {
+    "name": "Socrative",
+    "url": "https://www.socrative.com",
+    "logo": "www.socrative.com.webp"
+  },
+  {
+    "name": "Kahoot!",
+    "url": "https://kahoot.com",
+    "logo": "kahoot.com.svg"
+  },
+  {
+    "name": "Quizlet",
+    "url": "https://quizlet.com",
+    "logo": "quizlet.com.webp"
+  },
+  {
+    "name": "Gimkit",
+    "url": "https://www.gimkit.com",
+    "logo": "www.gimkit.com.webp"
+  },
+  {
+    "name": "Conker",
+    "url": "https://www.conker.ai",
+    "logo": "www.conker.ai.webp"
+  },
+  {
+    "name": "Gibbly",
+    "url": "https://www.gibbly.co",
+    "logo": "www.gibbly.co.webp"
+  },
+  {
+    "name": "Twee",
+    "url": "https://twee.com",
+    "logo": "twee.com.svg"
+  },
+  {
+    "name": "LessonPlans.ai",
+    "url": "https://lessonplans.ai",
+    "logo": "lessonplans.ai.webp"
+  },
+  {
+    "name": "Chalkie AI",
+    "url": "https://www.chalkie.ai",
+    "logo": "www.chalkie.ai.webp"
+  },
+  {
+    "name": "TeacherMatic",
+    "url": "https://teachermatic.com",
+    "logo": "teachermatic.com.webp"
+  },
+  {
+    "name": "Teacher's Buddy",
+    "url": "https://teachersbuddy.com",
+    "logo": "teachersbuddy.com.svg"
+  },
+  {
+    "name": "Learnt.ai",
+    "url": "https://www.learnt.ai",
+    "logo": "www.learnt.ai.webp"
+  },
+  {
+    "name": "Tango",
+    "url": "https://www.tango.us",
+    "logo": "www.tango.us.webp"
+  },
+  {
+    "name": "Scribe",
+    "url": "https://scribehow.com",
+    "logo": "scribehow.com.svg"
+  },
+  {
+    "name": "MagicForm",
+    "url": "https://www.magicform.app",
+    "logo": "www.magicform.app.svg"
+  },
+  {
+    "name": "Quizgecko",
+    "url": "https://quizgecko.com",
+    "logo": "quizgecko.com.webp"
+  },
+  {
+    "name": "Wooclap",
+    "url": "https://www.wooclap.com",
+    "logo": "www.wooclap.com.webp"
+  },
+  {
+    "name": "Perusall",
+    "url": "https://www.perusall.com",
+    "logo": "www.perusall.com.webp"
+  },
+  {
+    "name": "Top Hat",
+    "url": "https://tophat.com",
+    "logo": "tophat.com.svg"
+  },
+  {
+    "name": "Khan Academy",
+    "url": "https://www.khanacademy.org",
+    "logo": "www.khanacademy.org.webp"
+  },
+  {
+    "name": "Photomath",
+    "url": "https://photomath.com",
+    "logo": "photomath.com.webp"
+  },
+  {
+    "name": "WolframAlpha",
+    "url": "https://www.wolframalpha.com",
+    "logo": "www.wolframalpha.com.webp"
+  },
+  {
+    "name": "Symbolab",
+    "url": "https://www.symbolab.com",
+    "logo": "www.symbolab.com.svg"
+  },
+  {
+    "name": "Socratic by Google",
+    "url": "https://socratic.org",
+    "logo": "socratic.org.webp"
+  },
+  {
+    "name": "Brainly",
+    "url": "https://brainly.com",
+    "logo": "brainly.com.webp"
+  },
+  {
+    "name": "Studocu",
+    "url": "https://www.studocu.com",
+    "logo": "www.studocu.com.webp"
+  },
+  {
+    "name": "Course Hero",
+    "url": "https://www.coursehero.com",
+    "logo": "www.coursehero.com.webp"
+  },
+  {
+    "name": "Knowt",
+    "url": "https://knowt.com",
+    "logo": "knowt.com.webp"
+  },
+  {
+    "name": "StudyFetch",
+    "url": "https://www.studyfetch.com",
+    "logo": "www.studyfetch.com.svg"
+  },
+  {
+    "name": "Mindgrasp",
+    "url": "https://mindgrasp.ai",
+    "logo": "mindgrasp.ai.webp"
+  },
+  {
+    "name": "Gizmo AI",
+    "url": "https://gizmo.ai",
+    "logo": "gizmo.ai.svg"
+  },
+  {
+    "name": "Recall",
+    "url": "https://www.recall.ai",
+    "logo": "www.recall.ai.webp"
+  },
+  {
+    "name": "Humata",
+    "url": "https://www.humata.ai",
+    "logo": "www.humata.ai.webp"
+  },
+  {
+    "name": "AskYourPDF",
+    "url": "https://askyourpdf.com",
+    "logo": "askyourpdf.com.webp"
+  },
+  {
+    "name": "ChatPDF",
+    "url": "https://www.chatpdf.com",
+    "logo": "www.chatpdf.com.svg"
+  },
+  {
+    "name": "PDF.ai",
+    "url": "https://pdf.ai",
+    "logo": "pdf.ai.webp"
+  },
+  {
+    "name": "Mapify",
+    "url": "https://mapify.so",
+    "logo": "mapify.so.svg"
+  },
+  {
+    "name": "Napkin AI",
+    "url": "https://www.napkin.ai",
+    "logo": "www.napkin.ai.webp"
+  },
+  {
+    "name": "Whimsical AI",
+    "url": "https://whimsical.com/ai",
+    "logo": "whimsical.com.webp"
+  },
+  {
+    "name": "Miro AI",
+    "url": "https://miro.com/ai",
+    "logo": "miro.com.webp"
+  },
+  {
+    "name": "FigJam AI",
+    "url": "https://www.figma.com/figjam",
+    "logo": "www.figma.com.svg"
+  },
+  {
+    "name": "Notion AI",
+    "url": "https://www.notion.com/product/ai",
+    "logo": "www.notion.com.webp"
+  },
+  {
+    "name": "ClickUp AI",
+    "url": "https://clickup.com/ai",
+    "logo": "clickup.com.webp"
+  },
+  {
+    "name": "Zapier AI",
+    "url": "https://zapier.com/ai",
+    "logo": "zapier.com.webp"
+  },
+  {
+    "name": "Make",
+    "url": "https://www.make.com",
+    "logo": "www.make.com.webp"
+  },
+  {
+    "name": "Replit",
+    "url": "https://replit.com",
+    "logo": "replit.com.webp"
+  },
+  {
+    "name": "Bolt",
+    "url": "https://bolt.new",
+    "logo": "bolt.new.svg"
+  },
+  {
+    "name": "Lovable",
+    "url": "https://lovable.dev",
+    "logo": "lovable.dev.svg"
+  },
+  {
+    "name": "v0",
+    "url": "https://v0.dev",
+    "logo": "v0.dev.svg"
+  },
+  {
+    "name": "Wix AI",
+    "url": "https://www.wix.com/ai-website-builder",
+    "logo": "www.wix.com.webp"
+  },
+  {
+    "name": "Framer AI",
+    "url": "https://www.framer.com/ai",
+    "logo": "www.framer.com.webp"
+  },
+  {
+    "name": "10Web AI",
+    "url": "https://10web.io/ai-website-builder",
+    "logo": "10web.io.webp"
+  },
+  {
+    "name": "LearningStudioAI",
+    "url": "https://learningstudioai.com",
+    "logo": "learningstudioai.com.svg"
+  },
+  {
+    "name": "Coursebox AI",
+    "url": "https://www.coursebox.ai",
+    "logo": "www.coursebox.ai.webp"
+  },
+  {
+    "name": "Mindsmith",
+    "url": "https://mindsmith.ai",
+    "logo": "mindsmith.ai.webp"
+  },
+  {
+    "name": "SCORM Hero",
+    "url": "https://scormhero.com",
+    "logo": "scormhero.com.webp"
+  },
+  {
+    "name": "Sana Learn",
+    "url": "https://sanalabs.com",
+    "logo": "sanalabs.com.svg"
+  },
+  {
+    "name": "Docebo",
+    "url": "https://www.docebo.com",
+    "logo": "www.docebo.com.webp"
+  },
+  {
+    "name": "D-ID",
+    "url": "https://www.d-id.com",
+    "logo": "www.d-id.com.webp"
+  },
+  {
+    "name": "Elai.io",
+    "url": "https://elai.io",
+    "logo": "elai.io.webp"
+  },
+  {
+    "name": "DeepBrain AI",
+    "url": "https://www.aistudios.com",
+    "logo": "www.aistudios.com.svg"
+  },
+  {
+    "name": "Lumen5",
+    "url": "https://lumen5.com",
+    "logo": "lumen5.com.webp"
+  },
+  {
+    "name": "Pictory",
+    "url": "https://pictory.ai",
+    "logo": "pictory.ai.webp"
+  },
+  {
+    "name": "Kapwing AI",
+    "url": "https://www.kapwing.com/ai",
+    "logo": "www.kapwing.com.svg"
+  },
+  {
+    "name": "Adobe Express",
+    "url": "https://www.adobe.com/express",
+    "logo": "www.adobe.com.webp"
+  },
+  {
+    "name": "Visme",
+    "url": "https://www.visme.co",
+    "logo": "www.visme.co.svg"
+  },
+  {
+    "name": "Simplified AI",
+    "url": "https://simplified.com",
+    "logo": "simplified.com.webp"
+  }
+]

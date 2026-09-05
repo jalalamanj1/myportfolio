@@ -36,10 +36,21 @@ export const translations: Record<Lang, Record<string, string>> = {
     'services.prompts.desc': 'مكتبة أوامر الذكاء الاصطناعي للتصميم والإنتاجية.',
     'services.edu.desc': 'الموارد التعليمية ومواد التعلم.',
     'services.apps.desc': 'تطبيقات سطح المكتب والمشاريع البرمجية.',
+    'services.wheel.title': 'العجلة',
+    'services.wheel.desc': 'عجلة الأسماء والأسئلة.',
+    'services.freeTag': 'مجاني',
 
     // Edu Page
     'edu.title': 'التعليم',
     'edu.desc': 'الموارد التعليمية ومواد التعلم قريباً.',
+    'edu.aiTools.title': 'مواقع ووكلاء الذكاء الاصطناعي',
+    'edu.aiTools.desc': 'دليل منسق لمواقع وأدوات ووكلاء الذكاء الاصطناعي للمعلمين والطلاب والمبدعين.',
+    'edu.aiTools.cardDesc': 'اكتشف مواقع وأدوات ووكلاء الذكاء الاصطناعي المتميزة للتعليم والإبداع.',
+    'edu.aiTools.count': '{n} موقع وأداة',
+    'edu.aiTools.open': 'زيارة',
+    'edu.aiTools.hint': 'اسحب للإصبع أو استخدم الأسهم للتصفح.',
+    'edu.aiTools.sectionStudents': 'للطلاب',
+    'edu.aiTools.sectionTeachers': 'للمعلمين',
 
     // Apps Page
     'apps.title': 'التطبيقات',
@@ -435,10 +446,21 @@ export const translations: Record<Lang, Record<string, string>> = {
     'services.prompts.desc': 'AI prompt library for design and productivity.',
     'services.edu.desc': 'Educational resources and learning materials.',
     'services.apps.desc': 'Desktop applications and software projects.',
+    'services.wheel.title': 'Wheel',
+    'services.wheel.desc': 'Wheel of Names and Questions.',
+    'services.freeTag': 'Free',
 
     // Edu Page
     'edu.title': 'Edu',
     'edu.desc': 'Educational resources and learning materials coming soon.',
+    'edu.aiTools.title': 'AI Websites & Agents',
+    'edu.aiTools.desc': 'A curated directory of AI websites, tools, and agents for teachers, students, and creators.',
+    'edu.aiTools.cardDesc': 'Explore a curated directory of AI websites, assistants, and agents for teaching, studying, and creating.',
+    'edu.aiTools.count': '{n} tools',
+    'edu.aiTools.open': 'Visit',
+    'edu.aiTools.hint': 'Swipe or use the arrows to browse.',
+    'edu.aiTools.sectionStudents': 'For Students',
+    'edu.aiTools.sectionTeachers': 'For Teachers',
 
     // Apps Page
     'apps.title': 'Apps',
