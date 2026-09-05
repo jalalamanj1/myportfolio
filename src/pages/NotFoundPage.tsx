@@ -10,7 +10,7 @@ export const NotFoundPage: React.FC = () => {
   const { lang } = useLang();
 
   return (
-    <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="relative z-10 w-full min-h-screen pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
       <Seo
         title={`404 — ${t('notFound.title', lang)} | Jalal Amanj`}
         description="The page you are looking for could not be found on Jalal Amanj's portfolio."

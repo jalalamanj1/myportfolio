@@ -27,7 +27,7 @@ export const EduPage: React.FC = () => {
   ];
 
   return (
-    <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="relative z-10 w-full min-h-screen pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
       <Seo
         title="Education Services — Jalal Amanj"
         description="A curated directory of AI websites, tools, and agents for teachers, students, and creators."
@@ -35,7 +35,7 @@ export const EduPage: React.FC = () => {
         jsonLd={[breadcrumbJsonLd(crumbs)]}
       />
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
+        <div className="mb-12">
           <Breadcrumbs items={crumbs} />
         </div>
 
@@ -66,7 +66,7 @@ export const EduPage: React.FC = () => {
                 <div className="p-4 rounded-2xl bg-accent-soft border border-line text-accent group-hover:bg-accent group-hover:text-white group-hover:scale-110 transition-all">
                   <Icon className="w-7 h-7" />
                 </div>
-                <h3 className="font-serif text-2xl font-light text-ink group-hover:text-accent transition-colors">
+                <h3 className="font-serif text-2xl font-light text-ink group-hover:text-accent transition-colors whitespace-nowrap max-w-full overflow-hidden">
                   {card.title}
                 </h3>
                 <p className="text-xs text-ink font-light leading-relaxed">

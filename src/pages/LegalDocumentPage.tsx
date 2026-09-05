@@ -34,7 +34,7 @@ export const LegalDocumentPage: React.FC = () => {
   ];
 
   return (
-    <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="relative z-10 w-full min-h-screen pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
       <Seo
         title={`${title} | Murshid — Jalal Amanj`}
         description={`${title} — the legal document that governs how the Murshid desktop application handles your data and rights.`}
@@ -42,7 +42,7 @@ export const LegalDocumentPage: React.FC = () => {
         jsonLd={[breadcrumbJsonLd(crumbs)]}
       />
       <div className="max-w-3xl mx-auto">
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+        <div className="mb-12 flex flex-wrap items-center justify-between gap-3">
           <Breadcrumbs items={crumbs} />
         </div>
 

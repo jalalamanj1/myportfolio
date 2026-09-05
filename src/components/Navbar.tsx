@@ -5,12 +5,14 @@ import { t } from '../i18n';
 
 const LOGO_URL = `${import.meta.env.BASE_URL}logo.webp`;
 
-const NAV_ITEMS = [
+type NavItem = { key: string; href: string; route?: string };
+
+const NAV_ITEMS: readonly NavItem[] = [
   { key: 'home', href: '#hero' },
   { key: 'work', href: '#work' },
-  { key: 'services', href: '#services' },
+  { key: 'services', href: '#services', route: '/services' },
   { key: 'contact', href: '#contact' },
-] as const;
+];
 
 export const Navbar: React.FC = memo(function Navbar() {
   const navigate = useNavigate();
@@ -39,6 +41,19 @@ export const Navbar: React.FC = memo(function Navbar() {
       const el = document.querySelector(href);
       if (el) (el as HTMLElement).scrollIntoView({ behavior: 'smooth' });
     }, 120);
+  };
+
+  const handleNav = (item: NavItem) => {
+    setMenuOpen(false);
+    if (item.route) {
+      if (window.location.pathname === item.route) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        navigate(item.route);
+      }
+      return;
+    }
+    goTo(item.href);
   };
 
   const toggleLang = () => {
@@ -74,7 +89,7 @@ export const Navbar: React.FC = memo(function Navbar() {
           {NAV_ITEMS.map((item) => (
             <button
               key={item.key}
-              onClick={() => goTo(item.href)}
+              onClick={() => handleNav(item)}
               className="text-[13px] font-medium text-ink-soft hover:text-ink transition-colors cursor-pointer"
             >
               {t(`nav.${item.key}`, lang)}
@@ -116,7 +131,7 @@ export const Navbar: React.FC = memo(function Navbar() {
             {NAV_ITEMS.map((item) => (
               <button
                 key={item.key}
-                onClick={() => goTo(item.href)}
+                onClick={() => handleNav(item)}
                 className="text-start py-3 text-[15px] font-medium text-ink hover:text-accent transition-colors cursor-pointer border-b border-line/60 last:border-0"
               >
                 {t(`nav.${item.key}`, lang)}

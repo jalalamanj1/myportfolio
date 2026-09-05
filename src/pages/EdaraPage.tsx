@@ -43,7 +43,7 @@ export const EdaraPage: React.FC = () => {
   const paragraphClass = 'text-sm text-ink font-light leading-relaxed text-start';
 
   return (
-    <div className="relative z-10 w-full min-h-screen pt-12 sm:pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="relative z-10 w-full min-h-screen pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8">
       <Seo
         title="Edara — School Management System | Jalal Amanj"
         description="Edara is a school management desktop application for organizing administrative and educational records locally, with optional cloud backup."
@@ -51,7 +51,7 @@ export const EdaraPage: React.FC = () => {
         jsonLd={[breadcrumbJsonLd(crumbs), softwareJsonLd]}
       />
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+        <div className="mb-12 flex flex-wrap items-center justify-between gap-3">
           <Breadcrumbs items={crumbs} />
         </div>
 
